@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>About — DEAD RECKONING</title>
+<meta name="description" content="What DEAD RECKONING is, why it exists, and who built it." />
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div id="app" style="position:static;display:block;min-height:100%;">
+  <header class="topbar">
+    <a class="brand" href="index.html" style="text-decoration:none">DEAD<span class="dot">·</span>RECKONING</a>
+    <span class="spacer"></span>
+    <nav><a href="index.html">Map</a><a href="methodology.html">Methodology</a><a href="about.html">About</a></nav>
+  </header>
+
+  <main class="doc">
+    <a class="backlink" href="index.html">← back to the map</a>
+    <h1>About</h1>
+    <p class="lede"><em>Dead reckoning</em> is how you navigate when the
+    satellites go quiet: from your last known position, your heading, and your
+    speed. The name is the thesis — this is a record of where, and when, aircraft
+    were forced back onto their own instruments.</p>
+
+    <h2>Why it exists</h2>
+    <p>Several tools already show <em>current</em> GPS interference conditions —
+    GPSJam, Flightradar24's jamming map, SkAI's spoofing tracker. They answer
+    "what is happening right now." None of them keeps <strong>memory</strong>.
+    There has been no scrubbable, multi-year archive that lets you ask: <em>when
+    did this region light up? how does today compare to its own normal? what was
+    happening in the world that week?</em></p>
+    <p>DEAD RECKONING is that memory: per-hex baselines, anomaly scoring, named
+    watch regions with analyst context, and a timeline of sourced events — all
+    built from open data, with uncertainty shown as a first-class feature rather
+    than hidden behind confident color.</p>
+
+    <h2>How it works, briefly</h2>
+    <p>Aircraft broadcast a navigation-integrity value (NIC) with every position.
+    Where many aircraft simultaneously report degraded integrity, GNSS is likely
+    being interfered with. We aggregate that signal per hexagonal cell per UTC
+    day, compare each cell to its own history, and render the result. The full
+    method — and its limits — is on the
+    <a href="methodology.html">methodology page</a>.</p>
+
+    <h2>What it is not</h2>
+    <p>It is not a jamming-attribution service. The map never asserts who caused
+    an interference event. Region profiles summarize what public reporting
+    attributes, with sources, and are marked as draft analysis pending review.</p>
+
+    <h2>Stack</h2>
+    <p>A static site — no servers, no databases, no paid APIs. A Python pipeline
+    (H3, streaming JSON) turns daily
+    <a href="https://www.adsb.lol" target="_blank" rel="noopener">adsb.lol</a>
+    dumps into small flat aggregates; the frontend is vanilla JavaScript with
+    <a href="https://maplibre.org" target="_blank" rel="noopener">MapLibre GL JS</a>,
+    <a href="https://github.com/uber/h3-js" target="_blank" rel="noopener">h3-js</a>,
+    and <a href="https://d3js.org" target="_blank" rel="noopener">D3</a>, on an
+    <a href="https://openfreemap.org" target="_blank" rel="noopener">OpenFreeMap</a>
+    basemap. GitHub Actions rebuilds it nightly. The whole thing runs at $0.</p>
+
+    <h2>Author</h2>
+    <p>Built by <strong>Walker Robinson</strong>.
+    <a href="https://github.com/wrobinson127" target="_blank" rel="noopener">GitHub</a>
+    · <span class="mono" style="color:var(--ink-faint)">LinkedIn / site — TODO</span></p>
+
+    <h2>Data &amp; licensing</h2>
+    <p>Source flight data © adsb.lol feeders and partners, ODbL 1.0. Published
+    aggregates: ODbL 1.0. Code: MIT. Basemap © OpenStreetMap contributors.</p>
+
+    <a class="backlink" href="index.html">← back to the map</a>
+  </main>
+
+  <footer class="site-footer">
+    <span class="mono">DEAD·RECKONING</span>
+    <span>Built by <a href="https://github.com/wrobinson127" target="_blank" rel="noopener">Walker Robinson</a></span>
+    <span>Data © adsb.lol (ODbL 1.0)</span>
+    <span>Code MIT</span>
+  </footer>
+</div>
+</body>
+</html>

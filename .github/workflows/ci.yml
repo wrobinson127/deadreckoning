@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run tests
+        run: python -m pytest pipeline/tests -q
+      - name: Smoke-check pipeline imports & config invariants
+        run: python -c "import pipeline.run_daily, pipeline.backfill, pipeline.baselines, pipeline.regions, pipeline.build_site_data; from pipeline import config as c; assert 0 <= c.NIC_DEGRADED_MAX <= 11"

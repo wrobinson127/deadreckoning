@@ -1,0 +1,11 @@
+# Normalize line endings: text is LF in the repo (keeps CI/Linux clean).
+* text=auto eol=lf
+
+# Binary assets — never normalize.
+*.png binary
+*.svg text eol=lf
+*.pmtiles binary
+*.ttf binary
+
+# Generated/data JSON is text; large but small per file.
+data/**/*.json text eol=lf
