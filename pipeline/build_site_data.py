@@ -10,21 +10,17 @@ is already JSON and is consumed directly. Run after dailies/baselines exist.
 """
 from __future__ import annotations
 
-import glob
 import os
 
 import orjson
 import yaml
 
-from . import config as C
+from . import config as C, dailyio
 from .paths import repo_path
 
 
 def build_manifest() -> dict:
-    days = sorted(
-        os.path.basename(p).removesuffix(".json")
-        for p in glob.glob(repo_path("data", "daily", "*.json"))
-    )
+    days = sorted(dailyio.day_of(p) for p in dailyio.daily_paths())
     # Global render hints: a robust upper clip for the raw bad_ratio color scale.
     # (Anomaly z-scores are computed client-side from baselines.json.)
     return {

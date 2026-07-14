@@ -17,7 +17,7 @@ from datetime import date as date_cls
 
 import orjson
 
-from . import aggregate, config as C, download, parse
+from . import aggregate, dailyio, download, parse
 from .paths import repo_path
 
 
@@ -35,10 +35,7 @@ def process_day(day: str, scratch: str, keep_raw: bool = False) -> dict:
         if not keep_raw:
             download.cleanup(parts)
 
-    out = repo_path(C.DAILY_JSON_TEMPLATE.format(date=day))
-    os.makedirs(os.path.dirname(out), exist_ok=True)
-    with open(out, "wb") as fh:
-        fh.write(orjson.dumps(records))  # compact; small (<~1MB/day)
+    out = dailyio.write_daily(day, records)  # gzipped; ~0.24 MB/day
 
     n_hi = sum(1 for r in records if r["confidence"] == "high")
     summary = {

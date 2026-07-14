@@ -40,14 +40,17 @@ Ordered by analytic value:
    - Storage: 208 × 3.36 MB ≈ **700 MB** uncompressed (≈ 50 MB gzipped).
 
 ## Repo-size guardrail (important)
-At **3.36 MB/day uncompressed**, a full *daily* year is ≈ **1.2 GB** — at
-GitHub's ~1 GB soft repo guidance and the 100 MB/file hard limit is never
-approached (per-file is 3.36 MB). Mitigations, in order of preference:
-- **Weekly sampling** for the deep multi-year fill (above) keeps totals modest.
-- If dense multi-year daily coverage is later desired, **commit gzipped**
-  (`data/daily/*.json.gz`, ~0.24 MB/day → ~90 MB/yr) and have the frontend
-  fetch/inflate, or move bulk history to a release asset / separate data branch.
-  A `GZIP_DAILY` flag already exists in `pipeline/config.py` for this switch.
+Dailies are **committed gzipped** (`data/daily/*.json.gz`, **~0.24 MB/day**,
+measured 13.8× on the current 14 days). This is the shipped default, not an
+option: all daily I/O runs through `pipeline/dailyio.py`, and the frontend
+inflates each day client-side with the native `DecompressionStream` API.
+- **Dense daily** now costs ≈ **90 MB/yr** (≈ **260 MB for 3 years**), comfortably
+  under GitHub Pages' ~1 GB guidance; per-file (~0.24 MB) is nowhere near the
+  100 MB hard limit. Uncompressed, the same 3 years would be ≈ **3.7 GB** — over
+  budget, which is why gzip is a **hard gate** before any bulk backfill.
+- **Weekly sampling** remains available for very deep multi-year fills if wanted.
+- Further headroom if ever needed: move bulk history to a release asset or a
+  separate data branch.
 
 ## Operational invariants
 - **All dates are UTC.** The dumps are UTC days.

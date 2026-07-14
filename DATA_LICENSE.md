@@ -2,7 +2,7 @@
 
 ## Summary
 The **data outputs** published in this repository — everything under `data/`
-(`data/daily/*.json`, `data/baselines.json`, `data/regions/*.json`) — are a
+(`data/daily/*.json.gz`, `data/baselines.json`, `data/regions/*.json`) — are a
 **derivative database** produced from [adsb.lol](https://www.adsb.lol) open
 data. They are made available under the
 **[Open Database License (ODbL) v1.0](https://opendatacommons.org/licenses/odbl/1-0/)**.

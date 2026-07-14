@@ -52,18 +52,26 @@ All tunables live in `pipeline/config.py`. The current values:
 `nic ≤ 6` is chosen because NIC 6 ⇒ rc ≈ 926 m (~1 km) — the point at which a
 position is too loose to trust. NIC 7+ (rc < ~370 m) is healthy.
 
-**Open calibration note (FLAG).** On the reference day the degraded signal is
-**dominated by `nic = 0`** (~85% of all degraded points). Concretely, the
-degraded-point fraction is **5.98% including `nic = 0`** but only **0.87%
-excluding it** — so the map is largely a `nic = 0` ("integrity unknown") density
-surface. That is the expected behavior of GPS denial, and the spatial
-distribution is correct (it concentrates in known interference zones —
-Baltic/Kaliningrad `bad_ratio` up to 1.0 — and is near-absent over a quiet
-control region, central US ~0.10 max). But folding "integrity unknown" into
-"degraded" is a deliberate modeling choice, and a reader should know it. Planned:
-report `bad_ratio` with and without `nic = 0` as a selectable strict view, and
-treat ADS-B v0 aircraft (~3.8% of reports, different NIC derivation) separately.
-**Not yet empirically tuned beyond the sanity check.**
+**`nic = 0` is folded into "degraded" — by design.** On the reference day the
+degraded signal is **dominated by `nic = 0`** (~85% of all degraded points),
+which makes the physical rationale the load-bearing one: NIC 0 ("integrity
+unknown") is the *expected signature of a receiver under interference that cannot
+compute an integrity bound at all*. Excluding it would discard the strongest,
+most characteristic evidence of GPS denial and leave only the milder "degraded
+but still reporting" cases. The spatial evidence supports inclusion — with
+`nic = 0` in, the surface concentrates in known interference zones
+(Baltic/Kaliningrad `bad_ratio` up to 1.0) and stays near-absent over a quiet
+control (central US ~0.10 max), which is the behavior we would demand of a real
+interference signal, not of an artifact.
+
+**Documented sensitivity band (reference day 2026-07-13).** Because the choice is
+consequential, the with/without figures are kept on the record: the degraded-point
+fraction is **5.98% including `nic = 0`** vs **0.87% excluding it**. These are
+sample-day figures, not recomputed per render; treat them as the calibrated order
+of magnitude. A per-hex *strict* view (`bad_ratio` excluding `nic = 0`) is a
+planned UI toggle so a reader can see the band directly — deferred, not dropped.
+ADS-B v0 aircraft (~3.8% of reports, different NIC derivation) are treated with
+the same coarse `≤ 6` rule; their small share is noted rather than special-cased.
 
 ## Confidence & the honesty rule (invariant)
 Every hex carries its unique-aircraft count and a tier: **high** (≥10),

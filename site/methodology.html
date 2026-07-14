@@ -72,21 +72,23 @@
     corresponds to a containment radius of roughly 1 km — the point at which a
     position is too loose to trust for navigation. NIC 7 and above (rc &lt; ~370 m)
     are treated as healthy.</p>
-    <div class="callout warn">
-      <strong>Open calibration note.</strong> On the reference day, the degraded
-      signal is dominated by <code>nic = 0</code> reports (~85% of all degraded
-      points) — aircraft that have dropped to "integrity unknown," the expected
-      state under GNSS denial. Spatially this behaves correctly (it concentrates
-      in known interference zones and is near-absent over quiet regions), but
-      folding "unknown" into "degraded" is a deliberate choice.
-      <strong>Concretely:</strong> on the reference day the degraded-point
-      fraction is <strong>5.98% including <code>nic = 0</code></strong> but only
-      <strong>0.87% excluding it</strong> — so most of the signal <em>is</em> the
-      "integrity unknown" state. That is the honest and expected behavior of GPS
-      denial, but a reader should know the map is largely a <code>nic = 0</code>
-      density surface. A planned toggle will let you view the strict
-      (<code>1 ≤ nic ≤ 6</code>) ratio alongside it. All thresholds live in a
-      single config file and are versioned with the data.
+    <div class="callout">
+      <strong>Design decision: <code>nic = 0</code> counts as degraded.</strong>
+      On the reference day the degraded signal is dominated by <code>nic = 0</code>
+      reports (~85% of all degraded points) — aircraft dropped to "integrity
+      unknown," which is the <em>expected physical signature</em> of a receiver
+      under interference that can no longer bound its own error. Excluding it would
+      throw away the strongest evidence of GPS denial, so it is folded in
+      deliberately. Spatially this behaves as a real signal should: it concentrates
+      in known interference zones (Baltic/Kaliningrad up to 1.0) and is near-absent
+      over a quiet control (central US ~0.10 max).
+      <strong>Sensitivity (kept on the record):</strong> the degraded-point
+      fraction is <strong>5.98% including <code>nic = 0</code></strong> vs
+      <strong>0.87% excluding it</strong> — sample-day figures, so the map is
+      largely a <code>nic = 0</code> density surface, and you should read it as
+      one. A per-hex <em>strict</em> view (<code>1 ≤ nic ≤ 6</code>) is a planned
+      toggle to show that band directly. All thresholds live in a single config
+      file and are versioned with the data.
     </div>
 
     <h2>Confidence &amp; the honesty rule</h2>

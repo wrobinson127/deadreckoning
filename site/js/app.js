@@ -47,9 +47,25 @@
     return r.json();
   }
 
+  // Daily aggregates are stored gzip-compressed (data/daily/*.json.gz) to keep
+  // the archive small. Decompress client-side with the native DecompressionStream
+  // API — no library. Static hosts (GitHub Pages, python http.server) serve .gz
+  // as an opaque body without a Content-Encoding header, so the browser does NOT
+  // auto-inflate it and we must do it here.
+  async function getGzJSON(url) {
+    if (typeof DecompressionStream === "undefined") {
+      throw new Error("This browser lacks DecompressionStream (gzip); please update it.");
+    }
+    const r = await fetch(url);
+    if (!r.ok) throw new Error(`${url}: ${r.status}`);
+    const stream = r.body.pipeThrough(new DecompressionStream("gzip"));
+    const text = await new Response(stream).text();
+    return JSON.parse(text);
+  }
+
   async function loadDay(day) {
     if (state.dayCache.has(day)) return state.dayCache.get(day);
-    const records = await getJSON(`data/daily/${day}.json`);
+    const records = await getGzJSON(`data/daily/${day}.json.gz`);
     const byHex = new Map();
     for (const r of records) byHex.set(r.hex, r);
     const entry = { records, byHex };
@@ -410,9 +426,12 @@
 
   function showEventCard(e, target) {
     const card = el("eventCard");
-    card.innerHTML = `<div class="e-date">${e.date} · ${e.type || ""}</div>
+    const disputed = e.disputed ? `<span class="e-tag">disputed</span>` : "";
+    const note = e.editorial_note
+      ? `<div class="e-note">${escapeHtml(e.editorial_note)}</div>` : "";
+    card.innerHTML = `<div class="e-date">${e.date} · ${e.type || ""}${disputed}</div>
       <div class="e-title">${escapeHtml(e.title)}</div>
-      <div class="e-one">${escapeHtml(e.one_line || "")}</div>`;
+      <div class="e-one">${escapeHtml(e.one_line || "")}</div>${note}`;
     const wrap = target.closest(".track-wrap").getBoundingClientRect();
     const tr = target.getBoundingClientRect();
     card.style.left = Math.min(window.innerWidth - 300, tr.left) + "px";

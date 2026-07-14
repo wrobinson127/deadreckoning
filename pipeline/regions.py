@@ -2,7 +2,7 @@
 Per-region daily time series from the committed daily aggregates.
 
 Reads content/regions.geojson (analyst-defined watch polygons) and every
-data/daily/*.json, assigns each active hex to the first region whose polygon
+data/daily/*.json.gz, assigns each active hex to the first region whose polygon
 contains the hex centroid, and writes one time series per region to
 data/regions/{id}.json for the region panel's trend sparkline.
 
@@ -11,14 +11,12 @@ active hexes and ~10 regions this is trivially fast and dependency-free.
 """
 from __future__ import annotations
 
-import glob
-import json
 import os
 
 import h3
 import orjson
 
-from . import config as C
+from . import config as C, dailyio
 from .paths import repo_path
 
 REGIONS_GEOJSON = repo_path("content", "regions.geojson")
@@ -93,10 +91,7 @@ def build_region_series() -> list[str]:
     # region_id -> list of per-day metric dicts
     series: dict[str, list[dict]] = {r["id"]: [] for r in regions}
 
-    for path in sorted(glob.glob(repo_path("data", "daily", "*.json"))):
-        day = os.path.basename(path).removesuffix(".json")
-        with open(path, "rb") as fh:
-            records = orjson.loads(fh.read())
+    for day, records in dailyio.load_dailies():
         # region_id -> accumulators
         acc: dict[str, dict] = {r["id"]: {"ratios": [], "aircraft": 0} for r in regions}
         for rec in records:
