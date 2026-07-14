@@ -40,6 +40,17 @@ NIC_DEGRADED_MAX = 6
 # aircraft-level, not report-level, unit — one jet lingering does not dominate.
 BAD_AIRCRAFT_MAJORITY = 0.5  # strictly greater-than this fraction => bad
 
+# --- Affected-flights schema (per degraded hex) ------------------------------
+# A degraded hex carries up to FLIGHTS_TOP_N of the aircraft that were counted
+# "bad" there (majority-degraded), each as {ic, cs, t0, t1, nd}: ICAO, public
+# callsign, first/last degraded-report unix-seconds, and #degraded reports.
+# Attached ONLY to hexes at/above FLIGHTS_MIN_BAD_RATIO that also meet the
+# aircraft floor — this bounds the size to the visually significant hexes and
+# keeps quiet/corridor hexes byte-for-byte unchanged. Callsigns are public ADS-B
+# broadcast data (see docs/METHODOLOGY.md).
+FLIGHTS_TOP_N = 10
+FLIGHTS_MIN_BAD_RATIO = 0.5
+
 # --- Minimum-sample guard ----------------------------------------------------
 # Hexes with fewer than this many unique aircraft render as "insufficient data"
 # and NEVER as a ratio/color. This structurally encodes the FR24 inference rule:

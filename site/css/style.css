@@ -124,6 +124,7 @@ header.topbar {
 .legend .swatch-row { display:flex; align-items:center; gap:8px; margin-top:9px;
   font-size:11px; color:var(--ink-dim); }
 .swatch { width:16px; height:12px; border-radius:2px; border:1px solid var(--line-2); }
+.swatch.quiet { background-color:#3d726a; }
 .swatch.insufficient {
   background-color:#232a33;
   background-image: repeating-linear-gradient(45deg,

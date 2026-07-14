@@ -76,9 +76,29 @@ the same coarse `≤ 6` rule; their small share is noted rather than special-cas
 ## Confidence & the honesty rule (invariant)
 Every hex carries its unique-aircraft count and a tier: **high** (≥10),
 **medium** (5–9), **insufficient** (<5). Insufficient hexes are never rendered as
-a ratio or confident color — on the map they appear as a dim diagonal hatch under
-the "coverage" toggle. This makes *no interference* visually distinct from *no
-coverage*.
+a ratio or confident color — on the map they appear as a dim diagonal hatch (the
+"Low-sample cells" toggle). This makes *no interference* visually distinct from
+*no coverage*.
+
+**Showing coverage matters** because absence of signal is only meaningful where
+presence of monitoring is shown: a dark cell could mean "watched and calm" or
+"nobody was looking," and those are opposite claims. So measured-but-quiet hexes
+(tier ≥ medium, low degraded ratio) render as a faint "watched airspace" carpet
+(the "Quiet coverage" toggle, on by default) — distinct from the near-black of
+genuine no-data. The carpet is deliberately a whisper: it must never compete with
+a real bloom.
+
+## Affected flights (per degraded hex)
+Significant hexes (`bad_ratio ≥ FLIGHTS_MIN_BAD_RATIO`, meeting the aircraft
+floor) carry up to `FLIGHTS_TOP_N` of the aircraft counted degraded there:
+`{ic, cs, t0, t1, nd}` = ICAO address, callsign, first/last degraded-report time
+(UTC seconds), and number of degraded reports, highest first. **Privacy:**
+callsigns and ICAO addresses are **public ADS-B broadcast data**, transmitted in
+the clear by every aircraft and already redistributed by adsb.lol under ODbL;
+DeadReckoning surfaces a bounded top-N per interference hex, not tracking. The
+list is attached only to hexes that already render as interference, which keeps
+the added artifact size small (~15% per day) and leaves quiet/corridor hexes
+unchanged.
 
 ## Baselines & anomaly
 Per hex, baseline = mean/std of `bad_ratio` over up to `BASELINE_WINDOW_DAYS`
