@@ -1,0 +1,7 @@
+# DeadReckoning pipeline dependencies (Python 3.11+). Kept minimal and pinned.
+h3==4.5.0            # H3 hexagonal grid (v4 API: latlng_to_cell, cell_to_boundary)
+orjson==3.11.7       # fast JSON parse/serialize for streaming trace files
+PyYAML==6.0.3        # regions.yaml / events.yaml parsing
+
+# Dev/test only (not needed by the deployed site or the nightly Action runtime):
+pytest==8.3.4

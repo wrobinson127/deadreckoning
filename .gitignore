@@ -1,0 +1,37 @@
+# --- Raw data & scratch (NEVER commit; only aggregates live in data/) ---
+.scratch/
+*.tar
+*.tar.a*
+*.tar.gz
+traces/
+heatmap/
+*_result.json
+sample_trace.bin
+
+# Any large file must never enter history (Pages: 100MB/file, ~1GB repo).
+# Aggregates in data/ are small (<2MB/day) and ARE committed.
+
+# --- The overnight handoff brief (private, not part of the deliverable) ---
+cc_handoff_a1_gps_interference_archive.md
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+
+# --- Node / frontend tooling (site is buildless; no node_modules committed) ---
+node_modules/
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# assembled local preview (deploy builds this on the runner)
+_site/
