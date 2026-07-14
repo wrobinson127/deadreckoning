@@ -45,6 +45,7 @@
         <div class="seg" id="modeToggle" role="group" aria-label="color mode">
           <button data-mode="raw" aria-pressed="true">Degraded %</button>
           <button data-mode="anomaly" aria-pressed="false">Anomaly</button>
+          <button data-mode="coverage" aria-pressed="false">Coverage</button>
         </div>
         <label class="check"><input type="checkbox" id="quietToggle" checked />
           Quiet coverage</label>
@@ -111,6 +112,9 @@
           <div><span class="k" style="background:#b39ddb"></span> <b>Outlined</b> —
             airspace closed or reduced-coverage: the instrument is blind here, and
             that blindness is itself information.</div>
+          <div><span class="k" style="background:#3a6690"></span> <b>Coverage</b>
+            view (top-left) — how <em>heavily</em> each area is watched, so you can
+            tell confidence from blindness.</div>
           <div><span class="k" style="background:var(--phosphor)"></span> Scrub the
             timeline below to move through days.</div>
         </div>

@@ -119,6 +119,7 @@ header.topbar {
   border: 1px solid var(--line); }
 .ramp.anom { background: linear-gradient(90deg,#000004,#3b0f70,#8c2981,#de4968,#fe9f6d,#fcfdbf); }
 .ramp.raw  { background: linear-gradient(90deg,#0b1a24,#123b4e,#1f6f74,#3fae8f,#a7d99b,#f0f6c0); }
+.ramp.cov  { background: linear-gradient(90deg,#111c28,#25415c,#3a6690,#6098c0,#a6cbe4); }
 .ramp-labels { display: flex; justify-content: space-between;
   font-family: var(--mono); font-size: 10px; color: var(--ink-faint); }
 .legend .swatch-row { display:flex; align-items:center; gap:8px; margin-top:9px;
@@ -247,6 +248,19 @@ input.slider::-moz-range-thumb { width:14px; height:14px; border-radius:50%;
   letter-spacing:.04em; text-transform:uppercase; vertical-align:middle;
   background:rgba(210,150,70,.18); color:#e0a869; border:1px solid rgba(210,150,70,.35);
 }
+.event-card .e-tag.draft {
+  background:rgba(150,155,165,.18); color:#aab3bf; border:1px solid rgba(150,155,165,.35);
+}
+/* spatial event marker — minimal amber ring, matches the timeline event ticks;
+   dashed when the event is still draft (preview only). */
+.event-pin {
+  width:11px; height:11px; border-radius:50%; box-sizing:border-box;
+  background:transparent; border:2px solid var(--warn); cursor:pointer;
+  box-shadow:0 0 0 1px rgba(0,0,0,.55), 0 0 6px rgba(255,207,92,.3);
+  transition:transform .1s;
+}
+.event-pin:hover { transform:scale(1.3); }
+.event-pin.draft { border-style:dashed; opacity:.85; box-shadow:0 0 0 1px rgba(0,0,0,.5); }
 .event-card .e-note {
   margin-top:7px; padding-top:7px; border-top:1px solid var(--line);
   color:var(--ink-dim); font-size:11px; font-style:italic; line-height:1.45;
@@ -264,11 +278,8 @@ input.slider::-moz-range-thumb { width:14px; height:14px; border-radius:50%;
   position:absolute; top:6px; right:8px; background:none; border:none;
   color:var(--ink-dim); font-size:17px; line-height:1; cursor:pointer;
 }
-.zone-card .zc-type {
-  font-family:var(--mono); font-size:10px; letter-spacing:.05em;
-  text-transform:uppercase; color:#b39ddb;
-}
-.zone-card .zc-title { font-weight:600; font-size:14px; margin:3px 0 5px; color:var(--ink); }
+.zone-card .zc-title { font-weight:600; font-size:14px; margin:0 0 4px; color:var(--ink); }
+.zone-card .zc-lead { color:#c6b1e6; font-size:12.5px; font-weight:600; line-height:1.4; margin-bottom:6px; }
 .zone-card .zc-note { color:var(--ink-dim); font-size:12px; line-height:1.5; }
 .zone-card .zc-src {
   margin-top:8px; padding-top:8px; border-top:1px solid var(--line);

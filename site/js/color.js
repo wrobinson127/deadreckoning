@@ -10,6 +10,13 @@
   const rawRamp = d3.interpolateRgbBasis([
     "#0b1a24", "#123b4e", "#1f6f74", "#3fae8f", "#a7d99b", "#f0f6c0",
   ]);
+  // Coverage (traffic density) ramp — a muted single-hue STEEL-BLUE, deliberately
+  // off the teal signal ramp, the violet airspace overlay, and the magma anomaly
+  // ramp. Only ever shown in its own "Coverage" mode, so it never competes with
+  // signal in the default view. Match CSS .ramp.cov.
+  const covRamp = d3.interpolateRgbBasis([
+    "#111c28", "#25415c", "#3a6690", "#6098c0", "#a6cbe4",
+  ]);
 
   function clamp(x, lo, hi) { return x < lo ? lo : x > hi ? hi : x; }
 
@@ -25,6 +32,10 @@
     // Raw degraded-aircraft ratio in [0,1].
     raw(ratio) {
       return rawRamp(clamp(ratio, 0, 1));
+    },
+    // Traffic density, already log-normalized to [0,1] by the caller.
+    coverage(t) {
+      return covRamp(clamp(t, 0, 1));
     },
   };
 })();
