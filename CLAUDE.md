@@ -17,7 +17,8 @@ board/  = self-contained kanban (project state, rides git history)
 ```
 - **pipeline/** (Python 3.11+): `config.py` (ALL tunables) · `download.py`
   (resolve+fetch split-tar release, delete after) · `parse.py` (stream tar,
-  airborne NIC points) · `aggregate.py` (per-hex daily) · `baselines.py` ·
+  airborne NIC points + callsign) · `aggregate.py` (per-hex daily + top-N
+  affected flights on degraded hexes) · `baselines.py` ·
   `regions.py` (per-region series) · `build_site_data.py` (manifest + yaml→json)
   · `dailyio.py` (the one place the daily storage format lives)
   · `run_daily.py` / `backfill.py` (entrypoints) · `tests/`.

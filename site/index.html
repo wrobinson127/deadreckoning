@@ -29,7 +29,7 @@
     <span class="brand">DEAD<span class="dot">·</span>RECKONING</span>
     <span class="tagline">GPS interference, remembered.</span>
     <span class="spacer"></span>
-    <a class="byline" href="https://github.com/wrobinson127" target="_blank" rel="noopener">Built by Walker Robinson</a>
+    <a class="byline" href="https://www.walker-robinson.com/" target="_blank" rel="noopener">Built by Walker Robinson</a>
     <nav>
       <a href="index.html">Map</a>
       <a href="methodology.html">Methodology</a>
@@ -46,8 +46,10 @@
           <button data-mode="raw" aria-pressed="true">Degraded %</button>
           <button data-mode="anomaly" aria-pressed="false">Anomaly</button>
         </div>
-        <label class="check"><input type="checkbox" id="coverageToggle" />
-          Show coverage (low-sample)</label>
+        <label class="check"><input type="checkbox" id="quietToggle" checked />
+          Quiet coverage</label>
+        <label class="check"><input type="checkbox" id="hatchToggle" />
+          Low-sample cells</label>
       </div>
     </div>
 
@@ -55,6 +57,8 @@
       <h3 id="legendTitle">Aircraft with degraded GPS</h3>
       <div class="ramp raw" id="legendRamp"></div>
       <div class="ramp-labels"><span id="legLo">0%</span><span id="legHi">100%</span></div>
+      <div class="swatch-row"><span class="swatch quiet"></span>
+        <span>watched &amp; quiet &mdash; aircraft seen, GPS healthy</span></div>
       <div class="swatch-row"><span class="swatch insufficient"></span>
         <span>too few aircraft &mdash; not measured</span></div>
     </div>
@@ -91,10 +95,12 @@
         aircraft at once</em> report degraded satellite navigation, something on
         the ground is interfering with it. This map remembers that — day by day.</p>
         <div class="intro-how">
-          <div><span class="k" style="background:#3fae8f"></span> Brighter cells =
-            more aircraft with degraded GPS.</div>
-          <div><span class="k hatch"></span> Hatched = too few aircraft to judge
-            (not the same as "clear").</div>
+          <div><span class="k" style="background:#245f58"></span> <b>Quiet</b> —
+            faint teal is <em>watched airspace</em>: aircraft seen, GPS healthy.</div>
+          <div><span class="k" style="background:#e0673a"></span> <b>Degraded</b> —
+            brighter cells = many aircraft reporting degraded GPS (the signal).</div>
+          <div><span class="k hatch"></span> <b>Hatched</b> — too few aircraft to
+            judge (not the same as "clear").</div>
           <div><span class="k" style="background:var(--phosphor)"></span> Scrub the
             timeline below to move through days.</div>
         </div>

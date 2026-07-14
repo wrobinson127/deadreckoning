@@ -36,6 +36,7 @@ class Point:
     rc: "int | None"
     version: "int | None"
     t: float  # unix seconds (trace timestamp + point offset)
+    callsign: "str | None" = None  # public ADS-B flight id, carried forward per trace
 
 
 class ChainedReader(io.RawIOBase):
@@ -107,9 +108,19 @@ def _points_from_trace(data: dict, member_name: str) -> Iterator[Point]:
         icao = member_name.rsplit("_", 1)[-1].removesuffix(".json")
     ts0 = data.get("timestamp", 0) or 0
     trace = data.get("trace") or []
+    # readsb emits the callsign in the detail object; it can be absent on later
+    # points even when unchanged, so carry the last-seen value forward per trace.
+    # No registration fallback — if there's no callsign we keep it null and the UI
+    # falls back to the ICAO (the always-present, unambiguous id).
+    last_callsign = None
     for p in trace:
         if len(p) <= C.IDX_DETAIL:
             continue
+        detail = p[C.IDX_DETAIL]
+        if detail:
+            fl = detail.get("flight")
+            if fl and fl.strip():
+                last_callsign = fl.strip()
         alt = p[C.IDX_ALT]
         if alt == C.GROUND_ALT_SENTINEL:  # ground position -> exclude
             continue
@@ -119,7 +130,6 @@ def _points_from_trace(data: dict, member_name: str) -> Iterator[Point]:
             continue
         if not (C.LAT_MIN <= lat <= C.LAT_MAX and C.LON_MIN <= lon <= C.LON_MAX):
             continue
-        detail = p[C.IDX_DETAIL]
         if not detail:
             continue
         nic = detail.get("nic")
@@ -133,4 +143,5 @@ def _points_from_trace(data: dict, member_name: str) -> Iterator[Point]:
             rc=detail.get("rc"),
             version=detail.get("version"),
             t=ts0 + (p[C.IDX_SECONDS] or 0),
+            callsign=last_callsign,
         )

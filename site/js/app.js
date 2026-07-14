@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  const MAP_STYLE = "https://tiles.openfreemap.org/styles/dark";
+  const MAP_STYLE_URL = "https://tiles.openfreemap.org/styles/dark";
   // Minimal offline fallback if the hosted basemap CDN is slow/unreachable —
   // the instrument still works (hexes on a plain charcoal ground); coastlines
   // are simply absent. Loads instantly, no network.
@@ -15,6 +15,17 @@
     layers: [{ id: "bg", type: "background", paint: { "background-color": "#0a0c0f" } }],
     glyphs: "https://fonts.openmaptiles.org/{fontstack}/{range}.pbf",
   };
+
+  // ---- Render tuning (all in one place; see docs/METHODOLOGY.md "Showing
+  // coverage"). Absence of signal is only meaningful where monitoring is shown,
+  // so measured-but-quiet hexes get a faint "watched airspace" carpet — a
+  // whisper that must never compete with a real bloom. Tune against the
+  // 2026-07-13 frame with the GPSJam green carpet as the *semantic* benchmark.
+  const QUIET_FILL = "#6aa79c";  // desaturated teal; luminance-separated from bg so
+                                 // it stays legible under color-vision deficiency
+  const QUIET_OP = 0.14;         // faint "watched" floor for conf>=medium, low-degraded
+  const FILL_OP_MIN = 0.0;       // 0 at bad_ratio=0 so quiet hexes show pure carpet
+  const FILL_OP_MAX = 0.72;      // cap so the basemap/geography ghosts through at peak
   const el = (id) => document.getElementById(id);
   const fmtDate = (s) => s; // ISO already human-legible; kept for future locale work
 
@@ -30,7 +41,8 @@
     dayCache: new Map(),// day -> {byHex:Map, records:[]}
     dayData: null,      // current day's byHex map
     mode: "raw",
-    coverage: false,
+    quiet: true,    // quiet-coverage carpet on by default
+    hatch: false,   // low-sample hatch off by default
     idx: 0,
     playing: false,
     playTimer: null,
@@ -75,9 +87,11 @@
 
   // ---------- styling ----------
   // Opacity scales with signal strength so faint hexes recede and real blooms
-  // dominate — declutters the flight-corridor "haze" of near-zero hexes.
+  // dominate — declutters the flight-corridor "haze" of near-zero hexes. Capped
+  // at FILL_OP_MAX so the basemap/geography stays legible even under peak signal.
   function opFor(strength) {
-    return 0.12 + 0.76 * Math.max(0, Math.min(1, strength));
+    const s = Math.max(0, Math.min(1, strength));
+    return FILL_OP_MIN + (FILL_OP_MAX - FILL_OP_MIN) * s;
   }
 
   function styleFor(rec) {
@@ -101,10 +115,50 @@
 
   // ---------- map ----------
   let map;
-  function initMap() {
+
+  // Basemap "surgery": OpenFreeMap dark is OpenMapTiles-schema. De-clutter it so
+  // an analyst orients instantly and the map never competes with signal:
+  //  - English-only labels (kills the stacked latin\nnonlatin dual-script names),
+  //  - drop admin-1/oblast labels ("MURMANSK OBLAST" class of noise),
+  //  - push minor place labels to zoom-in only; mute + shrink country labels.
+  // Coastlines, borders, seas, and major cities on zoom-in are retained.
+  function curateStyle(style) {
+    const EN = ["coalesce", ["get", "name:en"], ["get", "name_en"],
+                ["get", "name:latin"], ["get", "name"]];
+    const DROP = new Set(["place_state"]);           // oblast / admin-1 clutter
+    const MIN_ZOOM = {                                // continental view stays clean
+      place_country_other: 3.2, place_country_minor: 2.6,
+      place_other: 6, place_suburb: 7, place_village: 6, place_town: 4.5, place_city: 3,
+    };
+    style.layers = (style.layers || []).filter((l) => !DROP.has(l.id));
+    for (const l of style.layers) {
+      if (l.type !== "symbol") continue;
+      l.layout = l.layout || {};
+      if (l.layout["text-field"]) l.layout["text-field"] = EN;
+      if (MIN_ZOOM[l.id] != null) l.minzoom = Math.max(l.minzoom || 0, MIN_ZOOM[l.id]);
+      if (l.id.startsWith("place_country")) {        // muted, smaller country names
+        l.paint = l.paint || {};
+        l.paint["text-color"] = "#6c7a86";
+        l.paint["text-halo-color"] = "#0a0c0f";
+        l.paint["text-halo-width"] = 1;
+        l.layout["text-size"] = ["interpolate", ["linear"], ["zoom"], 2, 9, 5, 12];
+      }
+    }
+    return style;
+  }
+
+  async function initMap() {
+    // Fetch + curate the style ourselves so the label surgery applies from the
+    // first paint. If the CDN is unreachable, fall back to the minimal dark bg.
+    let style = FALLBACK_STYLE;
+    try {
+      const r = await fetch(MAP_STYLE_URL);
+      if (r.ok) style = curateStyle(await r.json());
+    } catch (e) { /* offline: keep FALLBACK_STYLE */ }
+
     map = new maplibregl.Map({
       container: "map",
-      style: MAP_STYLE,
+      style,
       center: [22, 48],
       zoom: 3.1,
       minZoom: 1.5,
@@ -112,6 +166,11 @@
       attributionControl: false,
       dragRotate: false,
     });
+    // Localhost-only debug handle (no-op on the deployed origin) for scripted
+    // verification / screenshotting.
+    if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+      window.__drMap = map;
+    }
     map.addControl(new maplibregl.AttributionControl({
       compact: true,
       customAttribution:
@@ -154,19 +213,34 @@
     return ctx.getImageData(0, 0, s, s);
   }
 
+  // Insert our hex layers BENEATH the basemap's first label layer so place names
+  // and geography stay readable through the blooms. On the fallback style (no
+  // symbols) this returns undefined and layers go on top, which is fine.
+  function firstSymbolId() {
+    for (const l of (map.getStyle().layers || [])) {
+      if (l.type === "symbol") return l.id;
+    }
+    return undefined;
+  }
+
   function onMapReady() {
     map.addImage("hatch", makeHatchImage(), { pixelRatio: 2 });
     map.addSource("hexes", {
       type: "geojson", data: state.geomFC, promoteId: "h",
     });
+    const before = firstSymbolId();
+
+    // Quiet-coverage carpet (bottom): a faint "watched airspace" floor under every
+    // measured hex. Default on. Reads as coverage at continental zoom; never
+    // competes with a bloom (QUIET_OP is a whisper vs the signal ramp above it).
     map.addLayer({
-      id: "hex-insuf", type: "fill", source: "hexes",
+      id: "hex-quiet", type: "fill", source: "hexes",
       paint: {
-        "fill-pattern": "hatch",
-        "fill-opacity": ["case", ["==", ["feature-state", "k"], "insuf"], 0.55, 0],
+        "fill-color": QUIET_FILL,
+        "fill-opacity": ["case", ["==", ["feature-state", "k"], "val"], QUIET_OP, 0],
       },
-      layout: { visibility: "none" },
-    });
+    }, before);
+    // Signal (the blooms) — color + capped opacity ramp, on top of the carpet.
     map.addLayer({
       id: "hex-fill", type: "fill", source: "hexes",
       paint: {
@@ -174,7 +248,7 @@
         "fill-opacity": ["case", ["==", ["feature-state", "k"], "val"],
           ["coalesce", ["feature-state", "op"], 0.5], 0],
       },
-    });
+    }, before);
     map.addLayer({
       id: "hex-line", type: "line", source: "hexes",
       paint: {
@@ -182,7 +256,16 @@
         "line-width": 0.4,
         "line-opacity": ["case", ["==", ["feature-state", "k"], "val"], 0.6, 0],
       },
-    });
+    }, before);
+    // Low-sample hatch — distinct "too few aircraft to judge" state. Default off.
+    map.addLayer({
+      id: "hex-insuf", type: "fill", source: "hexes",
+      paint: {
+        "fill-pattern": "hatch",
+        "fill-opacity": ["case", ["==", ["feature-state", "k"], "insuf"], 0.55, 0],
+      },
+      layout: { visibility: "none" },
+    }, before);
 
     wireHexInteraction();
     boot().catch((e) => fail(e));
@@ -240,6 +323,11 @@
       await loadDay(day);
       renderDay();
     } catch (e) {
+      // A listed day that won't load/parse is a real gap, not "awaiting nightly"
+      // (the manifest only ever lists already-processed days). Make it legible and
+      // persistent — which day failed — instead of a fleeting toast.
+      console.error(`day ${day} failed to load:`, e);
+      el("scrubMeta").textContent = `no data for ${day} — see console`;
       toast(`no data for ${day}`);
     }
   }
@@ -468,8 +556,12 @@
     el("legHi").textContent = mode === "anomaly" ? state.anomalyClip + "σ+" : "100%";
     renderDay();
   }
-  function setCoverage(on) {
-    state.coverage = on;
+  function setQuiet(on) {
+    state.quiet = on;
+    map.setLayoutProperty("hex-quiet", "visibility", on ? "visible" : "none");
+  }
+  function setHatch(on) {
+    state.hatch = on;
     map.setLayoutProperty("hex-insuf", "visibility", on ? "visible" : "none");
   }
 
@@ -558,7 +650,12 @@
     // wire controls
     document.querySelectorAll("#modeToggle button").forEach((b) =>
       b.addEventListener("click", () => setMode(b.dataset.mode)));
-    el("coverageToggle").addEventListener("change", (e) => setCoverage(e.target.checked));
+    const quietEl = el("quietToggle"), hatchEl = el("hatchToggle");
+    quietEl.checked = state.quiet;   // default on
+    hatchEl.checked = state.hatch;   // default off
+    quietEl.addEventListener("change", (e) => setQuiet(e.target.checked));
+    hatchEl.addEventListener("change", (e) => setHatch(e.target.checked));
+    setQuiet(state.quiet);           // apply initial visibility to the carpet layer
     el("slider").addEventListener("input", (e) => {
       if (state.playing) togglePlay();
       goTo(+e.target.value);

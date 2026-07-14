@@ -96,9 +96,16 @@
     <strong>high</strong> (≥10 aircraft), <strong>medium</strong> (5–9), and
     <strong>insufficient</strong> (&lt;5). Hexes below the minimum-aircraft floor
     are <em>never</em> rendered as a value or a confident color — on the map they
-    appear as a dim diagonal hatch under the "coverage" layer. This is the whole
-    point of the instrument: <strong>you can always tell "no interference" from
-    "no coverage."</strong></p>
+    appear as a dim diagonal hatch (the <em>Low-sample cells</em> toggle). This is
+    the whole point of the instrument: <strong>you can always tell "no
+    interference" from "no coverage."</strong></p>
+    <p>That distinction only works if coverage is <em>visible</em>: a dark cell
+    could mean "watched and calm" or "nobody was looking." So measured-but-quiet
+    airspace draws a faint <em>watched-airspace</em> carpet (the <em>Quiet
+    coverage</em> toggle, on by default) — a whisper that never competes with a
+    real bloom, but that turns the black background into an honest three-state
+    reading: <strong>quiet</strong> (watched, calm), <strong>degraded</strong>
+    (the signal), <strong>hatched</strong> (too few aircraft to judge).</p>
 
     <h2>A worked example: same signal, three meanings</h2>
     <p>The instrument's core lesson is that <em>the reading is not the analysis</em>.
@@ -143,8 +150,16 @@
     GNSS-interference zones by live trackers such as
     <a href="https://gpsjam.org" target="_blank" rel="noopener">GPSJam</a> and
     Flightradar24. Those tools show <em>current</em> conditions; you can compare
-    any date directly on GPSJam. A formal same-date side-by-side figure is on the
-    roadmap — it is the single most persuasive credibility artifact still to add.</p>
+    any date directly on GPSJam. A <strong>dated side-by-side cross-check for
+    2026-07-13</strong> found agreement on every major hot zone — Baltic/Kaliningrad,
+    the Black Sea western rim through Istanbul and eastern Turkey, Moscow-area
+    spots, and the eastern Mediterranean — despite the two projects drawing on
+    <em>different</em> feeder networks (adsb.lol vs ADS-B Exchange). Two independent
+    pipelines agreeing on the same date is strong corroboration; the writeup and
+    caveats are in
+    <a href="https://github.com/wrobinson127/deadreckoning/tree/main/docs/validation/2026-07-13" target="_blank" rel="noopener">docs/validation/2026-07-13</a>.
+    It is visual corroboration between two ADS-B-derived estimates, not validation
+    against ground truth.</p>
 
     <h2>Baselines &amp; anomaly</h2>
     <p>Chronic zones are interesting; <em>change</em> is more interesting. For each
@@ -190,7 +205,7 @@
 
   <footer class="site-footer">
     <span class="mono">DEAD·RECKONING</span>
-    <span>Built by <a href="https://github.com/wrobinson127" target="_blank" rel="noopener">Walker Robinson</a></span>
+    <span>Built by <a href="https://www.walker-robinson.com/" target="_blank" rel="noopener">Walker Robinson</a></span>
     <span>Data © adsb.lol (ODbL 1.0)</span>
     <span>Code MIT</span>
   </footer>
