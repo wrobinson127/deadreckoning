@@ -56,7 +56,9 @@ def build_all() -> dict:
         fh.write(orjson.dumps(manifest, option=orjson.OPT_INDENT_2))
     n_regions = _yaml_to_json("regions.yaml", "regions", "regions.json")
     n_events = _yaml_to_json("events.yaml", "events", "events.json")
-    return {"days": manifest["n_days"], "regions": n_regions, "events": n_events}
+    n_zones = _yaml_to_json("airspace.yaml", "zones", "airspace.json")
+    return {"days": manifest["n_days"], "regions": n_regions,
+            "events": n_events, "airspace": n_zones}
 
 
 if __name__ == "__main__":

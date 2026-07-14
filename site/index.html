@@ -50,6 +50,8 @@
           Quiet coverage</label>
         <label class="check"><input type="checkbox" id="hatchToggle" />
           Low-sample cells</label>
+        <label class="check"><input type="checkbox" id="airspaceToggle" checked />
+          Airspace context</label>
       </div>
     </div>
 
@@ -61,6 +63,8 @@
         <span>watched &amp; quiet &mdash; aircraft seen, GPS healthy</span></div>
       <div class="swatch-row"><span class="swatch insufficient"></span>
         <span>too few aircraft &mdash; not measured</span></div>
+      <div class="swatch-row"><span class="swatch outlined"></span>
+        <span>outlined &mdash; airspace closed or reduced coverage (blind here)</span></div>
     </div>
 
     <div class="map-overlay region-chips" id="regionChips"></div>
@@ -73,6 +77,9 @@
     </div>
 
     <div class="event-card" id="eventCard"></div>
+
+    <!-- airspace-context zone card (click a zone outline) -->
+    <div class="zone-card" id="zoneCard"></div>
 
     <!-- region drawer -->
     <aside class="drawer" id="drawer" aria-hidden="true">
@@ -101,6 +108,9 @@
             brighter cells = many aircraft reporting degraded GPS (the signal).</div>
           <div><span class="k hatch"></span> <b>Hatched</b> — too few aircraft to
             judge (not the same as "clear").</div>
+          <div><span class="k" style="background:#b39ddb"></span> <b>Outlined</b> —
+            airspace closed or reduced-coverage: the instrument is blind here, and
+            that blindness is itself information.</div>
           <div><span class="k" style="background:var(--phosphor)"></span> Scrub the
             timeline below to move through days.</div>
         </div>
