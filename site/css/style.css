@@ -112,6 +112,7 @@ header.topbar {
 .check { display: flex; align-items: center; gap: 8px; margin-top: 9px;
   font-size: 12px; color: var(--ink-dim); cursor: pointer; user-select: none; }
 .check input { accent-color: var(--phosphor); }
+.check.basemap-check { margin-top: 12px; padding-top: 11px; border-top: 1px solid var(--line); }
 
 /* legend ramp */
 .legend { top: 14px; right: 14px; width: 190px; }

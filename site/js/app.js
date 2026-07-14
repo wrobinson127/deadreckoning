@@ -55,6 +55,8 @@
     mode: "raw",
     quiet: true,    // quiet-coverage carpet on by default
     hatch: false,   // low-sample hatch off by default
+    cities: true,   // major-city dots + names on by default
+    regional: false,// admin-1 (regional) borders off by default
     airspaceOn: true,   // airspace-context overlay on by default
     airspaceGeo: null,  // FeatureCollection of zone outlines
     airspace: {},       // id -> zone metadata (label/type/since/note/sources)
@@ -164,6 +166,13 @@
     };
     style.layers = (style.layers || []).filter((l) => !DROP.has(l.id));
     for (const l of style.layers) {
+      // Regional (admin-1) boundary lines start hidden — toggled by "Regional
+      // borders". Country borders (boundary_country_*) stay on.
+      if (l.id === "boundary_state") {
+        l.layout = l.layout || {};
+        l.layout.visibility = "none";
+        continue;
+      }
       if (l.type !== "symbol") continue;
       l.layout = l.layout || {};
       if (l.layout["text-field"]) l.layout["text-field"] = EN;
@@ -203,6 +212,14 @@
     if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
       window.__drMap = map;
     }
+    // The basemap's city layers reference a "circle-11" dot sprite that isn't in
+    // the CDN sprite sheet; provide a small muted dot so major cities show a
+    // marker, not just a name.
+    map.on("styleimagemissing", (e) => {
+      if (e.id === "circle-11" && !map.hasImage("circle-11")) {
+        map.addImage("circle-11", makeDotImage(3, "#9aa6b2"), { pixelRatio: 2 });
+      }
+    });
     map.addControl(new maplibregl.AttributionControl({
       compact: true,
       customAttribution:
@@ -230,6 +247,17 @@
         toast("basemap slow — using a minimal map");
       } catch (e) { ready(); }
     }, 11000);
+  }
+
+  function makeDotImage(r, color) {
+    const d = r * 2 + 2, cv = document.createElement("canvas");
+    cv.width = cv.height = d;
+    const ctx = cv.getContext("2d");
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.arc(d / 2, d / 2, r, 0, 2 * Math.PI);
+    ctx.fill();
+    return ctx.getImageData(0, 0, d, d);
   }
 
   function makeHatchImage() {
@@ -740,6 +768,14 @@
     state.hatch = on;
     map.setLayoutProperty("hex-insuf", "visibility", on ? "visible" : "none");
   }
+  // Basemap layer toggles (city labels/dots; admin-1 "regional" boundary lines).
+  const CITY_LAYERS = ["place_city_large", "place_city", "place_town"];
+  function setBasemapLayers(ids, on) {
+    for (const id of ids)
+      if (map.getLayer(id)) map.setLayoutProperty(id, "visibility", on ? "visible" : "none");
+  }
+  function setCities(on) { state.cities = on; setBasemapLayers(CITY_LAYERS, on); }
+  function setRegional(on) { state.regional = on; setBasemapLayers(["boundary_state"], on); }
 
   // ---------- chrome ----------
   function buildChips() {
@@ -834,14 +870,21 @@
     document.querySelectorAll("#modeToggle button").forEach((b) =>
       b.addEventListener("click", () => setMode(b.dataset.mode)));
     const quietEl = el("quietToggle"), hatchEl = el("hatchToggle"),
-          airspaceEl = el("airspaceToggle");
+          airspaceEl = el("airspaceToggle"),
+          citiesEl = el("citiesToggle"), regionalEl = el("regionalToggle");
     quietEl.checked = state.quiet;      // default on
     hatchEl.checked = state.hatch;      // default off
     airspaceEl.checked = state.airspaceOn;  // default on
+    citiesEl.checked = state.cities;    // default on
+    regionalEl.checked = state.regional;// default off
     quietEl.addEventListener("change", (e) => setQuiet(e.target.checked));
     hatchEl.addEventListener("change", (e) => setHatch(e.target.checked));
     airspaceEl.addEventListener("change", (e) => setAirspace(e.target.checked));
+    citiesEl.addEventListener("change", (e) => setCities(e.target.checked));
+    regionalEl.addEventListener("change", (e) => setRegional(e.target.checked));
     setQuiet(state.quiet);           // apply initial visibility to the carpet layer
+    setCities(state.cities);
+    setRegional(state.regional);
     el("slider").addEventListener("input", (e) => {
       if (state.playing) togglePlay();
       goTo(+e.target.value);
