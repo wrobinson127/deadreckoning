@@ -26,6 +26,18 @@
   const QUIET_OP = 0.14;         // faint "watched" floor for conf>=medium, low-degraded
   const FILL_OP_MIN = 0.0;       // 0 at bad_ratio=0 so quiet hexes show pure carpet
   const FILL_OP_MAX = 0.72;      // cap so the basemap/geography ghosts through at peak
+
+  // Airspace-context outlines: violet, chosen over warm/orange because warm hues
+  // collapse toward the anomaly ramp / reserved extreme-red under red-green CVD,
+  // and toward the ramp under blue-yellow CVD for plain blue. Violet carries both
+  // red and blue, so it separates on all three axes (see docs/METHODOLOGY.md).
+  // Outline only, NEVER filled. The three status types differ by DASH, not hue.
+  const AIRSPACE_COLOR = "#b39ddb";
+  const AIRSPACE_DASH = {
+    closed:          [3, 1.8],   // long dash — airspace formally closed
+    reduced_coverage:[1, 2.5],   // fine dash — avoidance / sparse coverage
+    known_test_area: [1, 1.5],   // dotted — recurring announced testing
+  };
   const el = (id) => document.getElementById(id);
   const fmtDate = (s) => s; // ISO already human-legible; kept for future locale work
 
@@ -43,6 +55,9 @@
     mode: "raw",
     quiet: true,    // quiet-coverage carpet on by default
     hatch: false,   // low-sample hatch off by default
+    airspaceOn: true,   // airspace-context overlay on by default
+    airspaceGeo: null,  // FeatureCollection of zone outlines
+    airspace: {},       // id -> zone metadata (label/type/since/note/sources)
     idx: 0,
     playing: false,
     playTimer: null,
@@ -271,6 +286,68 @@
     boot().catch((e) => fail(e));
   }
 
+  // ---------- airspace-context overlay ----------
+  function airspaceLayerIds() {
+    return Object.keys(AIRSPACE_DASH).map((t) => "airspace-" + t);
+  }
+  function addAirspace() {
+    if (!state.airspaceGeo || !map) return;
+    const before = firstSymbolId();
+    if (map.getSource("airspace")) map.getSource("airspace").setData(state.airspaceGeo);
+    else map.addSource("airspace", { type: "geojson", data: state.airspaceGeo });
+    // One line layer per status type — same violet hue, distinct dash. Outline
+    // only: a filled zone would read as jamming signal, the exact confusion this
+    // layer exists to cure. Sits above the hex fills but below the basemap labels.
+    for (const [type, dash] of Object.entries(AIRSPACE_DASH)) {
+      const id = "airspace-" + type;
+      if (map.getLayer(id)) continue;
+      map.addLayer({
+        id, type: "line", source: "airspace",
+        filter: ["==", ["get", "type"], type],
+        paint: {
+          "line-color": AIRSPACE_COLOR,
+          "line-width": type === "closed" ? 1.7 : 1.3,
+          "line-dasharray": dash,
+          "line-opacity": 0.9,
+        },
+        layout: { visibility: state.airspaceOn ? "visible" : "none" },
+      }, before);
+      map.on("mouseenter", id, () => { map.getCanvas().style.cursor = "help"; });
+      map.on("mouseleave", id, () => { map.getCanvas().style.cursor = ""; });
+    }
+  }
+  function setAirspace(on) {
+    state.airspaceOn = on;
+    for (const id of airspaceLayerIds())
+      if (map.getLayer(id)) map.setLayoutProperty(id, "visibility", on ? "visible" : "none");
+  }
+
+  const ZONE_TYPE_LABEL = {
+    closed: "Airspace closed",
+    reduced_coverage: "Reduced coverage",
+    known_test_area: "Known test area",
+  };
+  function showZoneCard(id, point) {
+    const z = state.airspace[id];
+    if (!z) return;
+    const card = el("zoneCard");
+    const since = z.since === "recurring" ? "recurring"
+      : (z.since ? "since " + z.since : "");
+    const srcs = (z.sources || []).map((s) =>
+      `<a href="${s.url}" target="_blank" rel="noopener">${escapeHtml(s.title)}</a>`).join("");
+    card.innerHTML =
+      `<button class="zc-close" aria-label="close">×</button>
+       <div class="zc-type">${ZONE_TYPE_LABEL[z.type] || z.type}${since ? " · " + since : ""}</div>
+       <div class="zc-title">${escapeHtml(z.label)}</div>
+       <div class="zc-note">${escapeHtml(z.note || "")}</div>
+       <div class="zc-src">${srcs}</div>`;
+    card.querySelector(".zc-close").addEventListener("click", hideZoneCard);
+    card.style.left = Math.min(window.innerWidth - 330, point.x + 14) + "px";
+    card.style.top = Math.min(window.innerHeight - 220, point.y + 14) + "px";
+    card.classList.add("show");
+  }
+  function hideZoneCard() { el("zoneCard").classList.remove("show"); }
+
   function ensureGeometry(records) {
     let added = false;
     for (const r of records) {
@@ -345,7 +422,17 @@
       map.getCanvas().style.cursor = "";
     });
     map.on("click", (e) => {
-      // region hit-test on click (point in region polygon)
+      // Airspace zone takes precedence — clicking a zone outline opens its card.
+      // Query a small box (not the exact pixel) so the thin dashed line is an
+      // easy target.
+      if (state.airspaceOn) {
+        const live = airspaceLayerIds().filter((id) => map.getLayer(id));
+        const pad = 7, p = e.point;
+        const box = [[p.x - pad, p.y - pad], [p.x + pad, p.y + pad]];
+        const zf = live.length ? map.queryRenderedFeatures(box, { layers: live }) : [];
+        if (zf.length) { showZoneCard(zf[0].properties.id, e.point); return; }
+      }
+      // otherwise region hit-test on click (point in region polygon)
       const rid = regionAt(e.lngLat.lng, e.lngLat.lat);
       if (rid) openRegion(rid);
     });
@@ -622,13 +709,16 @@
 
   // ---------- boot ----------
   async function boot() {
-    const [manifest, baselines, regionsGeo, regions, events] = await Promise.all([
-      getJSON("data/manifest.json"),
-      getJSON("data/baselines.json").catch(() => ({ hexes: {}, std_floor: 0.02 })),
-      getJSON("content/regions.geojson").catch(() => ({ type: "FeatureCollection", features: [] })),
-      getJSON("content/regions.json").catch(() => ({ regions: [] })),
-      getJSON("content/events.json").catch(() => ({ events: [] })),
-    ]);
+    const [manifest, baselines, regionsGeo, regions, events, airspaceGeo, airspace] =
+      await Promise.all([
+        getJSON("data/manifest.json"),
+        getJSON("data/baselines.json").catch(() => ({ hexes: {}, std_floor: 0.02 })),
+        getJSON("content/regions.geojson").catch(() => ({ type: "FeatureCollection", features: [] })),
+        getJSON("content/regions.json").catch(() => ({ regions: [] })),
+        getJSON("content/events.json").catch(() => ({ events: [] })),
+        getJSON("content/airspace.geojson").catch(() => ({ type: "FeatureCollection", features: [] })),
+        getJSON("content/airspace.json").catch(() => ({ zones: [] })),
+      ]);
     state.manifest = manifest;
     state.baselines = baselines.hexes || {};
     state.stdFloor = baselines.std_floor || 0.02;
@@ -637,6 +727,9 @@
     state.regionsGeo = regionsGeo;
     state.regions = Object.fromEntries((regions.regions || []).map((r) => [r.id, r]));
     state.events = events.events || [];
+    state.airspaceGeo = airspaceGeo;
+    state.airspace = Object.fromEntries((airspace.zones || []).map((z) => [z.id, z]));
+    addAirspace();
 
     // (legend text is set by setMode below, called after controls are wired)
 
@@ -650,11 +743,14 @@
     // wire controls
     document.querySelectorAll("#modeToggle button").forEach((b) =>
       b.addEventListener("click", () => setMode(b.dataset.mode)));
-    const quietEl = el("quietToggle"), hatchEl = el("hatchToggle");
-    quietEl.checked = state.quiet;   // default on
-    hatchEl.checked = state.hatch;   // default off
+    const quietEl = el("quietToggle"), hatchEl = el("hatchToggle"),
+          airspaceEl = el("airspaceToggle");
+    quietEl.checked = state.quiet;      // default on
+    hatchEl.checked = state.hatch;      // default off
+    airspaceEl.checked = state.airspaceOn;  // default on
     quietEl.addEventListener("change", (e) => setQuiet(e.target.checked));
     hatchEl.addEventListener("change", (e) => setHatch(e.target.checked));
+    airspaceEl.addEventListener("change", (e) => setAirspace(e.target.checked));
     setQuiet(state.quiet);           // apply initial visibility to the carpet layer
     el("slider").addEventListener("input", (e) => {
       if (state.playing) togglePlay();

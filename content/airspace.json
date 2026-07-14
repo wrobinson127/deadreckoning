@@ -1,0 +1,129 @@
+{
+  "draft": true,
+  "zones": [
+    {
+      "id": "ukraine",
+      "label": "Ukraine",
+      "type": "closed",
+      "since": "2022-02-24",
+      "note": "Ukrainian airspace has been closed to civil aviation since the full-scale Russian invasion, so the dark cells here are the absence of civil traffic, not the absence of interference.",
+      "sources": [
+        {
+          "title": "EASA CZIB-2022-01 — Airspace of Ukraine",
+          "url": "https://www.easa.europa.eu/en/domains/air-operations/czibs/czib-2022-01r13",
+          "note": "EASA airspace bulletin; airspace closed to civil traffic."
+        },
+        {
+          "title": "FlightGlobal — Ukrainian airspace closed to civil traffic (24 Feb 2022)",
+          "url": "https://www.flightglobal.com/ops-safety/2022/02/ukrainian-airspace-closes-as-easa-declares-region-active-conflict-zone/",
+          "note": "UkSATSE NOTAM closed FIRs Lviv/Kyiv/Dnipro/Simferopol/Odesa at 0045Z, 24 Feb 2022."
+        },
+        {
+          "title": "Safe Airspace — Ukraine",
+          "url": "https://safeairspace.net/ukraine/",
+          "note": "Ongoing airspace-status reference."
+        }
+      ]
+    },
+    {
+      "id": "russia",
+      "label": "Russia",
+      "type": "reduced_coverage",
+      "since": "2022-02-28",
+      "note": "Western carriers are barred from and avoid Russian airspace and volunteer ADS-B receivers thin out east of the EU, so coverage here is sparse rather than absent — the visible Moscow-area blooms are the domestic and Asian/Gulf carriers that still overfly, which is why interference reads only where aircraft are actually seen.",
+      "sources": [
+        {
+          "title": "The Flying Engineer — Russian airspace ban: airlines, routes & impact",
+          "url": "https://theflyingengineer.com/russian-airspace-ban-airlines/",
+          "note": "Reciprocal bans from 28 Feb 2022; 35+ countries/territories barred."
+        },
+        {
+          "title": "Alternative Airlines — Which airlines are still flying over Russia?",
+          "url": "https://www.alternativeairlines.com/airlines-flying-over-russian-airspace",
+          "note": "Chinese, Gulf and domestic carriers continue to overfly (partial coverage)."
+        },
+        {
+          "title": "Wilson Center — Russia's civil aviation in the wake of the sanctions",
+          "url": "https://www.wilsoncenter.org/blog-post/russias-civil-aviation-wake-sanctions",
+          "note": "Context on sanctions and reduced Western overflight."
+        }
+      ]
+    },
+    {
+      "id": "sudan",
+      "label": "Sudan",
+      "type": "closed",
+      "since": "2023-04-15",
+      "note": "Sudanese airspace has been closed to civil traffic (bar humanitarian and evacuation flights) since the April 2023 civil war — a data gap, not calm.",
+      "sources": [
+        {
+          "title": "Ops.Group — Sudan airspace closed",
+          "url": "https://ops.group/blog/military-coup-sudan-airspace-closed/",
+          "note": "Khartoum FIR closed to civil traffic; humanitarian/evac exceptions."
+        },
+        {
+          "title": "FlightGlobal — Sudanese airspace closed (Apr 2023)",
+          "url": "https://www.flightglobal.com/air-transport/sudanese-airspace-closed-as-armed-conflict-erupts/152865.article",
+          "note": "Closure at the onset of the April 2023 civil war."
+        }
+      ]
+    },
+    {
+      "id": "libya",
+      "label": "Libya",
+      "type": "reduced_coverage",
+      "since": "2014-05-01",
+      "note": "EASA advises against flying over Libya at all levels except coastal approaches from the sea, so interior traffic — and therefore coverage — is thin.",
+      "sources": [
+        {
+          "title": "EASA CZIB-2017-02 — Airspace of Libya",
+          "url": "https://www.easa.europa.eu/en/domains/air-operations/czibs/czib-2017-02r19",
+          "note": "Avoid Libyan airspace except coastal operations under stated conditions."
+        },
+        {
+          "title": "Safe Airspace — Libya",
+          "url": "https://safeairspace.net/libya/",
+          "note": "Ongoing airspace-status reference; instability since 2014."
+        }
+      ]
+    },
+    {
+      "id": "china-lake",
+      "label": "China Lake (NAWS), CA",
+      "type": "known_test_area",
+      "since": "recurring",
+      "note": "A recurring, announced US Navy GPS-testing range. FAA flight advisories for these tests have made GPS unreliable over roughly a 253 nm radius below 50 ft, widening to about 950 nm across at altitude — benign, scheduled testing announced in advance, not interference from closed or avoided airspace.",
+      "sources": [
+        {
+          "title": "IEEE Spectrum — FAA Files Reveal a Surprising Threat to Airline Safety: the US Military's GPS Tests",
+          "url": "https://spectrum.ieee.org/faa-files-reveal-a-surprising-threat-to-airline-safety-the-us-militarys-gps-tests",
+          "note": "Documents recurring FAA GPS-test advisories centred on China Lake and their radii."
+        },
+        {
+          "title": "GPS World — FAA issues GPS interference flight advisory",
+          "url": "https://www.gpsworld.com/faa-issues-gps-interference-flight-advisory/",
+          "note": "253 nm radius below 50 ft AGL; ~950 nm across at 40,000 ft."
+        }
+      ]
+    },
+    {
+      "id": "white-sands",
+      "label": "White Sands (WSMR), NM",
+      "type": "known_test_area",
+      "since": "recurring",
+      "note": "A recurring, announced US Army GPS-testing range (White Sands Missile Range). FAA flight advisories degrade GPS over a broad radius during scheduled tests, published in advance and coordinated with civil aviation.",
+      "sources": [
+        {
+          "title": "FAA/FAAST — WSMR GPS Interference Flight Advisory (WSMRNM 26-13)",
+          "url": "https://www.faasafety.gov/files/notices/2026/May/WSMRNM_26-13_GPS_Flight_Advisory.pdf",
+          "note": "Primary FAA flight advisory for a scheduled White Sands GPS test."
+        },
+        {
+          "title": "FAA — GPS/GNSS Interference Resource Guide",
+          "url": "https://www.faa.gov/about/office_org/headquarters_offices/avs/offices/afx/afs/afs400/afs410/GNSS/GPS_GNSS_Interference_Resource_Guide.pdf",
+          "note": "FAA reference on announced GNSS-test advisories and NOTAMs."
+        }
+      ]
+    }
+  ]
+}

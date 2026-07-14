@@ -125,6 +125,7 @@ header.topbar {
   font-size:11px; color:var(--ink-dim); }
 .swatch { width:16px; height:12px; border-radius:2px; border:1px solid var(--line-2); }
 .swatch.quiet { background-color:#3d726a; }
+.swatch.outlined { background:transparent; border:1px dashed #b39ddb; }
 .swatch.insufficient {
   background-color:#232a33;
   background-image: repeating-linear-gradient(45deg,
@@ -251,6 +252,31 @@ input.slider::-moz-range-thumb { width:14px; height:14px; border-radius:50%;
   color:var(--ink-dim); font-size:11px; font-style:italic; line-height:1.45;
 }
 
+/* ---- airspace-context zone card (pinned on click) ---- */
+.zone-card {
+  position:absolute; z-index:17; max-width:320px; background:var(--bg-panel);
+  border:1px solid rgba(179,157,219,.4); border-radius:6px; padding:12px 30px 12px 14px;
+  box-shadow:0 8px 30px rgba(0,0,0,.55); opacity:0; pointer-events:none;
+  transform:translateY(6px); transition:opacity .15s, transform .15s;
+}
+.zone-card.show { opacity:1; pointer-events:auto; transform:translateY(0); }
+.zone-card .zc-close {
+  position:absolute; top:6px; right:8px; background:none; border:none;
+  color:var(--ink-dim); font-size:17px; line-height:1; cursor:pointer;
+}
+.zone-card .zc-type {
+  font-family:var(--mono); font-size:10px; letter-spacing:.05em;
+  text-transform:uppercase; color:#b39ddb;
+}
+.zone-card .zc-title { font-weight:600; font-size:14px; margin:3px 0 5px; color:var(--ink); }
+.zone-card .zc-note { color:var(--ink-dim); font-size:12px; line-height:1.5; }
+.zone-card .zc-src {
+  margin-top:8px; padding-top:8px; border-top:1px solid var(--line);
+  display:flex; flex-direction:column; gap:4px;
+}
+.zone-card .zc-src a { color:var(--phosphor); font-size:11px; text-decoration:none; }
+.zone-card .zc-src a:hover { text-decoration:underline; }
+
 /* ================= intro / orientation ================= */
 .intro-scrim { position:absolute; inset:0; z-index:18; display:grid; place-items:center;
   padding:20px; background:radial-gradient(120% 90% at 50% 30%,
@@ -336,6 +362,8 @@ footer.site-footer { border-top: 1px solid var(--line); padding: 20px 24px;
   color: var(--ink-faint); font-size: 12px; display:flex; flex-wrap:wrap; gap:6px 18px;
   align-items:center; }
 footer.site-footer .mono { color: var(--ink-dim); }
+footer.site-footer .footer-note { flex-basis:100%; color:var(--ink-faint);
+  font-size:11px; font-style:italic; opacity:.85; }
 
 /* ================= responsive ================= */
 @media (max-width: 760px) {

@@ -25,8 +25,11 @@ board/  = self-contained kanban (project state, rides git history)
 - **data/** — committed **aggregates only**: `daily/YYYY-MM-DD.json.gz`
   (gzipped ~14×; the browser inflates each day via native `DecompressionStream`),
   `baselines.json`, `regions/{id}.json`, `manifest.json`.
-- **content/** — `regions.yaml`+`regions.geojson`+`events.yaml` (authored,
-  draft-flagged); `regions.json`/`events.json` are generated for the browser.
+- **content/** — `regions.yaml`+`regions.geojson`+`events.yaml`+`airspace.yaml`
+  +`airspace.geojson` (authored, draft-flagged); `regions.json`/`events.json`/
+  `airspace.json` are generated for the browser. Airspace zones use
+  airspace-status language (closed / reduced_coverage / known_test_area), never
+  "conflict zone".
 - **site/** — buildless: `index.html` (map), `methodology.html`, `about.html`,
   `js/app.js` (+`color.js`), `css/style.css`. Libs via pinned CDN.
 - **.github/workflows/** — `ci.yml` (tests, active) · `nightly.yml`

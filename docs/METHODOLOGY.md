@@ -109,6 +109,23 @@ max(std, std_floor)`, computed client-side and clamped to the color scale
 suits a **retrospective archive** rather than a real-time alarm — documented so
 readers don't mistake it for a causal early-warning signal.
 
+## The sensor-desert paradox
+The instrument measures interference **where civil aircraft fly**, which is
+systematically **not** the airspace that is closed or avoided. When conflict or a
+formal closure empties the sky, the sensors leave with the traffic — so the worst
+jamming can sit inside a **dark zone that means "nobody was looking," not "all
+clear."** We measure the *edges* of such airspace, not its interior.
+
+The **Airspace context** overlay (on by default) exists to keep that honest: it
+outlines airspace that is `closed` (e.g., Ukraine, closed to civil traffic since
+Feb 2022) or of `reduced_coverage` (e.g., Russia, widely avoided by Western
+carriers and thin on volunteer receivers), plus `known_test_area` ranges where
+GPS testing is recurring, announced, and benign. The outline is a violet dash —
+never a fill, and never coloured like the signal ramp — so a reader can never
+mistake *absence of data* for *absence of jamming*. Zone polygons are drawn from
+Natural Earth boundaries and are context, not precise FIR geometry; each carries a
+sourced note (see `content/airspace.yaml`, draft pending review).
+
 ## What the instrument cannot see
 - **Coverage bias** — signal exists only where aircraft fly and receivers hear
   them; open ocean, closed airspace, and receiver-sparse regions read as
