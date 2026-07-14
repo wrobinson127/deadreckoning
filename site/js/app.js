@@ -6,6 +6,15 @@
   "use strict";
 
   const MAP_STYLE = "https://tiles.openfreemap.org/styles/dark";
+  // Minimal offline fallback if the hosted basemap CDN is slow/unreachable —
+  // the instrument still works (hexes on a plain charcoal ground); coastlines
+  // are simply absent. Loads instantly, no network.
+  const FALLBACK_STYLE = {
+    version: 8,
+    sources: {},
+    layers: [{ id: "bg", type: "background", paint: { "background-color": "#0a0c0f" } }],
+    glyphs: "https://fonts.openmaptiles.org/{fontstack}/{range}.pbf",
+  };
   const el = (id) => document.getElementById(id);
   const fmtDate = (s) => s; // ISO already human-legible; kept for future locale work
 
@@ -20,7 +29,7 @@
     events: [],
     dayCache: new Map(),// day -> {byHex:Map, records:[]}
     dayData: null,      // current day's byHex map
-    mode: "anomaly",
+    mode: "raw",
     coverage: false,
     idx: 0,
     playing: false,
@@ -49,16 +58,23 @@
   }
 
   // ---------- styling ----------
+  // Opacity scales with signal strength so faint hexes recede and real blooms
+  // dominate — declutters the flight-corridor "haze" of near-zero hexes.
+  function opFor(strength) {
+    return 0.12 + 0.76 * Math.max(0, Math.min(1, strength));
+  }
+
   function styleFor(rec) {
-    if (rec.n_aircraft < state.floor) return { k: "insuf", c: null };
+    if (rec.n_aircraft < state.floor) return { k: "insuf", c: null, op: null };
     if (state.mode === "raw") {
-      return { k: "val", c: DR_COLOR.raw(rec.bad_ratio) };
+      return { k: "val", c: DR_COLOR.raw(rec.bad_ratio), op: opFor(rec.bad_ratio) };
     }
     // anomaly
     const bl = state.baselines[rec.hex];
-    if (!bl) return { k: "val", c: "#20262e" }; // measured, no baseline yet
+    if (!bl) return { k: "val", c: "#1c2430", op: 0.18 }; // measured, no baseline yet
     const z = (rec.bad_ratio - bl.mean) / Math.max(bl.std, state.stdFloor);
-    return { k: "val", c: DR_COLOR.anomaly(z, state.anomalyClip), z };
+    return { k: "val", c: DR_COLOR.anomaly(z, state.anomalyClip),
+             op: opFor(z / state.anomalyClip), z };
   }
 
   function anomalyZ(rec) {
@@ -86,7 +102,27 @@
         "NIC data © adsb.lol (ODbL) · basemap © OpenStreetMap contributors",
     }), "bottom-right");
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "bottom-right");
-    map.on("load", onMapReady);
+
+    // Fire onMapReady exactly once, whether the hosted style loads or we fall back.
+    let mapReady = false;
+    const ready = () => { if (mapReady) return; mapReady = true; onMapReady(); };
+    map.on("load", ready);
+    // Watchdog: reassure at 8s; fall back to a keyless minimal basemap at 11s so
+    // the app never hangs on a slow/unreachable tile CDN.
+    setTimeout(() => {
+      const l = el("loader");
+      if (l && !l.classList.contains("hide")) {
+        l.querySelector(".msg").textContent = "acquiring signal — loading the archive…";
+      }
+    }, 8000);
+    setTimeout(() => {
+      if (mapReady) return;
+      try {
+        map.setStyle(FALLBACK_STYLE);
+        map.once("styledata", ready);
+        toast("basemap slow — using a minimal map");
+      } catch (e) { ready(); }
+    }, 11000);
   }
 
   function makeHatchImage() {
@@ -119,7 +155,8 @@
       id: "hex-fill", type: "fill", source: "hexes",
       paint: {
         "fill-color": ["coalesce", ["feature-state", "c"], "rgba(0,0,0,0)"],
-        "fill-opacity": ["case", ["==", ["feature-state", "k"], "val"], 0.74, 0],
+        "fill-opacity": ["case", ["==", ["feature-state", "k"], "val"],
+          ["coalesce", ["feature-state", "op"], 0.5], 0],
       },
     });
     map.addLayer({
@@ -161,14 +198,14 @@
     let nHigh = 0, nInsuf = 0;
     for (const r of entry.records) {
       const st = styleFor(r);
-      map.setFeatureState({ source: "hexes", id: r.hex }, { c: st.c, k: st.k });
+      map.setFeatureState({ source: "hexes", id: r.hex }, { c: st.c, k: st.k, op: st.op });
       nextActive.add(r.hex);
       if (r.confidence === "high") nHigh++;
       if (st.k === "insuf") nInsuf++;
     }
     // clear hexes that were shown yesterday but not today
     for (const h of state.prevActive) {
-      if (!nextActive.has(h)) map.setFeatureState({ source: "hexes", id: h }, { c: null, k: "none" });
+      if (!nextActive.has(h)) map.setFeatureState({ source: "hexes", id: h }, { c: null, k: "none", op: 0 });
     }
     state.prevActive = nextActive;
     state.dayData = entry.byHex;
@@ -406,10 +443,10 @@
     document.querySelectorAll("#modeToggle button").forEach((b) =>
       b.setAttribute("aria-pressed", String(b.dataset.mode === mode)));
     el("legendTitle").textContent = mode === "anomaly"
-      ? "Anomaly (σ from baseline)" : "Degraded aircraft ratio";
+      ? "Anomaly vs baseline (σ)" : "Aircraft with degraded GPS";
     el("legendRamp").className = "ramp " + (mode === "anomaly" ? "anom" : "raw");
-    el("legLo").textContent = mode === "anomaly" ? "0" : "0%";
-    el("legHi").textContent = mode === "anomaly" ? "6σ+" : "100%";
+    el("legLo").textContent = mode === "anomaly" ? "normal" : "0%";
+    el("legHi").textContent = mode === "anomaly" ? state.anomalyClip + "σ+" : "100%";
     renderDay();
   }
   function setCoverage(on) {
@@ -459,6 +496,19 @@
     el("loader").querySelector(".msg").textContent = "signal lost — see console";
   }
 
+  // ---------- intro / orientation ----------
+  const INTRO_KEY = "dr_intro_v1";
+  function showIntro() { el("intro").hidden = false; }
+  function hideIntro() {
+    el("intro").hidden = true;
+    try { localStorage.setItem(INTRO_KEY, "1"); } catch (e) {}
+  }
+  function maybeShowIntro() {
+    let seen = false;
+    try { seen = localStorage.getItem(INTRO_KEY); } catch (e) {}
+    if (!seen) showIntro();
+  }
+
   // ---------- boot ----------
   async function boot() {
     const [manifest, baselines, regionsGeo, regions, events] = await Promise.all([
@@ -477,8 +527,7 @@
     state.regions = Object.fromEntries((regions.regions || []).map((r) => [r.id, r]));
     state.events = events.events || [];
 
-    el("floorN").textContent = state.floor;
-    el("legHi").textContent = state.anomalyClip + "σ+";
+    // (legend text is set by setMode below, called after controls are wired)
 
     // scrubber bounds
     const n = manifest.days.length;
@@ -497,15 +546,20 @@
     });
     el("playBtn").addEventListener("click", togglePlay);
     el("drClose").addEventListener("click", closeRegion);
+    el("introGo").addEventListener("click", hideIntro);
+    el("helpBtn").addEventListener("click", showIntro);
     document.addEventListener("keydown", (e) => {
+      if (!el("intro").hidden) { if (e.key === "Escape") hideIntro(); return; }
       if (e.key === "ArrowLeft") goTo(state.idx - 1);
       else if (e.key === "ArrowRight") goTo(state.idx + 1);
       else if (e.key === " ") { e.preventDefault(); togglePlay(); }
       else if (e.key === "Escape") closeRegion();
     });
 
-    await goTo(n - 1); // newest day
+    setMode(state.mode);      // sync legend/buttons to the default view
+    await goTo(n - 1);        // newest day
     el("loader").classList.add("hide");
+    maybeShowIntro();
   }
 
   // kick off

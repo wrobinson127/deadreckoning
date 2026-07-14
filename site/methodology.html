@@ -78,10 +78,15 @@
       points) — aircraft that have dropped to "integrity unknown," the expected
       state under GNSS denial. Spatially this behaves correctly (it concentrates
       in known interference zones and is near-absent over quiet regions), but
-      folding "unknown" into "degraded" is a deliberate choice. A future revision
-      may report <code>bad_ratio</code> with and without <code>nic = 0</code> as a
-      sensitivity band. All thresholds live in a single config file and are
-      versioned with the data.
+      folding "unknown" into "degraded" is a deliberate choice.
+      <strong>Concretely:</strong> on the reference day the degraded-point
+      fraction is <strong>5.98% including <code>nic = 0</code></strong> but only
+      <strong>0.87% excluding it</strong> — so most of the signal <em>is</em> the
+      "integrity unknown" state. That is the honest and expected behavior of GPS
+      denial, but a reader should know the map is largely a <code>nic = 0</code>
+      density surface. A planned toggle will let you view the strict
+      (<code>1 ≤ nic ≤ 6</code>) ratio alongside it. All thresholds live in a
+      single config file and are versioned with the data.
     </div>
 
     <h2>Confidence &amp; the honesty rule</h2>
@@ -92,6 +97,52 @@
     appear as a dim diagonal hatch under the "coverage" layer. This is the whole
     point of the instrument: <strong>you can always tell "no interference" from
     "no coverage."</strong></p>
+
+    <h2>A worked example: same signal, three meanings</h2>
+    <p>The instrument's core lesson is that <em>the reading is not the analysis</em>.
+    On any given day, three places can look similar on the map and mean entirely
+    different things — which is why context lives in the region profiles, not the
+    color scale.</p>
+    <ul>
+      <li><strong>Kaliningrad &amp; the Baltic</strong> — a chronic, wide-area
+      degradation beside an active conflict; European reporting attributes it to
+      Russian electronic-warfare activity. Here degraded NIC is the <em>baseline</em>,
+      not the anomaly.</li>
+      <li><strong>Central US</strong> — a quiet control. This is what "clear" looks
+      like on the same sensor, and it's why a lit-up region elsewhere is
+      meaningful rather than an artifact of the method.</li>
+      <li><strong>US Southwest (White Sands / NTTR)</strong> — an <em>identical</em>
+      NIC-degradation signal to a hostile jamming zone, but <strong>benign</strong>:
+      scheduled, publicly NOTAM'd GPS-test exercises. The sensor cannot tell the two
+      apart; only the context can. This region is included deliberately as the
+      interpretive control.</li>
+    </ul>
+    <div class="callout">
+      This is the whole thesis in one comparison: an instrument shows you
+      <em>where</em> integrity degrades; deciding <em>what it means</em> is
+      analysis, done with sources — never asserted by the map.
+    </div>
+
+    <h2>Validation</h2>
+    <p>Two checks keep this honest:</p>
+    <p><strong>Internal (quantified).</strong> On the reference day, known chronic
+    zones light up as expected while a deliberate control stays dark:</p>
+    <table>
+      <tr><th>Zone</th><th>cells ≥5 aircraft</th><th>max degraded ratio</th></tr>
+      <tr><td>Kaliningrad / Baltic</td><td>121</td><td>1.00</td></tr>
+      <tr><td>Eastern Med / Cyprus</td><td>181</td><td>0.67</td></tr>
+      <tr><td>Central US (quiet control)</td><td>212</td><td>0.10</td></tr>
+    </table>
+    <p>Signal and background separate cleanly — the method isn't lighting up
+    everywhere aircraft fly.</p>
+    <p><strong>External (independent reference).</strong> The persistent hotspots
+    this archive surfaces — the Baltic/Kaliningrad corridor and the eastern
+    Mediterranean — are the same regions independently mapped as chronic
+    GNSS-interference zones by live trackers such as
+    <a href="https://gpsjam.org" target="_blank" rel="noopener">GPSJam</a> and
+    Flightradar24. Those tools show <em>current</em> conditions; you can compare
+    any date directly on GPSJam. A formal same-date side-by-side figure is on the
+    roadmap — it is the single most persuasive credibility artifact still to add.</p>
 
     <h2>Baselines &amp; anomaly</h2>
     <p>Chronic zones are interesting; <em>change</em> is more interesting. For each

@@ -53,14 +53,17 @@ All tunables live in `pipeline/config.py`. The current values:
 position is too loose to trust. NIC 7+ (rc < ~370 m) is healthy.
 
 **Open calibration note (FLAG).** On the reference day the degraded signal is
-**dominated by `nic = 0`** (~85% of all degraded points). `nic = 0` is the
-expected GNSS-denied state and its spatial distribution is correct (it
-concentrates in known interference zones — Baltic/Kaliningrad `bad_ratio` up to
-1.0 — and is near-absent over a quiet control region, central US ~0.10 max). But
-folding "integrity unknown" into "degraded" is a deliberate modeling choice. A
-future revision should report `bad_ratio` computed with and without `nic = 0` as
-a sensitivity band, and may treat ADS-B v0 aircraft (~3.8% of reports, different
-NIC derivation) separately. **Not yet empirically tuned beyond the sanity check.**
+**dominated by `nic = 0`** (~85% of all degraded points). Concretely, the
+degraded-point fraction is **5.98% including `nic = 0`** but only **0.87%
+excluding it** — so the map is largely a `nic = 0` ("integrity unknown") density
+surface. That is the expected behavior of GPS denial, and the spatial
+distribution is correct (it concentrates in known interference zones —
+Baltic/Kaliningrad `bad_ratio` up to 1.0 — and is near-absent over a quiet
+control region, central US ~0.10 max). But folding "integrity unknown" into
+"degraded" is a deliberate modeling choice, and a reader should know it. Planned:
+report `bad_ratio` with and without `nic = 0` as a selectable strict view, and
+treat ADS-B v0 aircraft (~3.8% of reports, different NIC derivation) separately.
+**Not yet empirically tuned beyond the sanity check.**
 
 ## Confidence & the honesty rule (invariant)
 Every hex carries its unique-aircraft count and a tier: **high** (≥10),

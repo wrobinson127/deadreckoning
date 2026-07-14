@@ -10,8 +10,10 @@ integrity, that indicates GNSS interference in that airspace.
 
 Live tools already show *current* conditions (GPSJam, Flightradar24's jamming
 map, SkAI's spoofing tracker). **None has memory.** This project is the memory:
-a scrubbable multi-year archive with per-hex baselines, anomaly scoring, named
-watch regions with analyst context, and curated event annotations.
+a scrubbable archive — seeded with a rolling recent window and built to grow
+toward multi-year — with per-hex baselines, anomaly scoring, named watch regions
+with analyst context, and curated event annotations. (Archive depth today is
+whatever has been backfilled; see `data/manifest.json`.)
 
 **This is an instrument, not an accusation.** It shows *where navigation
 integrity degrades*, with honest uncertainty. It does not assert "jamming by X" —

@@ -29,6 +29,7 @@
     <span class="brand">DEAD<span class="dot">·</span>RECKONING</span>
     <span class="tagline">GPS interference, remembered.</span>
     <span class="spacer"></span>
+    <a class="byline" href="https://github.com/wrobinson127" target="_blank" rel="noopener">Built by Walker Robinson</a>
     <nav>
       <a href="index.html">Map</a>
       <a href="methodology.html">Methodology</a>
@@ -42,8 +43,8 @@
       <div class="panel">
         <h3>Layer</h3>
         <div class="seg" id="modeToggle" role="group" aria-label="color mode">
-          <button data-mode="anomaly" aria-pressed="true">Anomaly</button>
-          <button data-mode="raw" aria-pressed="false">Raw ratio</button>
+          <button data-mode="raw" aria-pressed="true">Degraded %</button>
+          <button data-mode="anomaly" aria-pressed="false">Anomaly</button>
         </div>
         <label class="check"><input type="checkbox" id="coverageToggle" />
           Show coverage (low-sample)</label>
@@ -51,11 +52,11 @@
     </div>
 
     <div class="map-overlay legend panel">
-      <h3 id="legendTitle">Anomaly (σ from baseline)</h3>
-      <div class="ramp anom" id="legendRamp"></div>
-      <div class="ramp-labels"><span id="legLo">0</span><span id="legHi">6+</span></div>
+      <h3 id="legendTitle">Aircraft with degraded GPS</h3>
+      <div class="ramp raw" id="legendRamp"></div>
+      <div class="ramp-labels"><span id="legLo">0%</span><span id="legHi">100%</span></div>
       <div class="swatch-row"><span class="swatch insufficient"></span>
-        insufficient data (&lt;<span id="floorN">5</span> aircraft)</div>
+        <span>too few aircraft &mdash; not measured</span></div>
     </div>
 
     <div class="map-overlay region-chips" id="regionChips"></div>
@@ -80,6 +81,40 @@
       </header>
       <div class="body" id="drBody"></div>
     </aside>
+
+    <!-- first-run orientation -->
+    <div class="intro-scrim" id="intro" hidden>
+      <div class="intro-card">
+        <div class="intro-kicker">DEAD·RECKONING — a GPS interference archive</div>
+        <h2>A memory of where GPS goes dark.</h2>
+        <p>Aircraft broadcast how much they trust their own GPS. Where <em>many
+        aircraft at once</em> report degraded satellite navigation, something on
+        the ground is interfering with it. This map remembers that — day by day.</p>
+        <div class="intro-how">
+          <div><span class="k" style="background:#3fae8f"></span> Brighter cells =
+            more aircraft with degraded GPS.</div>
+          <div><span class="k hatch"></span> Hatched = too few aircraft to judge
+            (not the same as "clear").</div>
+          <div><span class="k" style="background:var(--phosphor)"></span> Scrub the
+            timeline below to move through days.</div>
+        </div>
+        <div class="intro-guide">
+          <div class="intro-guide-title">Read it like an analyst — three places, one sensor:</div>
+          <ul>
+            <li><b>Kaliningrad &amp; the Baltic</b> — chronic interference beside conflict.</li>
+            <li><b>Central US</b> — a quiet control; this is what "clear" looks like.</li>
+            <li><b>US Southwest (White Sands)</b> — an <em>identical</em> signal, but
+              benign: scheduled, published GPS-test exercises. Same reading,
+              opposite meaning — which is why context, not color, is the analysis.</li>
+          </ul>
+        </div>
+        <div class="intro-actions">
+          <button class="intro-go" id="introGo">Explore the map →</button>
+          <a href="methodology.html">How it works</a>
+        </div>
+      </div>
+    </div>
+    <button class="help-btn" id="helpBtn" title="What is this?" aria-label="help">?</button>
 
     <div class="loader" id="loader">
       <div class="core">

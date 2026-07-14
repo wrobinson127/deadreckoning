@@ -1,0 +1,104 @@
+{
+  "id": "us-southwest",
+  "display_name": "US Southwest Test Ranges",
+  "series": [
+    {
+      "date": "2026-06-30",
+      "n_hexes": 18,
+      "mean_bad_ratio": 0.0145,
+      "max_bad_ratio": 0.0714,
+      "total_aircraft": 879
+    },
+    {
+      "date": "2026-07-01",
+      "n_hexes": 22,
+      "mean_bad_ratio": 0.0296,
+      "max_bad_ratio": 0.2,
+      "total_aircraft": 955
+    },
+    {
+      "date": "2026-07-02",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0247,
+      "max_bad_ratio": 0.1667,
+      "total_aircraft": 1013
+    },
+    {
+      "date": "2026-07-03",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 1319
+    },
+    {
+      "date": "2026-07-04",
+      "n_hexes": 18,
+      "mean_bad_ratio": 0.0004,
+      "max_bad_ratio": 0.0076,
+      "total_aircraft": 1266
+    },
+    {
+      "date": "2026-07-05",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0009,
+      "max_bad_ratio": 0.018,
+      "total_aircraft": 1083
+    },
+    {
+      "date": "2026-07-06",
+      "n_hexes": 18,
+      "mean_bad_ratio": 0.0003,
+      "max_bad_ratio": 0.006,
+      "total_aircraft": 1235
+    },
+    {
+      "date": "2026-07-07",
+      "n_hexes": 18,
+      "mean_bad_ratio": 0.0281,
+      "max_bad_ratio": 0.1364,
+      "total_aircraft": 776
+    },
+    {
+      "date": "2026-07-08",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.009,
+      "max_bad_ratio": 0.125,
+      "total_aircraft": 766
+    },
+    {
+      "date": "2026-07-09",
+      "n_hexes": 20,
+      "mean_bad_ratio": 0.0124,
+      "max_bad_ratio": 0.125,
+      "total_aircraft": 916
+    },
+    {
+      "date": "2026-07-10",
+      "n_hexes": 18,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 927
+    },
+    {
+      "date": "2026-07-11",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0171,
+      "max_bad_ratio": 0.1429,
+      "total_aircraft": 1303
+    },
+    {
+      "date": "2026-07-12",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 1378
+    },
+    {
+      "date": "2026-07-13",
+      "n_hexes": 20,
+      "mean_bad_ratio": 0.0003,
+      "max_bad_ratio": 0.0058,
+      "total_aircraft": 894
+    }
+  ]
+}

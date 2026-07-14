@@ -1,0 +1,104 @@
+{
+  "id": "eastern-med",
+  "display_name": "Eastern Mediterranean",
+  "series": [
+    {
+      "date": "2026-06-30",
+      "n_hexes": 121,
+      "mean_bad_ratio": 0.0266,
+      "max_bad_ratio": 0.1667,
+      "total_aircraft": 11870
+    },
+    {
+      "date": "2026-07-01",
+      "n_hexes": 122,
+      "mean_bad_ratio": 0.0343,
+      "max_bad_ratio": 0.2,
+      "total_aircraft": 12836
+    },
+    {
+      "date": "2026-07-02",
+      "n_hexes": 121,
+      "mean_bad_ratio": 0.0388,
+      "max_bad_ratio": 0.2235,
+      "total_aircraft": 12985
+    },
+    {
+      "date": "2026-07-03",
+      "n_hexes": 122,
+      "mean_bad_ratio": 0.0291,
+      "max_bad_ratio": 0.1972,
+      "total_aircraft": 11942
+    },
+    {
+      "date": "2026-07-04",
+      "n_hexes": 121,
+      "mean_bad_ratio": 0.0547,
+      "max_bad_ratio": 0.2766,
+      "total_aircraft": 10424
+    },
+    {
+      "date": "2026-07-05",
+      "n_hexes": 123,
+      "mean_bad_ratio": 0.0481,
+      "max_bad_ratio": 0.2308,
+      "total_aircraft": 12386
+    },
+    {
+      "date": "2026-07-06",
+      "n_hexes": 122,
+      "mean_bad_ratio": 0.0226,
+      "max_bad_ratio": 0.2,
+      "total_aircraft": 12220
+    },
+    {
+      "date": "2026-07-07",
+      "n_hexes": 119,
+      "mean_bad_ratio": 0.0203,
+      "max_bad_ratio": 0.1171,
+      "total_aircraft": 12110
+    },
+    {
+      "date": "2026-07-08",
+      "n_hexes": 122,
+      "mean_bad_ratio": 0.0288,
+      "max_bad_ratio": 0.2188,
+      "total_aircraft": 12225
+    },
+    {
+      "date": "2026-07-09",
+      "n_hexes": 121,
+      "mean_bad_ratio": 0.0294,
+      "max_bad_ratio": 0.2,
+      "total_aircraft": 12271
+    },
+    {
+      "date": "2026-07-10",
+      "n_hexes": 122,
+      "mean_bad_ratio": 0.0439,
+      "max_bad_ratio": 0.4595,
+      "total_aircraft": 11614
+    },
+    {
+      "date": "2026-07-11",
+      "n_hexes": 122,
+      "mean_bad_ratio": 0.0427,
+      "max_bad_ratio": 0.5556,
+      "total_aircraft": 10480
+    },
+    {
+      "date": "2026-07-12",
+      "n_hexes": 123,
+      "mean_bad_ratio": 0.0438,
+      "max_bad_ratio": 0.4068,
+      "total_aircraft": 12601
+    },
+    {
+      "date": "2026-07-13",
+      "n_hexes": 121,
+      "mean_bad_ratio": 0.0407,
+      "max_bad_ratio": 0.2353,
+      "total_aircraft": 11646
+    }
+  ]
+}
