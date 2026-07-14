@@ -1,0 +1,224 @@
+{
+  "draft": true,
+  "events": [
+    {
+      "date": "2023-10-15",
+      "region_id": "levant",
+      "title": "IDF acknowledges GPS restrictions on northern border",
+      "one_line": "Amid the Gaza war, the IDF said GPS signals would be restricted along Israel's northern border; regional spoofing rose sharply thereafter.",
+      "type": "political",
+      "sources": [
+        {
+          "title": "NPR — Israel's GPS spoofing deters strikes, disrupts planes and apps",
+          "url": "https://www.npr.org/2024/04/22/1245847903/israel-gps-spoofing",
+          "note": "Reports IDF 15 Oct 2023 acknowledgment of GPS restriction and the subsequent spoofing surge."
+        }
+      ]
+    },
+    {
+      "date": "2023-11-25",
+      "region_id": "eastern-med",
+      "title": "Business jet spoofed over eastern Mediterranean",
+      "one_line": "A Bombardier Global 7500 flying Turkey-to-Cyprus reported GPS spoofing that placed its FMS position near Beirut, ~120 nm off track.",
+      "type": "incident",
+      "sources": [
+        {
+          "title": "Forbes (Eric Tegler) — GPS Spoofing in the Middle East Is Now Capturing Avionics",
+          "url": "https://www.forbes.com/sites/erictegler/2023/12/05/gps-spoofing-in-the-middle-east-is-now-capturing-avionics/",
+          "note": "Late-Nov 2023 eastern-Med spoofing case captured avionics; false Beirut position."
+        }
+      ]
+    },
+    {
+      "date": "2024-03-13",
+      "region_id": "kaliningrad",
+      "title": "UK Defence Secretary's RAF jet jammed near Kaliningrad",
+      "one_line": "An RAF jet carrying Grant Shapps briefly lost GPS while flying near Kaliningrad on a Poland-to-UK flight.",
+      "type": "incident",
+      "sources": [
+        {
+          "title": "C4ISRNET — UK defense minister's plane has GPS jammed near Russian territory",
+          "url": "https://www.c4isrnet.com/electronic-warfare/2024/03/15/uk-defense-ministers-plane-has-gps-jammed-near-russian-territory/",
+          "note": "Reports the ~30-min GPS jamming episode near Kaliningrad (flight on 13 Mar 2024)."
+        },
+        {
+          "title": "BBC News — Grant Shapps plane's GPS signal 'jammed' near Russia's Kaliningrad",
+          "url": "https://feeds.bbci.co.uk/news/uk-68569676",
+          "note": "BBC corroboration of the Kaliningrad jamming incident."
+        }
+      ]
+    },
+    {
+      "date": "2024-04-29",
+      "region_id": "baltic",
+      "title": "Finnair suspends flights to Tartu over GPS interference",
+      "one_line": "Finnair paused daily flights to Tartu, Estonia (29 Apr-31 May 2024) after GPS interference blocked its GPS-based approach; two flights had diverted.",
+      "type": "incident",
+      "sources": [
+        {
+          "title": "ERR — Finnair suspends flights to Tartu for 1 month to seek GPS jamming solution",
+          "url": "https://news.err.ee/1609328058/finnair-suspends-flights-to-tartu-for-1-month-to-seek-gps-jamming-solution",
+          "note": "Estonian public broadcaster; suspension dates and GPS-approach dependency."
+        },
+        {
+          "title": "International Airport Review — Finnair suspends flights to Tartu for a month following GPS interference",
+          "url": "https://www.internationalairportreview.com/news/221030/finnair-suspends-flights-to-tartu-estonia-for-a-month-following-gps-interference/",
+          "note": "Corroborates one-month suspension and diverted flights."
+        }
+      ]
+    },
+    {
+      "date": "2024-05-29",
+      "region_id": "korea",
+      "title": "North Korea GPS jamming episode near the NLL",
+      "one_line": "South Korea reported hundreds of aircraft and ships hit by suspected North Korean GPS jamming near the Northern Limit Line over late May-early June 2024.",
+      "type": "incident",
+      "sources": [
+        {
+          "title": "38 North — North Korean Non-kinetic Attacks: A Problem for Incheon Airport",
+          "url": "https://www.38north.org/2024/11/north-korean-non-kinetic-attacks-a-problem-for-incheon-airport/",
+          "note": "Details the 29 May-2 Jun 2024 jamming episode; 201 aircraft / 731 ships figures."
+        }
+      ]
+    },
+    {
+      "date": "2024-08-10",
+      "region_id": "black-sea",
+      "title": "Ukraine strikes Black Sea platform linked to GPS spoofing",
+      "one_line": "Ukrainian forces said they struck a former offshore gas platform that Russian forces had used for GPS spoofing in the Black Sea.",
+      "type": "strike",
+      "sources": [
+        {
+          "title": "Baird Maritime — Ukraine claims offshore platform in Black Sea used by Russia for GPS spoofing",
+          "url": "https://www.bairdmaritime.com/security/incidents/acts-of-war/ukraine-claims-offshore-platform-in-black-sea-used-by-russia-for-gps-spoofing",
+          "note": "Ukrainian claim of Aug 2024 strike on a platform used for spoofing."
+        }
+      ]
+    },
+    {
+      "date": "2024-11-08",
+      "region_id": "korea",
+      "title": "South Korea blames North Korea for GPS jamming attack",
+      "one_line": "South Korea's military accused North Korea of a GPS jamming attack affecting civilian aircraft and ships over consecutive days in November 2024.",
+      "type": "incident",
+      "sources": [
+        {
+          "title": "Al Jazeera — South Korea's military blames North Korea for GPS signal 'jamming attack'",
+          "url": "https://www.aljazeera.com/news/2024/11/9/south-koreas-military-blames-north-korea-on-gps-signal-jamming-attack",
+          "note": "ROK JCS attribution; jamming over 8-9 Nov 2024 affecting civil aircraft/ships."
+        }
+      ]
+    },
+    {
+      "date": "2024-12-25",
+      "region_id": "baltic",
+      "title": "Estlink 2 / Baltic cable damage; Eagle S detained",
+      "one_line": "The Estlink 2 power cable and several telecom cables were damaged; Finland detained the tanker Eagle S, suspected of dragging its anchor.",
+      "type": "incident",
+      "sources": [
+        {
+          "title": "NPR — Finland detains Russia-linked vessel over damaged undersea power cable in Baltic Sea",
+          "url": "https://www.npr.org/2024/12/27/g-s1-40114/finland-russia-vessel-undersea-cables",
+          "note": "25 Dec 2024 cable damage; Eagle S detention; suspected anchor-drag sabotage."
+        },
+        {
+          "title": "Wikipedia — 2024 Estlink 2 incident",
+          "url": "https://en.wikipedia.org/wiki/2024_Estlink_2_incident",
+          "note": "Timeline detail (Estlink 2 failure 12:26 EET, 25 Dec 2024) and cross-references."
+        }
+      ]
+    },
+    {
+      "date": "2025-05-10",
+      "region_id": "red-sea",
+      "title": "MSC Antonia grounding near Jeddah (suspected GNSS spoofing)",
+      "one_line": "The container ship MSC Antonia ran aground near Jeddah; reporting linked the grounding to suspected GPS spoofing/jamming (unconfirmed).",
+      "type": "incident",
+      "sources": [
+        {
+          "title": "The Maritime Executive — MSC Containership Aground in Red Sea is a Possible Victim of GPS Jamming",
+          "url": "https://maritime-executive.com/article/msc-containership-aground-in-red-sea-is-a-possible-victim-of-gps-jamming",
+          "note": "10 May 2025 grounding near Jeddah; framed as suspected/possible GPS-jamming victim."
+        }
+      ]
+    },
+    {
+      "date": "2025-06-13",
+      "region_id": "persian-gulf",
+      "title": "Israel launches Operation Rising Lion against Iran",
+      "one_line": "Israel began major strikes on Iranian nuclear and military sites on 13 Jun 2025, opening a 12-day conflict that coincided with a surge in Gulf GNSS interference.",
+      "type": "strike",
+      "sources": [
+        {
+          "title": "Britannica — 12-Day War (June 2025)",
+          "url": "https://www.britannica.com/event/12-Day-War",
+          "note": "13 Jun 2025 start of Israeli strikes; 12-day conflict framing."
+        },
+        {
+          "title": "House of Commons Library — Israel-Iran 2025: Iran's nuclear programme and military action",
+          "url": "https://commonslibrary.parliament.uk/research-briefings/cbp-10284/",
+          "note": "Official UK research briefing on the June 2025 strikes and timeline."
+        }
+      ]
+    },
+    {
+      "date": "2025-07-15",
+      "region_id": "kaliningrad",
+      "title": "EU sanctions Russia's 841st Electronic Warfare Center",
+      "one_line": "The EU Council listed the 841st Separate Electronic Warfare Center over GNSS jamming and spoofing affecting the Baltic states.",
+      "type": "political",
+      "sources": [
+        {
+          "title": "Consilium (EU Council) — EU lists nine individuals and six entities responsible for destabilising actions",
+          "url": "https://www.consilium.europa.eu/en/press/press-releases/2025/07/15/russian-hybrid-threats-eu-lists-nine-individuals-and-six-entities-responsible-for-destabilising-actions-in-the-eu-and-ukraine/",
+          "note": "Official 15 Jul 2025 listing naming the 841st EW Center over Baltic GNSS jamming/spoofing."
+        },
+        {
+          "title": "Militarnyi — Europe Announces Sanctions Over GPS Jamming in the Baltics",
+          "url": "https://militarnyi.com/en/news/europe-announces-sanctions-over-gps-jamming-in-the-baltics/",
+          "note": "Reachable summary of the 15 Jul 2025 sanctions and the named unit."
+        }
+      ]
+    },
+    {
+      "date": "2025-09-01",
+      "region_id": "black-sea",
+      "title": "Von der Leyen's plane reports GPS jamming near Plovdiv",
+      "one_line": "A jet carrying the European Commission president reported GPS loss approaching Plovdiv, Bulgaria; initial Russia-jamming claims were later disputed.",
+      "type": "incident",
+      "disputed": true,
+      "editorial_note": "Retained as a disputed incident, shown with its rebuttal. Filed under black-sea, but the geographic fit is imperfect — Plovdiv is inland SE Europe, not the Black Sea littoral. If more Balkan / SE-Europe events accrue, the fix is a dedicated region rather than stretching this one.",
+      "sources": [
+        {
+          "title": "CNN — Plane carrying EU's top leader targeted by alleged Russian GPS jamming",
+          "url": "https://www.cnn.com/2025/09/01/world/plane-ursula-von-der-leyen-intl",
+          "note": "1 Sep 2025 reported GPS jamming approaching Plovdiv; initial attribution to Russia."
+        },
+        {
+          "title": "Euronews — Bulgaria U-turns on claim Moscow jammed GPS of von der Leyen's plane",
+          "url": "https://www.euronews.com/my-europe/2025/09/04/no-russian-gps-jamming-bulgaria-u-turns-on-claim-that-von-der-leyens-plane-was-targeted-by",
+          "note": "Later dispute/U-turn on the jamming claim; included to keep the record honest."
+        }
+      ]
+    },
+    {
+      "date": "2026-02-28",
+      "region_id": "persian-gulf",
+      "title": "Hormuz interference surge amid Feb 2026 escalation",
+      "one_line": "Renewed US/Israel-Iran military escalation coincided with a sharp surge in GNSS interference around the Strait of Hormuz affecting 1,000+ vessels.",
+      "type": "incident",
+      "sources": [
+        {
+          "title": "CNN — Ships and planes are vulnerable to GPS jamming; the Iran war reveals how bad",
+          "url": "https://www.cnn.com/2026/03/06/science/gps-jamming-ships-planes-iran-war",
+          "note": "Feb 2026 escalation and Hormuz interference surge; contested attribution."
+        },
+        {
+          "title": "France 24 — Surge in GPS interference around Strait of Hormuz increases shipping risks",
+          "url": "https://www.france24.com/en/middle-east/20260306-surge-gps-interference-strait-hormuz-increases-shipping-risks",
+          "note": "Corroborates the early-2026 Hormuz interference surge."
+        }
+      ]
+    }
+  ]
+}

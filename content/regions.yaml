@@ -1,0 +1,340 @@
+# DeadReckoning — Watch Region Profiles
+# STATUS: DRAFT — every region below is PENDING AUTHOR (Walker Robinson) APPROVAL.
+#
+# Sourcing discipline:
+#   - Regions describe "GPS/GNSS interference indicated by degraded navigation
+#     integrity" as observed in ADS-B / GNSS reporting. They do NOT assert
+#     kinetic attribution as fact.
+#   - typical_causes / known_actors summarize what REPORTING AND ANALYSIS
+#     attribute, always attributed to the cited source.
+#   - interpretation_notes are the analyst's own framing (Walker's layer);
+#     they are honest and cautious and are not individually sourced.
+#   - Any claim that could not be verified against a real fetched source is
+#     marked "[NEEDS SOURCE — author to verify]".
+#
+# draft: true
+
+draft: true
+
+regions:
+  - id: baltic
+    display_name: "Baltic Sea"
+    centroid: [58.0, 20.0]
+    context:
+      typical_causes: >-
+        Chronic multi-constellation GNSS jamming (and, increasingly, spoofing)
+        degrades navigation integrity across the central and eastern Baltic,
+        affecting both aviation and shipping. Reporting describes hotspots
+        persistently co-located with areas of heavy Russian military presence,
+        and by 2025 detected events increasingly combined jamming with spoofed
+        GPS L1 signals.
+      known_actors: >-
+        Widely attributed by European reporting and analysis to Russian
+        electronic-warfare activity, principally from the Kaliningrad exclave
+        and the St. Petersburg area. On 15 July 2025 the EU Council sanctioned
+        Russia's 841st Separate Electronic Warfare Center over GNSS jamming and
+        spoofing affecting the Baltic states (per Consilium / Militarnyi).
+      interpretation_notes: >-
+        Treat the Baltic as a CHRONIC adversarial zone: degraded NIC here is
+        the baseline, not the anomaly. Coverage is dense (busy airspace, many
+        ADS-B receivers), so apparent "spikes" can partly reflect observation
+        density rather than a real change in emitter behavior. Distinguish
+        transient overflights near Kaliningrad from sustained wide-area
+        degradation. Attribution to a specific emitter is analytically
+        plausible but rarely court-proof; keep it attributed to reporting.
+      sources:
+        - title: "Consilium (EU Council) — Russian hybrid threats: EU lists nine individuals and six entities"
+          url: "https://www.consilium.europa.eu/en/press/press-releases/2025/07/15/russian-hybrid-threats-eu-lists-nine-individuals-and-six-entities-responsible-for-destabilising-actions-in-the-eu-and-ukraine/"
+          note: "Official EU listing (15 Jul 2025) of the 841st EW Center over GNSS jamming/spoofing affecting the Baltics."
+        - title: "Militarnyi — Europe Announces Sanctions Over GPS Jamming in the Baltics"
+          url: "https://militarnyi.com/en/news/europe-announces-sanctions-over-gps-jamming-in-the-baltics/"
+          note: "Reachable summary of the 15 Jul 2025 EU sanctions naming the 841st EW Center in Kaliningrad."
+        - title: "France 24 — Russia accused of meddling in the GPS systems of Baltic Sea countries"
+          url: "https://www.france24.com/en/europe/20240501-russia-accused-of-meddling-in-the-gps-systems-of-baltic-sea-countries"
+          note: "Overview of the 2024 Baltic GPS-interference episode and attribution to Russia."
+
+  - id: kaliningrad
+    display_name: "Kaliningrad Approaches"
+    centroid: [54.9, 20.3]
+    context:
+      typical_causes: >-
+        Concentrated GNSS jamming and spoofing emanating from the Kaliningrad
+        exclave, degrading navigation integrity for aircraft and vessels in the
+        surrounding airspace and Gulf of Gdansk approaches.
+      known_actors: >-
+        A 2025 international triangulation study (reported by Defense News)
+        pinpointed two coastal source locations inside Kaliningrad to about
+        one-kilometer precision — near the Okunevo antenna site and the
+        Baltiysk harbor area — both associated with Russian electronic-warfare
+        units. The EU's 15 July 2025 listing of the 841st Separate Electronic
+        Warfare Center names the Kaliningrad region explicitly.
+      interpretation_notes: >-
+        This is the emitter neighborhood, not just an affected area — the most
+        specific public attribution of any region in this archive. Even so, the
+        published triangulation covers a handful of dated events, not every
+        signal; do not over-generalize "the source is X" to all Baltic
+        degradation. Use this region to anchor emitter-side analysis; use
+        `baltic` for the wider affected footprint.
+      sources:
+        - title: "Defense News — Researchers home in on origins of Russia's Baltic GPS jamming"
+          url: "https://www.defensenews.com/global/europe/2025/07/02/researchers-home-in-on-origins-of-russias-baltic-gps-jamming/"
+          note: "Triangulation to Okunevo and Baltiysk (Gdynia Maritime Univ. team), ~1 km precision, spring 2025."
+        - title: "Spire Global — GNSS interference report: Russia 2024/2025, Part 1: Kaliningrad & the Baltic Sea"
+          url: "https://spire.com/blog/space-reconnaissance/gnss-interference-report-russia/"
+          note: "Space-based RF/GNSS monitoring characterizing Kaliningrad-area interference."
+
+  - id: black-sea
+    display_name: "Black Sea"
+    centroid: [44.0, 34.0]
+    context:
+      typical_causes: >-
+        Persistent GNSS jamming and spoofing over the western and northern
+        Black Sea, degrading navigation integrity for shipping (notably the
+        Greater Odesa corridor) and for aircraft over Romanian/Bulgarian
+        airspace. Ukraine's seaports authority warned mariners in July 2024 not
+        to rely on satellite navigation in the area.
+      known_actors: >-
+        Reporting attributes much of the interference to Russian
+        electronic-warfare activity; analysts describe it partly as a
+        counter-drone measure. Ukrainian naval intelligence stated Russian
+        forces used a former offshore gas platform for GPS spoofing, which
+        Ukrainian forces said they struck in August 2024 (per gCaptain / Baird
+        Maritime / RFE-RL).
+      interpretation_notes: >-
+        A dual-purpose war zone: interference here serves active air-defense /
+        counter-UAS aims, so degradation often tracks kinetic tempo rather than
+        a steady emitter. Expect strong correlation between NIC drops and
+        strike days. Maritime AIS anomalies (ships "on land," "impossible"
+        jumps) are a useful cross-check on aviation ADS-B here.
+      sources:
+        - title: "gCaptain — Ukraine Warns Ships Of Scrambled GPS Navigation In Black Sea"
+          url: "https://gcaptain.com/ukraine-warns-ships-of-scrambled-gps-navigation-in-black-sea/"
+          note: "Ukraine seaports authority July 2024 mariner warning on scrambled/spoofed GNSS."
+        - title: "RFE/RL — Suspected Russian GPS Jamming Risks Fresh Dangers In Black Sea Region"
+          url: "https://www.rferl.org/a/russia-gps-jamming-black-sea-romania-bulgaria-ukraine/32655397.html"
+          note: "Regional impact across Romania/Bulgaria/Ukraine; attribution to Russian jamming."
+        - title: "Baird Maritime — Ukraine claims offshore platform in Black Sea used by Russia for GPS spoofing"
+          url: "https://www.bairdmaritime.com/security/incidents/acts-of-war/ukraine-claims-offshore-platform-in-black-sea-used-by-russia-for-gps-spoofing"
+          note: "Ukrainian claim that a Black Sea gas platform was used for spoofing (struck Aug 2024)."
+
+  - id: eastern-med
+    display_name: "Eastern Mediterranean"
+    centroid: [34.5, 33.5]
+    context:
+      typical_causes: >-
+        Widespread GNSS spoofing degrades navigation integrity for aircraft
+        transiting between Turkey, Cyprus and the Levant, with flight
+        management systems reporting false positions (e.g., near Beirut or
+        Cairo) hundreds of nautical miles from the true track. Cyprus logged
+        thousands of spoofing incidents over a two-month window.
+      known_actors: >-
+        Reporting and expert analysis largely point to spoofing originating
+        from northern Israel spilling across the sea, rather than from Cyprus
+        itself (per Forbes / OPSGROUP reporting summarized in trade press). See
+        the `levant` region for the more specific source attribution.
+      interpretation_notes: >-
+        This region is mostly a SPILLOVER footprint of Levant emitters, not an
+        independent source. Read degradation here together with `levant`;
+        rising counts often reflect the same emitter reaching farther, not a
+        new actor. Spoofing (false-but-confident position) is more dangerous to
+        interpret than jamming (signal loss) — flag whether the underlying
+        report is loss-of-signal or position-capture.
+      sources:
+        - title: "Forbes (Eric Tegler) — GPS Spoofing in the Middle East Is Now Capturing Avionics"
+          url: "https://www.forbes.com/sites/erictegler/2023/12/05/gps-spoofing-in-the-middle-east-is-now-capturing-avionics/"
+          note: "Nov 2023 Bombardier Global 7500 case; FMS showed false position near Beirut; eastern Med spoofing."
+        - title: "Safe Airspace — Cyprus"
+          url: "https://safeairspace.net/cyprus/"
+          note: "Operator-facing airspace advisory tracking Cyprus/eastern-Med GNSS spoofing reports."
+
+  - id: levant
+    display_name: "Levant (Israel / Lebanon)"
+    centroid: [32.5, 35.0]
+    context:
+      typical_causes: >-
+        Intense GNSS spoofing over Israel/Lebanon degrades navigation integrity
+        for civil aviation across the region; reporting says spoofing rose
+        sharply after the start of the Gaza war in October 2023 and later
+        spread to central Israel (Tel Aviv/Jerusalem area).
+      known_actors: >-
+        Widely attributed to Israeli defensive electronic warfare intended to
+        disrupt missile/drone targeting; the IDF acknowledged restricting GPS
+        near the northern border on 15 Oct 2023 (per NPR / Times of Israel).
+        University of Texas researchers (Humphreys/Clements) said they were
+        "highly confident" one major spoofing source was Ein Shemer Airfield
+        near Hadera (per Times of Israel citing NYT).
+      interpretation_notes: >-
+        Adversarial in mechanism but DEFENSIVE in intent — an important nuance
+        for this archive: the same NIC-degradation signature as Baltic/Black
+        Sea, but the attributed motive is self-protection, not offensive
+        interference. Interpretation should say "attributed to Israeli
+        defensive EW," never assert it flatly. Effects are regional and bleed
+        into `eastern-med`.
+      sources:
+        - title: "NPR — Israel's GPS spoofing deters strikes, disrupts planes and apps"
+          url: "https://www.npr.org/2024/04/22/1245847903/israel-gps-spoofing"
+          note: "Attribution to likely IDF spoofing; IDF 15 Oct 2023 acknowledgment of GPS restrictions."
+        - title: "Times of Israel — Major GPS disruptions in Middle East coming from IDF airbase (NYT)"
+          url: "https://www.timesofisrael.com/major-gps-disruptions-in-middle-east-coming-from-idf-airbase-ny-times/"
+          note: "UT Austin researchers' high-confidence source attribution to Ein Shemer Airfield."
+
+  - id: persian-gulf
+    display_name: "Persian Gulf / Strait of Hormuz"
+    centroid: [26.5, 56.5]
+    context:
+      typical_causes: >-
+        GNSS jamming and spoofing degrade navigation integrity for shipping and
+        aircraft in and around the Strait of Hormuz, at times leaving vessels
+        displaying impossible positions (over land, over airports). Interference
+        surged sharply following the June 2025 Israel-Iran conflict and again
+        during escalation in early 2026, affecting well over a thousand vessels
+        per maritime-intelligence firms.
+      known_actors: >-
+        Attribution is contested. Some reporting says the strait spoofing is
+        "almost certainly" Iran's doing; other researchers attribute much of the
+        surge to non-Iranian systems around the Gulf (Israeli, US and NATO)
+        (per Scientific American / CNN / Windward). Treat attribution here as
+        genuinely unsettled.
+      interpretation_notes: >-
+        The MOST attribution-ambiguous region in the archive — a crowded
+        electromagnetic environment where multiple state actors plausibly emit.
+        Resist single-actor framing; present the competing attributions side by
+        side. Degradation tracks conflict tempo closely, so date-align
+        interference with `persian-gulf` and `red-sea` events before drawing
+        conclusions.
+      sources:
+        - title: "Scientific American — GPS Spoofing Is Scrambling Ships in the Strait of Hormuz"
+          url: "https://www.scientificamerican.com/article/gps-spoofing-is-scrambling-ships-in-the-strait-of-hormuz/"
+          note: "Vessels showing impossible positions; discussion of Iran and other possible sources."
+        - title: "CNN — Ships and planes are vulnerable to GPS jamming; the Iran war reveals how bad"
+          url: "https://www.cnn.com/2026/03/06/science/gps-jamming-ships-planes-iran-war"
+          note: "Feb 2026 escalation surge in Hormuz interference; competing attribution."
+        - title: "Windward — Widespread GPS Jamming Hits 1,000-plus Ships in the Middle East"
+          url: "https://windward.ai/blog/gps-jamming-disrupts-1100-ships-in-the-middle-east-gulf/"
+          note: "Maritime-intelligence quantification (1,100+ vessels) of Gulf interference."
+
+  - id: red-sea
+    display_name: "Red Sea"
+    centroid: [18.0, 40.0]
+    context:
+      typical_causes: >-
+        GNSS jamming and spoofing degrade navigation integrity for shipping in
+        the Red Sea corridor amid the broader Houthi-related shipping crisis;
+        interference has been linked to at least one grounding (the container
+        ship MSC Antonia near Jeddah on 10 May 2025). Levels spiked during the
+        June 2025 Iran-Israel conflict and remained sporadic thereafter.
+      known_actors: >-
+        Attribution is uncertain. Reporting frames much of the interference as
+        a side effect of military jammers near the conflict zone rather than a
+        single confirmed actor; the MSC Antonia grounding is described as a
+        SUSPECTED spoofing/jamming case, not a proven one (per Maritime
+        Executive / gCaptain / S&P Global). [Actor identity for Red Sea
+        interference — NEEDS SOURCE — author to verify before naming any party.]
+      interpretation_notes: >-
+        Treat Red Sea interference as conflict spillover with no clean
+        attribution. The MSC Antonia grounding is a valuable *effect* datapoint
+        but its causal link to GNSS interference is inferred, not confirmed —
+        phrase it as suspected. Overlaps heavily with `persian-gulf` in tempo;
+        analyze them together.
+      sources:
+        - title: "The Maritime Executive — MSC Containership Aground in Red Sea is a Possible Victim of GPS Jamming"
+          url: "https://maritime-executive.com/article/msc-containership-aground-in-red-sea-is-a-possible-victim-of-gps-jamming"
+          note: "MSC Antonia grounding (10 May 2025) framed as possible/suspected GPS-jamming victim."
+        - title: "S&P Global — Electronic interference in Red Sea, Hormuz as Houthis renew threats to shipping"
+          url: "https://www.spglobal.com/energy/en/news-research/latest-news/shipping/080825-electronic-interference-in-red-sea-hormuz-as-houthis-renew-threats-to-shipping"
+          note: "Red Sea/Hormuz interference context and sporadic persistence through 2025."
+
+  - id: ukraine-west
+    display_name: "Western Ukraine / Border Airspace"
+    centroid: [49.5, 27.0]
+    context:
+      typical_causes: >-
+        GNSS jamming degrades navigation integrity across Ukrainian and
+        adjacent NATO-border airspace as a consequence of active air defense
+        and counter-drone electronic warfare during the Russia-Ukraine war;
+        effects extend into neighboring Romanian/Polish airspace.
+      known_actors: >-
+        Reporting attributes interference in this theater broadly to
+        wartime electronic warfare by both sides, with Russian jamming/spoofing
+        most frequently cited for spillover affecting civil aviation (per
+        Foreign Policy / RFE-RL). [Precise emitter attribution for specific
+        western-Ukraine events — NEEDS SOURCE — author to verify.]
+      interpretation_notes: >-
+        This is a live combat EW environment; degradation is expected and
+        near-continuous, so ABSENCE of degradation is the more notable signal.
+        Because both belligerents emit, avoid single-actor attribution for the
+        border footprint. Distinguish Ukrainian interior airspace (largely
+        closed to civil traffic) from the NATO-border fringe where most ADS-B
+        observations actually come from.
+      sources:
+        - title: "Foreign Policy — War-Zone GPS Spoofing Is Threatening Civil Aviation in the Middle East and Europe"
+          url: "https://foreignpolicy.com/2024/03/19/war-zone-gps-spoofing-threat-civil-aviation-russia-iran/"
+          note: "Wartime spoofing/jamming spillover into civil aviation around the Ukraine theater."
+        - title: "RFE/RL — Suspected Russian GPS Jamming Risks Fresh Dangers In Black Sea Region"
+          url: "https://www.rferl.org/a/russia-gps-jamming-black-sea-romania-bulgaria-ukraine/32655397.html"
+          note: "Cross-border jamming effects into Romania/Bulgaria adjacent to the Ukraine war zone."
+
+  - id: korea
+    display_name: "Korean Peninsula"
+    centroid: [37.5, 125.5]
+    context:
+      typical_causes: >-
+        GNSS jamming degrades navigation integrity for civil aircraft and ships
+        near the inter-Korean maritime border (Northern Limit Line) and around
+        Incheon; South Korea's military reported hundreds of aircraft and ships
+        affected in a late-May/early-June 2024 episode and further incidents in
+        November 2024.
+      known_actors: >-
+        South Korea's Joint Chiefs of Staff attributed the jamming to North
+        Korea (per Al Jazeera / Korea Times / GPS World). Attribution here rests
+        on the ROK government's public assessment.
+      interpretation_notes: >-
+        A relatively CONTAINED, episodic pattern compared with the chronic
+        European/Middle-East zones: interference clusters in short bursts near
+        the NLL rather than persisting for months. ADS-B coverage is dense
+        around Incheon, so effects are well observed. Attribution is
+        single-source (ROK JCS) — report it as the ROK assessment, not
+        independently confirmed.
+      sources:
+        - title: "Al Jazeera — South Korea's military blames North Korea for GPS signal 'jamming attack'"
+          url: "https://www.aljazeera.com/news/2024/11/9/south-koreas-military-blames-north-korea-on-gps-signal-jamming-attack"
+          note: "ROK JCS attribution of Nov 2024 jamming affecting civilian aircraft/ships to North Korea."
+        - title: "38 North — North Korean Non-kinetic Attacks: A Problem for Incheon Airport"
+          url: "https://www.38north.org/2024/11/north-korean-non-kinetic-attacks-a-problem-for-incheon-airport/"
+          note: "Analysis of North Korean GNSS jamming affecting Incheon; May/Jun 2024 episode figures."
+
+  - id: us-southwest
+    display_name: "US Southwest Test Ranges"
+    centroid: [33.5, -106.5]
+    context:
+      typical_causes: >-
+        BENIGN, SCHEDULED GPS interference test events at US military ranges
+        (e.g., White Sands Missile Range, NM; China Lake, CA; the Nevada Test
+        and Training Range area) degrade navigation integrity in a bounded
+        volume for a bounded time. These are coordinated, published in advance,
+        and de-conflicted with civil aviation.
+      known_actors: >-
+        The interference source is the US government / military conducting
+        planned tests and training. The FAA publishes these as Notices to
+        Airmen (NOTAMs) / GPS Flight Advisories at least ~24 hours ahead; e.g.,
+        the White Sands "WSMRNM GPS" advisory series (per FAA/FAASafety flight
+        advisory PDF and AOPA reporting).
+      interpretation_notes: >-
+        THIS REGION IS DELIBERATE AND IS THE ARCHIVE'S CONTROL CASE. The raw
+        signal — a drop in Navigation Integrity Category over a defined area —
+        is IDENTICAL to what appears in Kaliningrad or the Black Sea. The
+        difference is entirely in context: here it is announced, geographically
+        fenced, time-boxed, and NOTAM'd. Whenever this archive surfaces a
+        degradation cluster over the US Southwest, the correct first move is to
+        check for a published GPS NOTAM / flight advisory before treating it as
+        anomalous. This region exists to remind the analyst that
+        NIC-degradation alone proves interference, NOT hostility — benign
+        test-range activity and adversarial jamming look the same to the sensor
+        and are separated only by interpretation.
+      sources:
+        - title: "FAA / FAASafety — Federal Aviation Administration Flight Advisory: GPS Interference Testing (WSMRNM 26-13)"
+          url: "https://www.faasafety.gov/files/notices/2026/May/WSMRNM_26-13_GPS_Flight_Advisory.pdf"
+          note: "Real FAA flight advisory for scheduled White Sands GPS interference testing (NOTAM'd)."
+        - title: "AOPA — GPS jamming scheduled across US (military GPS interference exercises)"
+          url: "https://www.aopa.org/news-and-media/all-news/2019/february/27/more-gps-interference-exercises-planned"
+          note: "Explains the scheduled, NOTAM-published nature of US military GPS interference exercises."

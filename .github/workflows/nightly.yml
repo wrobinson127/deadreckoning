@@ -1,0 +1,115 @@
+name: Nightly build & deploy
+
+# DORMANT until the repo is public and Pages is enabled.
+# The scheduled job is gated on the repo variable NIGHTLY_ENABLED == 'true'
+# (Settings -> Secrets and variables -> Actions -> Variables). Until you set it,
+# the schedule fires but the job skips — zero cost, nothing deploys.
+# To go live: make the repo public, enable Pages (Source: GitHub Actions),
+# then set repository variable NIGHTLY_ENABLED = true. See CLAUDE.md.
+
+on:
+  schedule:
+    # 05:30 UTC — comfortably after the prior UTC day's adsb.lol prod release,
+    # which historically publishes ~03:25 UTC. If it isn't up yet the run exits
+    # cleanly (no data committed) and the next night retries.
+    - cron: "30 5 * * *"
+  workflow_dispatch:
+    inputs:
+      day:
+        description: "UTC day to process (YYYY-MM-DD); blank = yesterday"
+        required: false
+
+permissions:
+  contents: write     # commit new aggregates
+  pages: write        # deploy Pages
+  id-token: write     # Pages OIDC
+
+concurrency:
+  group: nightly
+  cancel-in-progress: false
+
+jobs:
+  build:
+    # Gate: skip entirely unless explicitly enabled. Manual dispatch always runs.
+    if: ${{ github.event_name == 'workflow_dispatch' || vars.NIGHTLY_ENABLED == 'true' }}
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.commit.outputs.changed }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt
+
+      - name: Resolve target day
+        id: day
+        run: |
+          if [ -n "${{ github.event.inputs.day }}" ]; then
+            echo "day=${{ github.event.inputs.day }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "day=$(date -u -d 'yesterday' +%F)" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Process day (idempotent; exits clean if release not yet published)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python -m pipeline.backfill "${{ steps.day.outputs.day }}" \
+            --scratch "${RUNNER_TEMP}/dr_scratch"
+
+      - name: Commit new aggregates
+        id: commit
+        run: |
+          git config user.name  "deadreckoning-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/ content/*.json || true
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No data changes."
+          else
+            git commit -m "data: nightly aggregate ${{ steps.day.outputs.day }}"
+            git push
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Assemble Pages artifact (site + data + content)
+        run: |
+          rm -rf public && mkdir -p public
+          cp -r site/* public/
+          cp -r data public/data
+          cp -r content public/content
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  deploy:
+    needs: build
+    if: ${{ github.event_name == 'workflow_dispatch' || vars.NIGHTLY_ENABLED == 'true' }}
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4
+
+  # Failure isolation: if the build fails, prior committed data is untouched
+  # (we only commit on success) and an issue is opened for visibility.
+  notify-failure:
+    needs: [build, deploy]
+    if: ${{ always() && (needs.build.result == 'failure' || needs.deploy.result == 'failure') }}
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Nightly build failed: ${new Date().toISOString().slice(0,10)}`,
+              body: `The nightly build/deploy failed. Run: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+            });

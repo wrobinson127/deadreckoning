@@ -1,0 +1,104 @@
+{
+  "id": "levant",
+  "display_name": "Levant (Israel / Lebanon)",
+  "series": [
+    {
+      "date": "2026-06-30",
+      "n_hexes": 16,
+      "mean_bad_ratio": 0.2612,
+      "max_bad_ratio": 0.6471,
+      "total_aircraft": 1282
+    },
+    {
+      "date": "2026-07-01",
+      "n_hexes": 16,
+      "mean_bad_ratio": 0.1726,
+      "max_bad_ratio": 0.6154,
+      "total_aircraft": 1368
+    },
+    {
+      "date": "2026-07-02",
+      "n_hexes": 16,
+      "mean_bad_ratio": 0.2401,
+      "max_bad_ratio": 0.8824,
+      "total_aircraft": 1391
+    },
+    {
+      "date": "2026-07-03",
+      "n_hexes": 16,
+      "mean_bad_ratio": 0.2458,
+      "max_bad_ratio": 0.7143,
+      "total_aircraft": 1203
+    },
+    {
+      "date": "2026-07-04",
+      "n_hexes": 16,
+      "mean_bad_ratio": 0.2408,
+      "max_bad_ratio": 0.5455,
+      "total_aircraft": 1037
+    },
+    {
+      "date": "2026-07-05",
+      "n_hexes": 15,
+      "mean_bad_ratio": 0.2295,
+      "max_bad_ratio": 0.6875,
+      "total_aircraft": 1398
+    },
+    {
+      "date": "2026-07-06",
+      "n_hexes": 16,
+      "mean_bad_ratio": 0.1537,
+      "max_bad_ratio": 0.5556,
+      "total_aircraft": 1396
+    },
+    {
+      "date": "2026-07-07",
+      "n_hexes": 15,
+      "mean_bad_ratio": 0.1653,
+      "max_bad_ratio": 0.75,
+      "total_aircraft": 1297
+    },
+    {
+      "date": "2026-07-08",
+      "n_hexes": 14,
+      "mean_bad_ratio": 0.1562,
+      "max_bad_ratio": 0.6154,
+      "total_aircraft": 1263
+    },
+    {
+      "date": "2026-07-09",
+      "n_hexes": 15,
+      "mean_bad_ratio": 0.2305,
+      "max_bad_ratio": 0.7273,
+      "total_aircraft": 1396
+    },
+    {
+      "date": "2026-07-10",
+      "n_hexes": 16,
+      "mean_bad_ratio": 0.2809,
+      "max_bad_ratio": 0.8125,
+      "total_aircraft": 1110
+    },
+    {
+      "date": "2026-07-11",
+      "n_hexes": 16,
+      "mean_bad_ratio": 0.2441,
+      "max_bad_ratio": 0.6923,
+      "total_aircraft": 990
+    },
+    {
+      "date": "2026-07-12",
+      "n_hexes": 15,
+      "mean_bad_ratio": 0.2514,
+      "max_bad_ratio": 0.8333,
+      "total_aircraft": 1212
+    },
+    {
+      "date": "2026-07-13",
+      "n_hexes": 16,
+      "mean_bad_ratio": 0.2391,
+      "max_bad_ratio": 0.6842,
+      "total_aircraft": 1325
+    }
+  ]
+}

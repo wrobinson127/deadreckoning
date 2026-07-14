@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Methodology — DEAD RECKONING</title>
+<meta name="description" content="How DEAD RECKONING infers GPS/GNSS interference from ADS-B Navigation Integrity Category (NIC), and what it can and cannot see." />
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div id="app" style="position:static;display:block;min-height:100%;">
+  <header class="topbar">
+    <a class="brand" href="index.html" style="text-decoration:none">DEAD<span class="dot">·</span>RECKONING</a>
+    <span class="spacer"></span>
+    <nav><a href="index.html">Map</a><a href="methodology.html">Methodology</a><a href="about.html">About</a></nav>
+  </header>
+
+  <main class="doc">
+    <a class="backlink" href="index.html">← back to the map</a>
+    <h1>Methodology</h1>
+    <p class="lede">DEAD RECKONING is an instrument, not an accusation. It measures
+    where aircraft report <em>degraded navigation integrity</em>, aggregates that
+    signal over space and time, and shows it with its uncertainty attached. This
+    page explains exactly what the signal is, how it is computed, and — just as
+    important — what it cannot tell you.</p>
+
+    <h2>What NIC is</h2>
+    <p>Every ADS-B–equipped aircraft broadcasts a <strong>Navigation Integrity
+    Category</strong> (NIC), an integer from <code>0</code> to <code>11</code>,
+    alongside its position. NIC states how tightly the aircraft's own navigation
+    system can bound the error on the position it is transmitting — it is paired
+    with a <em>radius of containment</em> (<code>rc</code>, in metres). High NIC
+    means a small, trustworthy containment radius; low NIC means a large one.</p>
+    <p>When GNSS (GPS, Galileo, GLONASS, BeiDou) is jammed or spoofed, receivers
+    lose the ability to bound their error, and NIC falls — often all the way to
+    <code>0</code> ("integrity unknown"). Many aircraft in one area reporting low
+    NIC <em>at the same time</em> is the fingerprint of interference in that
+    airspace. Our sample day shows the containment ladder cleanly:</p>
+    <table>
+      <tr><th>NIC</th><th>11</th><th>10</th><th>9</th><th>8</th><th>7</th><th>6</th><th>5</th><th>4</th><th>3</th></tr>
+      <tr><td>median rc (m)</td><td>8</td><td>25</td><td>75</td><td>186</td><td>371</td><td>926</td><td>1852</td><td>3704</td><td>7408</td></tr>
+    </table>
+
+    <h2>The inference rule</h2>
+    <p>Interference is inferred from <strong>multiple proximate aircraft</strong>,
+    never a single report. The pipeline:</p>
+    <ol>
+      <li>Streams a full UTC day of open ADS-B traces from
+      <a href="https://www.adsb.lol" target="_blank" rel="noopener">adsb.lol</a>.</li>
+      <li>Keeps only <strong>airborne</strong> positions that carry a NIC value
+      (ground positions and non-positional records are dropped).</li>
+      <li>Bins each position into an <strong>H3 resolution-4 hex</strong>
+      (~1,770 km² per cell).</li>
+      <li>For each aircraft in each hex, marks it <em>degraded</em> if the
+      <strong>majority</strong> of its NIC reports there are
+      <code>nic ≤ 6</code> (containment radius ≳ 1 km).</li>
+      <li>Computes each hex's <code>bad_ratio</code> = degraded aircraft ÷ unique
+      aircraft.</li>
+    </ol>
+    <div class="callout">
+      The unit of "degraded" is the <strong>aircraft</strong>, not the report.
+      One aircraft lingering with poor reception cannot make a hex look jammed;
+      the signal only rises when many distinct aircraft agree.
+    </div>
+
+    <h2>Thresholds &amp; their sensitivity</h2>
+    <p>The degraded threshold <code>nic ≤ 6</code> is chosen because NIC 6
+    corresponds to a containment radius of roughly 1 km — the point at which a
+    position is too loose to trust for navigation. NIC 7 and above (rc &lt; ~370 m)
+    are treated as healthy.</p>
+    <div class="callout">
+      <strong>Design decision: <code>nic = 0</code> counts as degraded.</strong>
+      On the reference day the degraded signal is dominated by <code>nic = 0</code>
+      reports (~85% of all degraded points) — aircraft dropped to "integrity
+      unknown," which is the <em>expected physical signature</em> of a receiver
+      under interference that can no longer bound its own error. Excluding it would
+      throw away the strongest evidence of GPS denial, so it is folded in
+      deliberately. Spatially this behaves as a real signal should: it concentrates
+      in known interference zones (Baltic/Kaliningrad up to 1.0) and is near-absent
+      over a quiet control (central US ~0.10 max).
+      <strong>Sensitivity (kept on the record):</strong> the degraded-point
+      fraction is <strong>5.98% including <code>nic = 0</code></strong> vs
+      <strong>0.87% excluding it</strong> — sample-day figures, so the map is
+      largely a <code>nic = 0</code> density surface, and you should read it as
+      one. A per-hex <em>strict</em> view (<code>1 ≤ nic ≤ 6</code>) is a planned
+      toggle to show that band directly. All thresholds live in a single config
+      file and are versioned with the data.
+    </div>
+
+    <h2>Confidence &amp; the honesty rule</h2>
+    <p>Every hex ships with its unique-aircraft count and a confidence tier:
+    <strong>high</strong> (≥10 aircraft), <strong>medium</strong> (5–9), and
+    <strong>insufficient</strong> (&lt;5). Hexes below the minimum-aircraft floor
+    are <em>never</em> rendered as a value or a confident color — on the map they
+    appear as a dim diagonal hatch under the "coverage" layer. This is the whole
+    point of the instrument: <strong>you can always tell "no interference" from
+    "no coverage."</strong></p>
+
+    <h2>A worked example: same signal, three meanings</h2>
+    <p>The instrument's core lesson is that <em>the reading is not the analysis</em>.
+    On any given day, three places can look similar on the map and mean entirely
+    different things — which is why context lives in the region profiles, not the
+    color scale.</p>
+    <ul>
+      <li><strong>Kaliningrad &amp; the Baltic</strong> — a chronic, wide-area
+      degradation beside an active conflict; European reporting attributes it to
+      Russian electronic-warfare activity. Here degraded NIC is the <em>baseline</em>,
+      not the anomaly.</li>
+      <li><strong>Central US</strong> — a quiet control. This is what "clear" looks
+      like on the same sensor, and it's why a lit-up region elsewhere is
+      meaningful rather than an artifact of the method.</li>
+      <li><strong>US Southwest (White Sands / NTTR)</strong> — an <em>identical</em>
+      NIC-degradation signal to a hostile jamming zone, but <strong>benign</strong>:
+      scheduled, publicly NOTAM'd GPS-test exercises. The sensor cannot tell the two
+      apart; only the context can. This region is included deliberately as the
+      interpretive control.</li>
+    </ul>
+    <div class="callout">
+      This is the whole thesis in one comparison: an instrument shows you
+      <em>where</em> integrity degrades; deciding <em>what it means</em> is
+      analysis, done with sources — never asserted by the map.
+    </div>
+
+    <h2>Validation</h2>
+    <p>Two checks keep this honest:</p>
+    <p><strong>Internal (quantified).</strong> On the reference day, known chronic
+    zones light up as expected while a deliberate control stays dark:</p>
+    <table>
+      <tr><th>Zone</th><th>cells ≥5 aircraft</th><th>max degraded ratio</th></tr>
+      <tr><td>Kaliningrad / Baltic</td><td>121</td><td>1.00</td></tr>
+      <tr><td>Eastern Med / Cyprus</td><td>181</td><td>0.67</td></tr>
+      <tr><td>Central US (quiet control)</td><td>212</td><td>0.10</td></tr>
+    </table>
+    <p>Signal and background separate cleanly — the method isn't lighting up
+    everywhere aircraft fly.</p>
+    <p><strong>External (independent reference).</strong> The persistent hotspots
+    this archive surfaces — the Baltic/Kaliningrad corridor and the eastern
+    Mediterranean — are the same regions independently mapped as chronic
+    GNSS-interference zones by live trackers such as
+    <a href="https://gpsjam.org" target="_blank" rel="noopener">GPSJam</a> and
+    Flightradar24. Those tools show <em>current</em> conditions; you can compare
+    any date directly on GPSJam. A formal same-date side-by-side figure is on the
+    roadmap — it is the single most persuasive credibility artifact still to add.</p>
+
+    <h2>Baselines &amp; anomaly</h2>
+    <p>Chronic zones are interesting; <em>change</em> is more interesting. For each
+    hex we compute a rolling baseline (mean and standard deviation of
+    <code>bad_ratio</code> over up to 28 qualifying days) and express each day as a
+    z-score — how many standard deviations above its own normal the hex sits. The
+    default map view is this anomaly score; a toggle shows the raw ratio. A hex
+    needs at least 7 qualifying days of history before it earns a baseline, so
+    early in the archive many hexes show raw values only. The baseline uses the
+    window of available days around each date, which suits a retrospective archive
+    rather than a real-time alarm.</p>
+
+    <h2>What this instrument cannot see</h2>
+    <ul>
+      <li><strong>Coverage bias.</strong> The signal exists only where aircraft
+      fly and where ground receivers hear them. Open ocean, closed airspace
+      (e.g. much of wartime Ukraine and the Black Sea), and receiver-sparse
+      regions read as <em>no data</em>, not as <em>no interference</em>.</li>
+      <li><strong>Equipment &amp; multipath false positives.</strong> Old or
+      faulty avionics, and dense-terrain multipath, can lower NIC without any
+      interference. The multiple-aircraft rule suppresses most of this, but a
+      single anomalous hex is never proof.</li>
+      <li><strong>Cause.</strong> NIC degradation shows <em>that</em> integrity
+      dropped, not <em>why</em> or <em>by whom</em>. Attribution lives only in the
+      region context profiles, with sources, and is flagged as draft analysis —
+      not asserted by the map.</li>
+      <li><strong>Spoofing vs jamming.</strong> v1 measures integrity degradation
+      broadly; distinguishing spoofing (false positions) from jamming (lost
+      positions) is future work.</li>
+    </ul>
+
+    <h2>Time, data &amp; licensing</h2>
+    <p>Everything is <strong>UTC</strong>; the source dumps are UTC days. Source
+    flight data © <a href="https://www.adsb.lol" target="_blank" rel="noopener">adsb.lol</a>
+    feeders and partners, published under the
+    <a href="https://opendatacommons.org/licenses/odbl/1-0/" target="_blank" rel="noopener">Open Database License (ODbL) 1.0</a>.
+    Our per-day aggregates are a derivative database, also published under ODbL;
+    only aggregates are retained — raw traces are deleted after processing. The
+    project code is MIT. Basemap © OpenStreetMap contributors via OpenFreeMap.</p>
+
+    <a class="backlink" href="index.html">← back to the map</a>
+  </main>
+
+  <footer class="site-footer">
+    <span class="mono">DEAD·RECKONING</span>
+    <span>Built by <a href="https://github.com/wrobinson127" target="_blank" rel="noopener">Walker Robinson</a></span>
+    <span>Data © adsb.lol (ODbL 1.0)</span>
+    <span>Code MIT</span>
+  </footer>
+</div>
+</body>
+</html>

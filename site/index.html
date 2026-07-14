@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<title>DEAD RECKONING — a GPS interference archive</title>
+<meta name="description" content="A longitudinal archive of GPS/GNSS interference, indicated by degraded aircraft navigation integrity (ADS-B NIC). Scrub multi-day history, per-hex baselines, named watch regions." />
+
+<!-- Open Graph / Twitter -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="DEAD RECKONING — a GPS interference archive" />
+<meta property="og:description" content="Where satellite navigation degrades, remembered over time. Built from open ADS-B data." />
+<meta property="og:image" content="assets/og-image.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="DEAD RECKONING — a GPS interference archive" />
+<meta name="twitter:description" content="Where satellite navigation degrades, remembered over time." />
+<meta name="twitter:image" content="assets/og-image.png" />
+
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+<link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div id="app">
+  <header class="topbar">
+    <span class="brand">DEAD<span class="dot">·</span>RECKONING</span>
+    <span class="tagline">GPS interference, remembered.</span>
+    <span class="spacer"></span>
+    <a class="byline" href="https://github.com/wrobinson127" target="_blank" rel="noopener">Built by Walker Robinson</a>
+    <nav>
+      <a href="index.html">Map</a>
+      <a href="methodology.html">Methodology</a>
+      <a href="about.html">About</a>
+    </nav>
+  </header>
+
+  <div id="map">
+    <!-- overlays -->
+    <div class="map-overlay controls">
+      <div class="panel">
+        <h3>Layer</h3>
+        <div class="seg" id="modeToggle" role="group" aria-label="color mode">
+          <button data-mode="raw" aria-pressed="true">Degraded %</button>
+          <button data-mode="anomaly" aria-pressed="false">Anomaly</button>
+        </div>
+        <label class="check"><input type="checkbox" id="coverageToggle" />
+          Show coverage (low-sample)</label>
+      </div>
+    </div>
+
+    <div class="map-overlay legend panel">
+      <h3 id="legendTitle">Aircraft with degraded GPS</h3>
+      <div class="ramp raw" id="legendRamp"></div>
+      <div class="ramp-labels"><span id="legLo">0%</span><span id="legHi">100%</span></div>
+      <div class="swatch-row"><span class="swatch insufficient"></span>
+        <span>too few aircraft &mdash; not measured</span></div>
+    </div>
+
+    <div class="map-overlay region-chips" id="regionChips"></div>
+
+    <div class="map-overlay readout panel empty" id="readout">
+      <div class="hexid" id="roHex">— hover a cell —</div>
+      <div class="big" id="roVal">—</div>
+      <div class="row"><span id="roAircraft">aircraft —</span>
+        <span class="conf" id="roConf">—</span></div>
+    </div>
+
+    <div class="event-card" id="eventCard"></div>
+
+    <!-- region drawer -->
+    <aside class="drawer" id="drawer" aria-hidden="true">
+      <header>
+        <div>
+          <div class="rid" id="drRid">region</div>
+          <h2 id="drName">Region</h2>
+        </div>
+        <button class="close" id="drClose" aria-label="close">×</button>
+      </header>
+      <div class="body" id="drBody"></div>
+    </aside>
+
+    <!-- first-run orientation -->
+    <div class="intro-scrim" id="intro" hidden>
+      <div class="intro-card">
+        <div class="intro-kicker">DEAD·RECKONING — a GPS interference archive</div>
+        <h2>A memory of where GPS goes dark.</h2>
+        <p>Aircraft broadcast how much they trust their own GPS. Where <em>many
+        aircraft at once</em> report degraded satellite navigation, something on
+        the ground is interfering with it. This map remembers that — day by day.</p>
+        <div class="intro-how">
+          <div><span class="k" style="background:#3fae8f"></span> Brighter cells =
+            more aircraft with degraded GPS.</div>
+          <div><span class="k hatch"></span> Hatched = too few aircraft to judge
+            (not the same as "clear").</div>
+          <div><span class="k" style="background:var(--phosphor)"></span> Scrub the
+            timeline below to move through days.</div>
+        </div>
+        <div class="intro-guide">
+          <div class="intro-guide-title">Read it like an analyst — three places, one sensor:</div>
+          <ul>
+            <li><b>Kaliningrad &amp; the Baltic</b> — chronic interference beside conflict.</li>
+            <li><b>Central US</b> — a quiet control; this is what "clear" looks like.</li>
+            <li><b>US Southwest (White Sands)</b> — an <em>identical</em> signal, but
+              benign: scheduled, published GPS-test exercises. Same reading,
+              opposite meaning — which is why context, not color, is the analysis.</li>
+          </ul>
+        </div>
+        <div class="intro-actions">
+          <button class="intro-go" id="introGo">Explore the map →</button>
+          <a href="methodology.html">How it works</a>
+        </div>
+      </div>
+    </div>
+    <button class="help-btn" id="helpBtn" title="What is this?" aria-label="help">?</button>
+
+    <div class="loader" id="loader">
+      <div class="core">
+        <div class="sweep"></div>
+        <div class="msg">acquiring signal…</div>
+      </div>
+    </div>
+    <div class="toast" id="toast"></div>
+  </div>
+
+  <div class="scrubber">
+    <div class="scrub-head">
+      <span class="scrub-date" id="scrubDate">————-——-——</span>
+      <span class="scrub-meta" id="scrubMeta"></span>
+    </div>
+    <div class="scrub-row">
+      <button class="play" id="playBtn" aria-label="play">▶</button>
+      <div class="track-wrap">
+        <div class="track"><div class="fill" id="trackFill"></div></div>
+        <div class="ticks" id="ticks"></div>
+        <input type="range" class="slider" id="slider" min="0" max="0" value="0" step="1" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="https://unpkg.com/h3-js@4.1.0/dist/h3-js.umd.js"></script>
+<script src="https://unpkg.com/d3@7.9.0/dist/d3.min.js"></script>
+<script src="js/color.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

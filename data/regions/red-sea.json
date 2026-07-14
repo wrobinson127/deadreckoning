@@ -1,0 +1,104 @@
+{
+  "id": "red-sea",
+  "display_name": "Red Sea",
+  "series": [
+    {
+      "date": "2026-06-30",
+      "n_hexes": 3,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 45
+    },
+    {
+      "date": "2026-07-01",
+      "n_hexes": 7,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 158
+    },
+    {
+      "date": "2026-07-02",
+      "n_hexes": 5,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 45
+    },
+    {
+      "date": "2026-07-03",
+      "n_hexes": 3,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 31
+    },
+    {
+      "date": "2026-07-04",
+      "n_hexes": 3,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 39
+    },
+    {
+      "date": "2026-07-05",
+      "n_hexes": 0,
+      "mean_bad_ratio": null,
+      "max_bad_ratio": null,
+      "total_aircraft": 0
+    },
+    {
+      "date": "2026-07-06",
+      "n_hexes": 1,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 5
+    },
+    {
+      "date": "2026-07-07",
+      "n_hexes": 5,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 80
+    },
+    {
+      "date": "2026-07-08",
+      "n_hexes": 4,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 60
+    },
+    {
+      "date": "2026-07-09",
+      "n_hexes": 1,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 8
+    },
+    {
+      "date": "2026-07-10",
+      "n_hexes": 2,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 26
+    },
+    {
+      "date": "2026-07-11",
+      "n_hexes": 4,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 85
+    },
+    {
+      "date": "2026-07-12",
+      "n_hexes": 5,
+      "mean_bad_ratio": 0.0047,
+      "max_bad_ratio": 0.0233,
+      "total_aircraft": 113
+    },
+    {
+      "date": "2026-07-13",
+      "n_hexes": 7,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 118
+    }
+  ]
+}
