@@ -103,8 +103,12 @@ RELEASE_STAGING_TEMPLATE = "v{date}-planes-readsb-staging-0"
 # Reassembly: concatenate .tar.aa + .tar.ab (+...) then untar.
 
 # --- Output ------------------------------------------------------------------
-DAILY_JSON_TEMPLATE = "data/daily/{date}.json"  # date as YYYY-MM-DD
-BASELINES_JSON = "data/baselines.json"
+# Daily aggregates are stored gzip-compressed (~13x smaller). This is a hard
+# size gate for bulk backfill: 3 years uncompressed ~ 3.7 GB vs ~260 MB gzipped,
+# against GitHub Pages' ~1 GB guidance. The browser decompresses client-side via
+# native DecompressionStream (no library). All pipeline I/O goes through
+# pipeline/dailyio.py so the storage format lives in exactly one place.
+DAILY_TEMPLATE = "data/daily/{date}.json.gz"  # date as YYYY-MM-DD
+GZIP_LEVEL = 9                                 # max ratio; artifacts are write-once
+BASELINES_JSON = "data/baselines.json"         # small, singular — left uncompressed
 REGION_SERIES_TEMPLATE = "data/regions/{region_id}.json"
-# Gzip daily JSON if it saves meaningfully; frontend fetches .json (or .json.gz).
-GZIP_DAILY = False  # decided in Phase 0 based on measured sizes

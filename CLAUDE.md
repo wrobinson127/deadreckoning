@@ -19,8 +19,10 @@ board/  = self-contained kanban (project state, rides git history)
   (resolve+fetch split-tar release, delete after) · `parse.py` (stream tar,
   airborne NIC points) · `aggregate.py` (per-hex daily) · `baselines.py` ·
   `regions.py` (per-region series) · `build_site_data.py` (manifest + yaml→json)
+  · `dailyio.py` (the one place the daily storage format lives)
   · `run_daily.py` / `backfill.py` (entrypoints) · `tests/`.
-- **data/** — committed **aggregates only**: `daily/YYYY-MM-DD.json`,
+- **data/** — committed **aggregates only**: `daily/YYYY-MM-DD.json.gz`
+  (gzipped ~14×; the browser inflates each day via native `DecompressionStream`),
   `baselines.json`, `regions/{id}.json`, `manifest.json`.
 - **content/** — `regions.yaml`+`regions.geojson`+`events.yaml` (authored,
   draft-flagged); `regions.json`/`events.json` are generated for the browser.
@@ -36,6 +38,12 @@ board/  = self-contained kanban (project state, rides git history)
 - **UTC everywhere.** The dumps are UTC days; dates are UTC.
 - **Only aggregates are committed.** Raw dumps + extracted traces + anything
   >50 MB are gitignored and deleted after processing. Never commit raw data.
+- **Daily files are gzipped; go through `pipeline/dailyio.py`.** Never read/write
+  `data/daily/*` directly — the storage format (deterministic gzip, `.json.gz`)
+  lives in that one module. `.gitattributes` marks `*.gz binary` (do not remove;
+  eol-normalizing a gzip stream corrupts it). **Size gate:** no *bulk* backfill
+  until gzip storage is verified live (3 yrs ≈ 3.7 GB raw vs ≈ 260 MB gzipped
+  against Pages' ~1 GB guidance).
 - **ODbL attribution is required** wherever data is shown: README, site footer,
   methodology page. Code is MIT; published `data/` is ODbL (see `DATA_LICENSE.md`).
 - **Honest uncertainty is not optional.** Hexes below `MIN_AIRCRAFT_FLOOR` render

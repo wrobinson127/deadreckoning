@@ -21,28 +21,18 @@ Output: data/baselines.json
 """
 from __future__ import annotations
 
-import glob
 import math
 import os
 
 import orjson
 
-from . import config as C
+from . import config as C, dailyio
 from .paths import repo_path
-
-
-def _load_dailies() -> list[tuple[str, list[dict]]]:
-    out = []
-    for path in sorted(glob.glob(repo_path("data", "daily", "*.json"))):
-        day = os.path.basename(path).removesuffix(".json")
-        with open(path, "rb") as fh:
-            out.append((day, orjson.loads(fh.read())))
-    return out
 
 
 def compute_baselines(dailies: "list[tuple[str, list[dict]]] | None" = None) -> dict:
     if dailies is None:
-        dailies = _load_dailies()
+        dailies = dailyio.load_dailies()
     # hex -> list of (day, bad_ratio) for days meeting the floor
     series: dict[str, list[tuple[str, float]]] = {}
     for day, records in dailies:

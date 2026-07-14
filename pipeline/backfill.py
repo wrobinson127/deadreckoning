@@ -15,8 +15,7 @@ import os
 import sys
 from datetime import date as date_cls, timedelta
 
-from . import baselines, build_site_data, config as C, download, regions
-from .paths import repo_path
+from . import baselines, build_site_data, dailyio, download, regions
 from .run_daily import default_scratch, process_day
 
 
@@ -68,7 +67,7 @@ def main(argv=None) -> int:
     done, skipped, notready, failed = [], [], [], []
     for d in _daterange(start, end):
         day = d.isoformat()
-        out = repo_path(C.DAILY_JSON_TEMPLATE.format(date=day))
+        out = dailyio.daily_path(day)
         if os.path.exists(out) and not args.force:
             skipped.append(day)
             print(f"[skip] {day} (exists)")

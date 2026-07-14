@@ -240,6 +240,15 @@ input.slider::-moz-range-thumb { width:14px; height:14px; border-radius:50%;
 .event-card .e-date { font-family:var(--mono); font-size:11px; color:var(--phosphor); }
 .event-card .e-title { font-weight:600; margin:3px 0; font-size:13px; }
 .event-card .e-one { color:var(--ink-dim); font-size:12px; }
+.event-card .e-tag {
+  margin-left:6px; padding:1px 6px; border-radius:3px; font-size:9.5px;
+  letter-spacing:.04em; text-transform:uppercase; vertical-align:middle;
+  background:rgba(210,150,70,.18); color:#e0a869; border:1px solid rgba(210,150,70,.35);
+}
+.event-card .e-note {
+  margin-top:7px; padding-top:7px; border-top:1px solid var(--line);
+  color:var(--ink-dim); font-size:11px; font-style:italic; line-height:1.45;
+}
 
 /* ================= intro / orientation ================= */
 .intro-scrim { position:absolute; inset:0; z-index:18; display:grid; place-items:center;

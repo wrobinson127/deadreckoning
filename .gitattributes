@@ -7,5 +7,9 @@
 *.pmtiles binary
 *.ttf binary
 
+# Gzipped daily aggregates are binary — MUST NOT be eol-normalized (that would
+# corrupt the gzip stream). This overrides the "* text=auto" rule above.
+*.gz binary
+
 # Generated/data JSON is text; large but small per file.
 data/**/*.json text eol=lf

@@ -186,6 +186,8 @@
       "title": "Von der Leyen's plane reports GPS jamming near Plovdiv",
       "one_line": "A jet carrying the European Commission president reported GPS loss approaching Plovdiv, Bulgaria; initial Russia-jamming claims were later disputed.",
       "type": "incident",
+      "disputed": true,
+      "editorial_note": "Retained as a disputed incident, shown with its rebuttal. Filed under black-sea, but the geographic fit is imperfect — Plovdiv is inland SE Europe, not the Black Sea littoral. If more Balkan / SE-Europe events accrue, the fix is a dedicated region rather than stretching this one.",
       "sources": [
         {
           "title": "CNN — Plane carrying EU's top leader targeted by alleged Russian GPS jamming",
