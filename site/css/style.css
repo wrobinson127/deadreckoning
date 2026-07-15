@@ -107,10 +107,21 @@ a:hover { text-decoration: underline; text-underline-offset: 2px; }
 
 /* ---- top bar ---- */
 header.topbar {
+  position: relative;
   display: flex; align-items: baseline; gap: 18px;
   padding: 10px 18px; border-bottom: 1px solid var(--line);
   background: linear-gradient(180deg, rgba(0,0,0,0.4), transparent);
   z-index: 5;
+}
+/* always-on UTC date, centered IN the top bar (independent of the timeline,
+   so it stays visible when the scrubber is fully collapsed). */
+.topbar-date {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  font-family: var(--mono); font-size: 14px; font-weight: 600;
+  letter-spacing: 0.08em; color: var(--ink); white-space: nowrap;
+  background: color-mix(in srgb, var(--bg-panel) 70%, transparent);
+  border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 3px 12px; pointer-events: none;
 }
 .brand {
   font-family: var(--mono);
@@ -354,17 +365,6 @@ header.topbar {
 }
 .scrub-head { display:flex; align-items:baseline; gap:16px; margin-bottom:8px; }
 .scrub-meta { font-family: var(--mono); font-size: 11px; color: var(--ink-faint); }
-
-/* always-on UTC date, floating top-center over the map, independent of the
-   timeline so it stays visible when the scrubber is fully collapsed. */
-.map-date {
-  top: 12px; left: 50%; transform: translateX(-50%);
-  font-family: var(--mono); font-size: 15px; font-weight: 600;
-  letter-spacing: 0.06em; color: var(--ink);
-  background: color-mix(in srgb, var(--bg-panel) 82%, transparent);
-  border: 1px solid var(--line); border-radius: var(--radius);
-  padding: 4px 12px; backdrop-filter: blur(8px); pointer-events: none;
-}
 .scrub-row { display: flex; align-items: center; gap: 14px; }
 .play {
   width: 34px; height: 34px; flex: none; border-radius: 50%;
@@ -575,7 +575,7 @@ footer.site-footer .footer-note { flex-basis:100%; color:var(--ink-faint);
   .drawer { width: 100%; }
   .readout { min-width: 150px; }
   .readout.pinned { min-width: 62vw; }
-  .map-date { font-size: 13px; padding: 3px 10px; }
+  .topbar-date { font-size: 12px; padding: 2px 9px; }
 }
 @media (prefers-reduced-motion: reduce) {
   * { animation-duration: .01ms !important; transition-duration: .01ms !important; }
