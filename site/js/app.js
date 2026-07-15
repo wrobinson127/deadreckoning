@@ -232,6 +232,14 @@
         "NIC data © adsb.lol (ODbL) · basemap © OpenStreetMap contributors",
     }), "bottom-right");
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "bottom-right");
+    // MapLibre renders compact attribution EXPANDED by default; collapse it to
+    // just the "i" once, at mount (not on every idle, so a user click to expand
+    // it still sticks).
+    const collapseAttrib = () =>
+      document.querySelectorAll(".maplibregl-ctrl-attrib.maplibregl-compact-show")
+        .forEach((e) => e.classList.remove("maplibregl-compact-show"));
+    map.once("load", collapseAttrib);
+    setTimeout(collapseAttrib, 400);
 
     // Fire onMapReady exactly once, whether the hosted style loads or we fall back.
     let mapReady = false;
@@ -544,10 +552,10 @@
     el("roFlights").hidden = true;
     el("roFlights").innerHTML = "";
     el("readout").classList.add("empty");
-    el("roHex").textContent = "hover a cell";
+    el("readout").classList.remove("pinned");
     el("roVal").textContent = "—";
-    el("roAircraft").textContent = "aircraft —";
-    el("roConf").textContent = "—";
+    el("roAircraft").textContent = "hover a cell";
+    el("roConf").textContent = "";
     el("roConf").className = "conf";
   }
 
@@ -561,7 +569,6 @@
   function showReadout(rec, pinned) {
     const ro = el("readout");
     ro.classList.remove("empty");
-    el("roHex").textContent = rec.hex;
     const z = anomalyZ(rec);
     if (state.mode === "anomaly") {
       el("roVal").textContent = z == null ? "—" : (z >= 0 ? "+" : "") + z.toFixed(1) + "σ";
@@ -576,6 +583,7 @@
     // pinned view: the aircraft that drove this cell's degraded reading, from the
     // daily artifact (public ADS-B callsigns). Graceful empty state otherwise.
     const fl = el("roFlights"), close = el("roClose");
+    ro.classList.toggle("pinned", !!pinned);
     if (pinned) {
       close.hidden = false;
       const flights = rec.flights || [];
@@ -989,12 +997,19 @@
     el("drClose").addEventListener("click", closeRegion);
     el("introGo").addEventListener("click", hideIntro);
     el("helpBtn").addEventListener("click", showIntro);
-    // Legend is tap-collapsible; on phones it starts collapsed so it never
-    // covers the map (collapse styling is mobile-only, so this is a no-op on
-    // desktop). The map's color key stays reachable — the mobile contract.
-    el("legendTitle").addEventListener("click", () => el("legend").classList.toggle("collapsed"));
-    if (window.matchMedia && window.matchMedia("(max-width: 760px)").matches)
+    // Collapsible overlay panels: every arrow tab folds its box (or the
+    // timeline) away to declutter the map, and unfolds it again.
+    document.querySelectorAll("[data-collapse]").forEach((btn) =>
+      btn.addEventListener("click", () => {
+        const box = btn.closest(".collapsible");
+        if (box) box.classList.toggle("collapsed");
+      }));
+    // On phones, start the legend + watch-regions folded so they never cover
+    // the map (the color key stays reachable via its tab — the mobile contract).
+    if (window.matchMedia && window.matchMedia("(max-width: 760px)").matches) {
       el("legend").classList.add("collapsed");
+      el("regionBox").classList.add("collapsed");
+    }
     document.addEventListener("keydown", (e) => {
       if (!el("intro").hidden) { if (e.key === "Escape") hideIntro(); return; }
       if (e.key === "ArrowLeft") goTo(state.idx - 1);
