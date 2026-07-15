@@ -119,7 +119,7 @@ header.topbar {
 .ramp { height: 9px; border-radius: 2px; margin: 6px 0 4px;
   border: 1px solid var(--line); }
 .ramp.anom { background: linear-gradient(90deg,#000004,#3b0f70,#8c2981,#de4968,#fe9f6d,#fcfdbf); }
-.ramp.raw  { background: linear-gradient(90deg,#0b1a24,#123b4e,#1f6f74,#3fae8f,#a7d99b,#f0f6c0); }
+.ramp.raw  { background: linear-gradient(90deg,#150c0a,#4a1710,#8f2214,#cc3d18,#ef6f1c,#f9a838,#fbd66b,#fdf1b8); }
 .ramp.cov  { background: linear-gradient(90deg,#111c28,#25415c,#3a6690,#6098c0,#a6cbe4); }
 .ramp-labels { display: flex; justify-content: space-between;
   font-family: var(--mono); font-size: 10px; color: var(--ink-faint); }
@@ -295,6 +295,11 @@ input.slider::-moz-range-thumb { width:14px; height:14px; border-radius:50%;
 }
 .zone-card .zc-src a { color:var(--phosphor); font-size:11px; text-decoration:none; }
 .zone-card .zc-src a:hover { text-decoration:underline; }
+.zone-card .zc-region {
+  display:block; margin-top:8px; padding:0; background:none; border:none;
+  color:#c6b1e6; font-size:11.5px; cursor:pointer; text-align:left;
+}
+.zone-card .zc-region:hover { text-decoration:underline; }
 
 /* ================= intro / orientation ================= */
 .intro-scrim { position:absolute; inset:0; z-index:18; display:grid; place-items:center;

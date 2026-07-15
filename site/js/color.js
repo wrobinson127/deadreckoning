@@ -6,9 +6,14 @@
   const EXTREME = "#ff5a48";
   const EXTREME_Z = 5.0; // z at/above this reads as an alarm (reserved red)
 
-  // Raw ramp stops (match the CSS legend .ramp.raw), interpolated by D3.
+  // Raw (degraded %) ramp — an inferno-style WARM ramp so real interference reads
+  // as heat, not a cool wash (we bin continuously where GPSJam bins categorically;
+  // this keeps the honesty but adds energy). Deliberately avoids purple/magenta so
+  // it can't be confused with the violet airspace overlay, and monotonic in
+  // lightness so it survives colour-vision deficiency. Reserved saturated red
+  // (#ff5a48) still belongs to extreme ANOMALY only. Match CSS .ramp.raw.
   const rawRamp = d3.interpolateRgbBasis([
-    "#0b1a24", "#123b4e", "#1f6f74", "#3fae8f", "#a7d99b", "#f0f6c0",
+    "#150c0a", "#4a1710", "#8f2214", "#cc3d18", "#ef6f1c", "#f9a838", "#fbd66b", "#fdf1b8",
   ]);
   // Coverage (traffic density) ramp — a muted single-hue STEEL-BLUE, deliberately
   // off the teal signal ramp, the violet airspace overlay, and the magma anomaly
