@@ -124,6 +124,83 @@
           "note": "FAA reference on announced GNSS-test advisories and NOTAMs."
         }
       ]
+    },
+    {
+      "id": "north-korea",
+      "label": "North Korea",
+      "type": "reduced_coverage",
+      "since": "2018",
+      "region_id": "korea",
+      "note": "Civil traffic over North Korea is minimal — the FAA prohibits US operators throughout the Pyongyang FIR (SFAR 79) and most states avoid it over unannounced missile launches — so volunteer ADS-B coverage inside the country is effectively nil. It is the archive's starkest sensor desert: North Korea is a named interference actor here (see the korea region), yet its own territory shows nothing — the jamming is observable only where the sensors are, in South Korean airspace.",
+      "sources": [
+        {
+          "title": "14 CFR 91.1615 (SFAR 79) — Prohibition against certain flights in the Pyongyang FIR",
+          "url": "https://www.law.cornell.edu/cfr/text/14/91.1615",
+          "note": "FAA prohibits US operators throughout the Pyongyang FIR; in force through 18 Sep 2028."
+        },
+        {
+          "title": "Safe Airspace — North Korea",
+          "url": "https://safeairspace.net/north-korea/",
+          "note": "US prohibits all North Korean airspace (incl. oceanic); missile-debris / misidentification risk."
+        }
+      ]
+    },
+    {
+      "id": "afghanistan",
+      "label": "Afghanistan",
+      "type": "reduced_coverage",
+      "since": "2021",
+      "note": "The Kabul FIR lost air traffic services after the August 2021 withdrawal and is uncontrolled; the FAA prohibits US operators below FL320 (SFAR 119) and most Western carriers avoid it, though some high-altitude corridor traffic has returned. Low-altitude coverage is effectively absent.",
+      "sources": [
+        {
+          "title": "14 CFR 91.1619 (SFAR 119) — Prohibition against certain flights in the Kabul FIR",
+          "url": "https://www.law.cornell.edu/cfr/text/14/91.1619",
+          "note": "US operators prohibited below FL320; high-altitude overflight permitted with conditions."
+        },
+        {
+          "title": "Safe Airspace — Afghanistan",
+          "url": "https://safeairspace.net/afghanistan/",
+          "note": "Uncontrolled Class G since Aug 2021; no ATC; low-altitude SAM risk; high-altitude overflights ongoing."
+        }
+      ]
+    },
+    {
+      "id": "yemen",
+      "label": "Yemen",
+      "type": "reduced_coverage",
+      "since": "2015",
+      "note": "Yemeni airspace is avoided under active-conflict advisories — the FAA prohibits US operators over the landmass (SFAR 115) and EASA rates the Sanaa FIR high-risk at all altitudes — so the interior stays dark while the adjacent Red Sea shows bright offshore interference: signal where the sensors are, blindness where they are not.",
+      "sources": [
+        {
+          "title": "Safe Airspace — Yemen",
+          "url": "https://safeairspace.net/yemen/",
+          "note": "Level 1 'Do Not Fly'; FAA prohibition over the landmass through Jan 2028; EASA HIGH."
+        },
+        {
+          "title": "EASA CZIB-2017-07 — Airspace of Yemen (Sana'a FIR)",
+          "url": "https://www.easa.europa.eu/en/domains/air-operations/czibs/czib-2017-07r19",
+          "note": "EASA rates the Sana'a FIR HIGH risk at all altitudes."
+        }
+      ]
+    },
+    {
+      "id": "iran",
+      "label": "Iran",
+      "type": "reduced_coverage",
+      "since": "2020",
+      "note": "A longstanding FAA prohibition covers the entire Tehran FIR (SFAR 117, since 2020 — its rationale explicitly cites GPS and communications jammers), and the airspace has been intermittently closed during the 2025-2026 escalations. Coverage here is thin and episodic — never a stable open/closed state.",
+      "sources": [
+        {
+          "title": "14 CFR 91.1617 (SFAR 117) — Prohibition against certain flights in the Tehran FIR",
+          "url": "https://www.law.cornell.edu/cfr/text/14/91.1617",
+          "note": "FAA prohibits US operators throughout the Tehran FIR (since 2020); rationale cites GPS/comms jammers."
+        },
+        {
+          "title": "Safe Airspace — Iran",
+          "url": "https://safeairspace.net/iran/",
+          "note": "Level 1; episodic closures across 2025-2026 (Mar 2026 full closure; Jun 2026 partial eastern reopen)."
+        }
+      ]
     }
   ]
 }

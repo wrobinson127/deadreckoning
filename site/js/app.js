@@ -26,6 +26,8 @@
   const QUIET_OP = 0.14;         // faint "watched" floor for conf>=medium, low-degraded
   const FILL_OP_MIN = 0.0;       // 0 at bad_ratio=0 so quiet hexes show pure carpet
   const FILL_OP_MAX = 0.72;      // cap so the basemap/geography ghosts through at peak
+  const RAW_GAMMA = 0.6;         // <1: nonlinear boost so mid-range degraded % carries more energy
+  const EXTREME_RATIO = 0.85;    // degraded hexes at/above this get a subtle glow (raw view)
 
   // Airspace-context outlines: violet, chosen over warm/orange because warm hues
   // collapse toward the anomaly ramp / reserved extreme-red under red-green CVD,
@@ -131,7 +133,9 @@
       return { k: "val", c: DR_COLOR.coverage(t), op: 0.32 + 0.45 * t };
     }
     if (state.mode === "raw") {
-      return { k: "val", c: DR_COLOR.raw(rec.bad_ratio), op: opFor(rec.bad_ratio) };
+      const t = Math.pow(rec.bad_ratio, RAW_GAMMA);   // nonlinear: mid-range pops
+      return { k: "val", c: DR_COLOR.raw(t), op: opFor(t),
+               ex: rec.bad_ratio >= EXTREME_RATIO ? 1 : 0 };
     }
     // anomaly
     const bl = state.baselines[rec.hex];
@@ -317,6 +321,17 @@
         "line-opacity": ["case", ["==", ["feature-state", "k"], "val"], 0.6, 0],
       },
     }, before);
+    // Subtle glow around the most-degraded (extreme) hexes — a blurred warm halo,
+    // driven by the "ex" feature-state (raw view only). Adds heat without a fill.
+    map.addLayer({
+      id: "hex-glow", type: "line", source: "hexes",
+      paint: {
+        "line-color": "#ffdf8f",
+        "line-blur": 6,
+        "line-width": ["case", ["==", ["feature-state", "ex"], 1], 2.4, 0],
+        "line-opacity": ["case", ["==", ["feature-state", "ex"], 1], 0.65, 0],
+      },
+    }, before);
     // Low-sample hatch — distinct "too few aircraft to judge" state. Default off.
     map.addLayer({
       id: "hex-insuf", type: "fill", source: "hexes",
@@ -393,13 +408,19 @@
     const lead = (ZONE_LEAD[z.type] || (() => ""))(z);
     const srcs = (z.sources || []).map((s) =>
       `<a href="${s.url}" target="_blank" rel="noopener">${escapeHtml(s.title)}</a>`).join("");
+    const reg = (z.region_id && state.regions[z.region_id])
+      ? `<button class="zc-region" data-rid="${z.region_id}">See the ${escapeHtml(state.regions[z.region_id].display_name || z.region_id)} region →</button>`
+      : "";
     card.innerHTML =
       `<button class="zc-close" aria-label="close">×</button>
        <div class="zc-title">${escapeHtml(z.label)}</div>
        <div class="zc-lead">${escapeHtml(lead)}</div>
        <div class="zc-note">${escapeHtml(z.note || "")}</div>
+       ${reg}
        <div class="zc-src">${srcs}</div>`;
     card.querySelector(".zc-close").addEventListener("click", hideZoneCard);
+    const rb = card.querySelector(".zc-region");
+    if (rb) rb.addEventListener("click", () => { hideZoneCard(); openRegion(rb.dataset.rid); });
     card.style.left = Math.min(window.innerWidth - 330, point.x + 14) + "px";
     card.style.top = Math.min(window.innerHeight - 220, point.y + 14) + "px";
     card.classList.add("show");
@@ -432,14 +453,15 @@
     let nHigh = 0, nInsuf = 0;
     for (const r of entry.records) {
       const st = styleFor(r);
-      map.setFeatureState({ source: "hexes", id: r.hex }, { c: st.c, k: st.k, op: st.op });
+      map.setFeatureState({ source: "hexes", id: r.hex },
+        { c: st.c, k: st.k, op: st.op, ex: st.ex || 0 });
       nextActive.add(r.hex);
       if (r.confidence === "high") nHigh++;
       if (st.k === "insuf") nInsuf++;
     }
     // clear hexes that were shown yesterday but not today
     for (const h of state.prevActive) {
-      if (!nextActive.has(h)) map.setFeatureState({ source: "hexes", id: h }, { c: null, k: "none", op: 0 });
+      if (!nextActive.has(h)) map.setFeatureState({ source: "hexes", id: h }, { c: null, k: "none", op: 0, ex: 0 });
     }
     state.prevActive = nextActive;
     state.dayData = entry.byHex;

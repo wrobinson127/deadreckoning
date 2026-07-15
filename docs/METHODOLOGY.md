@@ -127,7 +127,15 @@ with a faint wash — a hue never used for the signal ramp — so a reader can n
 mistake *absence of data* for *absence of jamming*. Each zone card leads with the
 regulatory fact ("closed to civil aviation since …") and its source. Zone polygons
 are drawn from Natural Earth boundaries and are context, not precise FIR geometry
-(see `content/airspace.yaml`, draft pending review).
+(see `content/airspace.yaml`).
+
+**Not every dark cell is a zone.** Oceanic and remote-region darkness reflects
+**terrestrial ADS-B receiver range** (roughly 250 nm offshore before line-of-sight
+runs out) and volunteer-receiver sparsity — *not* airspace status. The
+traffic-density **Coverage** view is the honest instrument for reading where the
+sensors are; the zone layer is reserved for regulatory / conflict causes only. So
+a dark ocean or an empty stretch of central Asia is a coverage fact, not a closed
+zone — do not zone the Atlantic.
 
 ## What the instrument cannot see
 - **Coverage bias** — signal exists only where aircraft fly and receivers hear
