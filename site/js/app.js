@@ -517,7 +517,7 @@
     state.idx = idx;
     clearPin();   // a pinned cell's affected-aircraft list is day-specific
     const day = state.manifest.days[idx];
-    el("scrubDate").textContent = fmtDate(day);
+    el("mapDate").textContent = fmtDate(day);
     el("slider").value = idx;
     updateTrackFill();
     try {

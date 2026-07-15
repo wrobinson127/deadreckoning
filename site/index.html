@@ -43,6 +43,8 @@
 
   <div id="map">
     <!-- overlays -->
+    <div class="map-overlay map-date" id="mapDate" aria-live="polite">————-——-——</div>
+
     <div class="map-overlay controls">
       <div class="panel collapsible" id="controlsPanel">
         <button class="collapse-btn" data-collapse aria-label="collapse layer panel"></button>
@@ -166,7 +168,6 @@
   <div class="scrubber collapsible" id="scrubber">
     <button class="collapse-btn" data-collapse aria-label="collapse timeline"></button>
     <div class="scrub-head">
-      <span class="scrub-date" id="scrubDate">————-——-——</span>
       <span class="scrub-meta" id="scrubMeta"
         title="each cell is an H3 hex (~1,770 km²) that had at least one aircraft this UTC day; high-confidence = 10+ aircraft"></span>
     </div>
