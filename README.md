@@ -1,4 +1,4 @@
-# DEAD RECKONING — a GPS interference archive
+# DEAD RECKONING: a GPS interference archive
 
 > *Dead reckoning* is how you navigate when GPS is denied: from last known
 > position, heading, and speed. The name is the thesis.
@@ -10,13 +10,13 @@ integrity, that indicates GNSS interference in that airspace.
 
 Live tools already show *current* conditions (GPSJam, Flightradar24's jamming
 map, SkAI's spoofing tracker). **None has memory.** This project is the memory:
-a scrubbable archive — seeded with a rolling recent window and built to grow
-toward multi-year — with per-hex baselines, anomaly scoring, named watch regions
+a scrubbable archive (seeded with a rolling recent window and built to grow
+toward multi-year) with per-hex baselines, anomaly scoring, named watch regions
 with analyst context, and curated event annotations. (Archive depth today is
 whatever has been backfilled; see `data/manifest.json`.)
 
 **This is an instrument, not an accusation.** It shows *where navigation
-integrity degrades*, with honest uncertainty. It does not assert "jamming by X" —
+integrity degrades*, with honest uncertainty. It does not assert "jamming by X":
 attribution of cause lives only in region context profiles, with sources.
 
 ---
@@ -26,7 +26,7 @@ attribution of cause lives only in region context profiles, with sources.
   hex's own rolling baseline), with a toggle to raw degraded-aircraft ratio.
 - A **date scrubber** with play, spanning the available archive.
 - **Honest uncertainty as a feature**: every hex carries sample counts and a
-  confidence tier. Low-sample hexes render visibly distinct — you can always
+  confidence tier. Low-sample hexes render visibly distinct: you can always
   tell "no interference" from "no coverage."
 - **Named regions** (Baltic, Black Sea, Eastern Mediterranean, Persian Gulf, …)
   with analyst context profiles and 90-day trends.
@@ -37,8 +37,8 @@ For each UTC day we stream that day's adsb.lol dump, keep airborne positions
 carrying a NIC value, and aggregate per H3 hex: an aircraft is "degraded" in a
 hex if the majority of its NIC reports there are `nic ≤ 6` (containment radius
 > ~1 km). A hex's `bad_ratio` is degraded aircraft ÷ unique aircraft. Hexes below
-a minimum-aircraft floor are shown as *insufficient data*, never as a value —
-interference is inferred from **multiple proximate aircraft**, not single
+a minimum-aircraft floor are shown as *insufficient data*, never as a value.
+Interference is inferred from **multiple proximate aircraft**, not single
 reports. Full detail, thresholds, and their sensitivity: **`docs/METHODOLOGY.md`**.
 
 ## Architecture
@@ -49,15 +49,15 @@ adsb.lol dump ──► pipeline/ ──► data/ ──► site/ (static, MapLi
                    baselines      only
 content/ (regions.yaml, events.yaml, geojson) ─┘   board/ tracks project state
 ```
-- `pipeline/` — Python. `config.py` holds **all** tunables. `run_daily.py`
+- `pipeline/`: Python. `config.py` holds **all** tunables. `run_daily.py`
   processes one UTC day → `data/daily/YYYY-MM-DD.json`; `backfill.py` a range;
   `baselines.py` recomputes `data/baselines.json` + per-region series.
-- `data/` — committed **aggregates only**. Never raw traces (see `.gitignore`).
-- `content/` — named regions + curated events (analyst layer; drafts flagged).
-- `site/` — buildless static frontend (MapLibre GL JS, h3-js, D3).
-- `.github/workflows/` — `ci.yml` (tests) and `nightly.yml` (fetch→process→
+- `data/`: committed **aggregates only**. Never raw traces (see `.gitignore`).
+- `content/`: named regions + curated events (analyst layer; drafts flagged).
+- `site/`: buildless static frontend (MapLibre GL JS, h3-js, D3).
+- `.github/workflows/`: `ci.yml` (tests) and `nightly.yml` (fetch→process→
   deploy; **dormant until the repo is made public + Pages enabled**).
-- `board/` — self-contained kanban for session continuity.
+- `board/`: self-contained kanban for session continuity.
 
 ## Run it
 ```bash
@@ -74,15 +74,14 @@ See `CLAUDE.md` for the full command reference and conventions.
 - **Source:** [adsb.lol](https://www.adsb.lol) daily dumps
   ([globe_history_2026](https://github.com/adsblol/globe_history_2026)), **ODbL 1.0**.
 - **Code:** MIT (`LICENSE`). **Published data** under `data/`: **ODbL 1.0**
-  (`DATA_LICENSE.md`) — a derivative database of adsb.lol.
+  (`DATA_LICENSE.md`): a derivative database of adsb.lol.
 - **Basemap:** [OpenFreeMap](https://openfreemap.org) / © OpenStreetMap
   contributors, ODbL.
 - **$0 to run:** static site + GitHub Actions + flat files. No paid APIs, no
   servers, no databases. v1 makes zero LLM calls.
 
 ## Author
-Built by **Walker Robinson** — [github.com/wrobinson127](https://github.com/wrobinson127)
-· *(LinkedIn / site: TODO)*
+Built by **Walker Robinson**. [walker-robinson.com](https://walker-robinson.com) · [github.com/wrobinson127](https://github.com/wrobinson127)
 
 *Status: v1 overnight build. Region context profiles and event annotations are
-**drafts pending author review** — see `docs/` and the `board/` Review column.*
+**drafts pending author review**. See `docs/` and the `board/` Review column.*

@@ -95,7 +95,8 @@ floor) carry up to `FLIGHTS_TOP_N` of the aircraft counted degraded there:
 (UTC seconds), and number of degraded reports, highest first. **Privacy:**
 callsigns and ICAO addresses are **public ADS-B broadcast data**, transmitted in
 the clear by every aircraft and already redistributed by adsb.lol under ODbL;
-DeadReckoning surfaces a bounded top-N per interference hex, not tracking. The
+DeadReckoning surfaces a bounded top-N per interference hex (click a degraded
+cell on the map to see its affected-aircraft list), not tracking. The
 list is attached only to hexes that already render as interference, which keeps
 the added artifact size small (~15% per day) and leaves quiet/corridor hexes
 unchanged.

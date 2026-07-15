@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Methodology — DEAD RECKONING</title>
+<title>Methodology: DEAD RECKONING</title>
 <meta name="description" content="How DEAD RECKONING infers GPS/GNSS interference from ADS-B Navigation Integrity Category (NIC), and what it can and cannot see." />
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -25,18 +25,18 @@
     <p class="lede">DEAD RECKONING is an instrument, not an accusation. It measures
     where aircraft report <em>degraded navigation integrity</em>, aggregates that
     signal over space and time, and shows it with its uncertainty attached. This
-    page explains exactly what the signal is, how it is computed, and — just as
-    important — what it cannot tell you.</p>
+    page explains exactly what the signal is, how it is computed, and, just as
+    important, what it cannot tell you.</p>
 
     <h2>What NIC is</h2>
     <p>Every ADS-B–equipped aircraft broadcasts a <strong>Navigation Integrity
     Category</strong> (NIC), an integer from <code>0</code> to <code>11</code>,
     alongside its position. NIC states how tightly the aircraft's own navigation
-    system can bound the error on the position it is transmitting — it is paired
+    system can bound the error on the position it is transmitting. It is paired
     with a <em>radius of containment</em> (<code>rc</code>, in metres). High NIC
     means a small, trustworthy containment radius; low NIC means a large one.</p>
     <p>When GNSS (GPS, Galileo, GLONASS, BeiDou) is jammed or spoofed, receivers
-    lose the ability to bound their error, and NIC falls — often all the way to
+    lose the ability to bound their error, and NIC falls, often all the way to
     <code>0</code> ("integrity unknown"). Many aircraft in one area reporting low
     NIC <em>at the same time</em> is the fingerprint of interference in that
     airspace. Our sample day shows the containment ladder cleanly:</p>
@@ -69,13 +69,13 @@
 
     <h2>Thresholds &amp; their sensitivity</h2>
     <p>The degraded threshold <code>nic ≤ 6</code> is chosen because NIC 6
-    corresponds to a containment radius of roughly 1 km — the point at which a
+    corresponds to a containment radius of roughly 1 km, the point at which a
     position is too loose to trust for navigation. NIC 7 and above (rc &lt; ~370 m)
     are treated as healthy.</p>
     <div class="callout">
       <strong>Design decision: <code>nic = 0</code> counts as degraded.</strong>
       On the reference day the degraded signal is dominated by <code>nic = 0</code>
-      reports (~85% of all degraded points) — aircraft dropped to "integrity
+      reports (~85% of all degraded points): aircraft dropped to "integrity
       unknown," which is the <em>expected physical signature</em> of a receiver
       under interference that can no longer bound its own error. Excluding it would
       throw away the strongest evidence of GPS denial, so it is folded in
@@ -84,7 +84,7 @@
       over a quiet control (central US ~0.10 max).
       <strong>Sensitivity (kept on the record):</strong> the degraded-point
       fraction is <strong>5.98% including <code>nic = 0</code></strong> vs
-      <strong>0.87% excluding it</strong> — sample-day figures, so the map is
+      <strong>0.87% excluding it</strong>. Sample-day figures, so the map is
       largely a <code>nic = 0</code> density surface, and you should read it as
       one. A per-hex <em>strict</em> view (<code>1 ≤ nic ≤ 6</code>) is a planned
       toggle to show that band directly. All thresholds live in a single config
@@ -95,40 +95,40 @@
     <p>Every hex ships with its unique-aircraft count and a confidence tier:
     <strong>high</strong> (≥10 aircraft), <strong>medium</strong> (5–9), and
     <strong>insufficient</strong> (&lt;5). Hexes below the minimum-aircraft floor
-    are <em>never</em> rendered as a value or a confident color — on the map they
+    are <em>never</em> rendered as a value or a confident color. On the map they
     appear as a dim diagonal hatch (the <em>Low-sample cells</em> toggle). This is
     the whole point of the instrument: <strong>you can always tell "no
     interference" from "no coverage."</strong></p>
     <p>That distinction only works if coverage is <em>visible</em>: a dark cell
     could mean "watched and calm" or "nobody was looking." So measured-but-quiet
     airspace draws a faint <em>watched-airspace</em> carpet (the <em>Quiet
-    coverage</em> toggle, on by default) — a whisper that never competes with a
-    real bloom, but that turns the black background into an honest three-state
+    coverage</em> toggle, on by default). It is a whisper that never competes with a
+    real bloom, but it turns the black background into an honest three-state
     reading: <strong>quiet</strong> (watched, calm), <strong>degraded</strong>
     (the signal), <strong>hatched</strong> (too few aircraft to judge).</p>
 
     <h2>The sensor-desert paradox</h2>
     <p>There is a fourth state, and it is the most important caveat in the whole
-    instrument. We measure interference <em>where civil aircraft fly</em> — which
+    instrument. We measure interference <em>where civil aircraft fly</em>, which
     is systematically <strong>not</strong> the airspace that is closed or avoided.
     When airspace is closed or widely avoided the sky empties and the sensors leave
     with the traffic, so the worst jamming can sit inside a dark zone that means
     <em>"nobody was looking,"</em> not <em>"all clear."</em> We see the
     <em>edges</em> of such airspace, not its interior. The overlay describes the
-    instrument's blindness — an airspace-status fact — not the reasons behind it.</p>
+    instrument's blindness (an airspace-status fact), not the reasons behind it.</p>
     <p>The <strong>Airspace context</strong> overlay (on by default) keeps that
-    honest. A violet dashed outline with a faint wash — a hue never used for signal —
+    honest. A violet dashed outline with a faint wash (a hue never used for signal)
     marks airspace that is <strong>closed to civil aviation</strong> (e.g. Ukraine,
     since Feb 2022), of <strong>reduced coverage</strong> (e.g. Russia, widely
     avoided and thin on volunteer receivers), or a <strong>known test area</strong>
     (US ranges where GPS testing is recurring and announced). Each zone card leads
     with the regulatory fact and its source; click a zone to read it. So the fourth
-    reading is <strong>outlined</strong> — the instrument is blind here, and that
+    reading is <strong>outlined</strong>: the instrument is blind here, and that
     blindness is itself information. Zone outlines are drawn from Natural Earth
     boundaries as context, not precise airspace geometry.</p>
     <p><strong>Not every dark cell is a zone.</strong> Oceanic and remote-region
     darkness reflects <em>terrestrial ADS-B receiver range</em> (roughly 250&nbsp;nm
-    offshore before line-of-sight runs out) and volunteer-receiver sparsity — not
+    offshore before line-of-sight runs out) and volunteer-receiver sparsity, not
     airspace status. The traffic-density <strong>Coverage</strong> view is the
     honest instrument for where the sensors are; the zone layer is reserved for
     regulatory / conflict causes only. A dark ocean is a coverage fact, not a
@@ -137,17 +137,17 @@
     <h2>A worked example: same signal, three meanings</h2>
     <p>The instrument's core lesson is that <em>the reading is not the analysis</em>.
     On any given day, three places can look similar on the map and mean entirely
-    different things — which is why context lives in the region profiles, not the
+    different things, which is why context lives in the region profiles, not the
     color scale.</p>
     <ul>
-      <li><strong>Kaliningrad &amp; the Baltic</strong> — a chronic, wide-area
+      <li><strong>Kaliningrad &amp; the Baltic</strong>: a chronic, wide-area
       degradation beside an active conflict; European reporting attributes it to
       Russian electronic-warfare activity. Here degraded NIC is the <em>baseline</em>,
       not the anomaly.</li>
-      <li><strong>Central US</strong> — a quiet control. This is what "clear" looks
+      <li><strong>Central US</strong>: a quiet control. This is what "clear" looks
       like on the same sensor, and it's why a lit-up region elsewhere is
       meaningful rather than an artifact of the method.</li>
-      <li><strong>US Southwest (White Sands / NTTR)</strong> — an <em>identical</em>
+      <li><strong>US Southwest (White Sands / NTTR)</strong>: an <em>identical</em>
       NIC-degradation signal to a hostile jamming zone, but <strong>benign</strong>:
       scheduled, publicly NOTAM'd GPS-test exercises. The sensor cannot tell the two
       apart; only the context can. This region is included deliberately as the
@@ -156,7 +156,7 @@
     <div class="callout">
       This is the whole thesis in one comparison: an instrument shows you
       <em>where</em> integrity degrades; deciding <em>what it means</em> is
-      analysis, done with sources — never asserted by the map.
+      analysis, done with sources, never asserted by the map.
     </div>
 
     <h2>Validation</h2>
@@ -169,18 +169,18 @@
       <tr><td>Eastern Med / Cyprus</td><td>181</td><td>0.67</td></tr>
       <tr><td>Central US (quiet control)</td><td>212</td><td>0.10</td></tr>
     </table>
-    <p>Signal and background separate cleanly — the method isn't lighting up
+    <p>Signal and background separate cleanly; the method isn't lighting up
     everywhere aircraft fly.</p>
     <p><strong>External (independent reference).</strong> The persistent hotspots
-    this archive surfaces — the Baltic/Kaliningrad corridor and the eastern
-    Mediterranean — are the same regions independently mapped as chronic
+    this archive surfaces (the Baltic/Kaliningrad corridor and the eastern
+    Mediterranean) are the same regions independently mapped as chronic
     GNSS-interference zones by live trackers such as
     <a href="https://gpsjam.org" target="_blank" rel="noopener">GPSJam</a> and
     Flightradar24. Those tools show <em>current</em> conditions; you can compare
     any date directly on GPSJam. A <strong>dated side-by-side cross-check for
-    2026-07-13</strong> found agreement on every major hot zone — Baltic/Kaliningrad,
+    2026-07-13</strong> found agreement on every major hot zone: Baltic/Kaliningrad,
     the Black Sea western rim through Istanbul and eastern Turkey, Moscow-area
-    spots, and the eastern Mediterranean — despite the two projects drawing on
+    spots, and the eastern Mediterranean. That held despite the two projects drawing on
     <em>different</em> feeder networks (adsb.lol vs ADS-B Exchange). Two independent
     pipelines agreeing on the same date is strong corroboration; the writeup and
     caveats are in
@@ -192,7 +192,7 @@
     <p>Chronic zones are interesting; <em>change</em> is more interesting. For each
     hex we compute a rolling baseline (mean and standard deviation of
     <code>bad_ratio</code> over up to 28 qualifying days) and express each day as a
-    z-score — how many standard deviations above its own normal the hex sits. The
+    z-score: how many standard deviations above its own normal the hex sits. The
     default map view is this anomaly score; a toggle shows the raw ratio. A hex
     needs at least 7 qualifying days of history before it earns a baseline, so
     early in the archive many hexes show raw values only. The baseline uses the
@@ -211,7 +211,7 @@
       single anomalous hex is never proof.</li>
       <li><strong>Cause.</strong> NIC degradation shows <em>that</em> integrity
       dropped, not <em>why</em> or <em>by whom</em>. Attribution lives only in the
-      region context profiles, with sources, and is flagged as draft analysis —
+      region context profiles, with sources, and is flagged as draft analysis,
       not asserted by the map.</li>
       <li><strong>Spoofing vs jamming.</strong> v1 measures integrity degradation
       broadly; distinguishing spoofing (false positions) from jamming (lost
@@ -224,7 +224,7 @@
     feeders and partners, published under the
     <a href="https://opendatacommons.org/licenses/odbl/1-0/" target="_blank" rel="noopener">Open Database License (ODbL) 1.0</a>.
     Our per-day aggregates are a derivative database, also published under ODbL;
-    only aggregates are retained — raw traces are deleted after processing. The
+    only aggregates are retained; raw traces are deleted after processing. The
     project code is MIT. Basemap © OpenStreetMap contributors via OpenFreeMap.</p>
 
     <a class="backlink" href="index.html">← back to the map</a>
@@ -232,7 +232,7 @@
 
   <footer class="site-footer">
     <span class="mono">DEAD·RECKONING</span>
-    <span>Built by <a href="https://github.com/wrobinson127" target="_blank" rel="noopener">Walker Robinson</a></span>
+    <span>Built by <a href="https://walker-robinson.com" target="_blank" rel="noopener">Walker Robinson</a></span>
     <span>Data © adsb.lol (ODbL 1.0)</span>
     <span>Code MIT</span>
     <span class="footer-note">Basemap borders reflect OpenStreetMap's rendering and imply no position on territorial disputes.</span>

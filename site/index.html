@@ -3,18 +3,18 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-<title>DEAD RECKONING — a GPS interference archive</title>
+<title>DEAD RECKONING: a GPS interference archive</title>
 <meta name="description" content="A longitudinal archive of GPS/GNSS interference, indicated by degraded aircraft navigation integrity (ADS-B NIC). Scrub multi-day history, per-hex baselines, named watch regions." />
 
 <!-- Open Graph / Twitter -->
 <meta property="og:type" content="website" />
-<meta property="og:title" content="DEAD RECKONING — a GPS interference archive" />
+<meta property="og:title" content="DEAD RECKONING: a GPS interference archive" />
 <meta property="og:description" content="Where satellite navigation degrades, remembered over time. Built from open ADS-B data." />
-<meta property="og:image" content="assets/og-image.png" />
+<meta property="og:image" content="assets/og-image.jpg" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="DEAD RECKONING — a GPS interference archive" />
+<meta name="twitter:title" content="DEAD RECKONING: a GPS interference archive" />
 <meta name="twitter:description" content="Where satellite navigation degrades, remembered over time." />
-<meta name="twitter:image" content="assets/og-image.png" />
+<meta name="twitter:image" content="assets/og-image.jpg" />
 
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -29,11 +29,12 @@
     <span class="brand">DEAD<span class="dot">·</span>RECKONING</span>
     <span class="tagline">GPS interference, remembered.</span>
     <span class="spacer"></span>
-    <a class="byline" href="https://github.com/wrobinson127" target="_blank" rel="noopener">Built by Walker Robinson</a>
+    <a class="byline" href="https://walker-robinson.com" target="_blank" rel="noopener">Built by Walker Robinson</a>
     <nav>
       <a href="index.html">Map</a>
       <a href="methodology.html">Methodology</a>
       <a href="about.html">About</a>
+      <button class="nav-help" id="helpBtn" title="What is this?" aria-label="help">?</button>
     </nav>
   </header>
 
@@ -47,6 +48,7 @@
           <button data-mode="anomaly" aria-pressed="false">Anomaly</button>
           <button data-mode="coverage" aria-pressed="false">Coverage</button>
         </div>
+        <p class="seg-hint">Coverage shows how heavily each area is watched.</p>
         <label class="check"><input type="checkbox" id="quietToggle" checked />
           Quiet coverage</label>
         <label class="check"><input type="checkbox" id="hatchToggle" />
@@ -60,25 +62,27 @@
       </div>
     </div>
 
-    <div class="map-overlay legend panel">
+    <div class="map-overlay legend panel" id="legend">
       <h3 id="legendTitle">Aircraft with degraded GPS</h3>
       <div class="ramp raw" id="legendRamp"></div>
       <div class="ramp-labels"><span id="legLo">0%</span><span id="legHi">100%</span></div>
       <div class="swatch-row"><span class="swatch quiet"></span>
-        <span>watched &amp; quiet &mdash; aircraft seen, GPS healthy</span></div>
+        <span>watched &amp; quiet: aircraft seen, GPS healthy</span></div>
       <div class="swatch-row"><span class="swatch insufficient"></span>
-        <span>too few aircraft &mdash; not measured</span></div>
+        <span>too few aircraft: not measured</span></div>
       <div class="swatch-row"><span class="swatch outlined"></span>
-        <span>outlined &mdash; airspace closed or reduced coverage (blind here)</span></div>
+        <span>outlined: airspace closed or reduced coverage (blind here)</span></div>
     </div>
 
     <div class="map-overlay region-chips" id="regionChips"></div>
 
     <div class="map-overlay readout panel empty" id="readout">
-      <div class="hexid" id="roHex">— hover a cell —</div>
+      <button class="ro-close" id="roClose" aria-label="unpin" hidden>×</button>
+      <div class="hexid" id="roHex">hover a cell</div>
       <div class="big" id="roVal">—</div>
       <div class="row"><span id="roAircraft">aircraft —</span>
         <span class="conf" id="roConf">—</span></div>
+      <div class="ro-flights" id="roFlights" hidden></div>
     </div>
 
     <div class="event-card" id="eventCard"></div>
@@ -101,35 +105,35 @@
     <!-- first-run orientation -->
     <div class="intro-scrim" id="intro" hidden>
       <div class="intro-card">
-        <div class="intro-kicker">DEAD·RECKONING — a GPS interference archive</div>
+        <div class="intro-kicker">DEAD·RECKONING: a GPS interference archive</div>
         <h2>A memory of where GPS goes dark.</h2>
         <p>Aircraft broadcast how much they trust their own GPS. Where <em>many
         aircraft at once</em> report degraded satellite navigation, something on
-        the ground is interfering with it. This map remembers that — day by day.</p>
+        the ground is interfering with it. This map remembers that, day by day.</p>
         <div class="intro-how">
-          <div><span class="k" style="background:#245f58"></span> <b>Quiet</b> —
+          <div><span class="k" style="background:#245f58"></span> <b>Quiet</b>:
             faint teal is <em>watched airspace</em>: aircraft seen, GPS healthy.</div>
-          <div><span class="k" style="background:#e0673a"></span> <b>Degraded</b> —
+          <div><span class="k" style="background:#e0673a"></span> <b>Degraded</b>:
             brighter cells = many aircraft reporting degraded GPS (the signal).</div>
-          <div><span class="k hatch"></span> <b>Hatched</b> — too few aircraft to
+          <div><span class="k hatch"></span> <b>Hatched</b>: too few aircraft to
             judge (not the same as "clear").</div>
-          <div><span class="k" style="background:#b39ddb"></span> <b>Outlined</b> —
+          <div><span class="k" style="background:#b39ddb"></span> <b>Outlined</b>:
             airspace closed or reduced-coverage: the instrument is blind here, and
             that blindness is itself information.</div>
           <div><span class="k" style="background:#3a6690"></span> <b>Coverage</b>
-            view (top-left) — how <em>heavily</em> each area is watched, so you can
+            view (top-left): how <em>heavily</em> each area is watched, so you can
             tell confidence from blindness.</div>
           <div><span class="k" style="background:var(--phosphor)"></span> Scrub the
             timeline below to move through days.</div>
         </div>
         <div class="intro-guide">
-          <div class="intro-guide-title">Read it like an analyst — three places, one sensor:</div>
+          <div class="intro-guide-title">Read it like an analyst. Three places, one sensor:</div>
           <ul>
-            <li><b>Kaliningrad &amp; the Baltic</b> — chronic interference beside conflict.</li>
-            <li><b>Central US</b> — a quiet control; this is what "clear" looks like.</li>
-            <li><b>US Southwest (White Sands)</b> — an <em>identical</em> signal, but
+            <li><b>Kaliningrad &amp; the Baltic</b>: chronic interference beside conflict.</li>
+            <li><b>Central US</b>: a quiet control; this is what "clear" looks like.</li>
+            <li><b>US Southwest (White Sands)</b>: an <em>identical</em> signal, but
               benign: scheduled, published GPS-test exercises. Same reading,
-              opposite meaning — which is why context, not color, is the analysis.</li>
+              opposite meaning, which is why context, not color, is the analysis.</li>
           </ul>
         </div>
         <div class="intro-actions">
@@ -138,7 +142,6 @@
         </div>
       </div>
     </div>
-    <button class="help-btn" id="helpBtn" title="What is this?" aria-label="help">?</button>
 
     <div class="loader" id="loader">
       <div class="core">
