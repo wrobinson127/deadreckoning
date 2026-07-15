@@ -41,7 +41,8 @@
   <div id="map">
     <!-- overlays -->
     <div class="map-overlay controls">
-      <div class="panel">
+      <div class="panel collapsible" id="controlsPanel">
+        <button class="collapse-btn" data-collapse aria-label="collapse layer panel"></button>
         <h3>Layer</h3>
         <div class="seg" id="modeToggle" role="group" aria-label="color mode">
           <button data-mode="raw" aria-pressed="true">Degraded %</button>
@@ -62,7 +63,8 @@
       </div>
     </div>
 
-    <div class="map-overlay legend panel" id="legend">
+    <div class="map-overlay legend panel collapsible" id="legend">
+      <button class="collapse-btn" data-collapse aria-label="collapse legend"></button>
       <h3 id="legendTitle">Aircraft with degraded GPS</h3>
       <div class="ramp raw" id="legendRamp"></div>
       <div class="ramp-labels"><span id="legLo">0%</span><span id="legHi">100%</span></div>
@@ -74,14 +76,18 @@
         <span>outlined: airspace closed or reduced coverage (blind here)</span></div>
     </div>
 
-    <div class="map-overlay region-chips" id="regionChips"></div>
+    <div class="map-overlay region-box panel collapsible" id="regionBox">
+      <button class="collapse-btn" data-collapse aria-label="collapse regions"></button>
+      <h3>Watch regions</h3>
+      <div class="region-list" id="regionChips"></div>
+    </div>
 
-    <div class="map-overlay readout panel empty" id="readout">
+    <div class="map-overlay readout panel empty collapsible" id="readout">
+      <button class="collapse-btn readout-collapse" data-collapse aria-label="collapse readout"></button>
       <button class="ro-close" id="roClose" aria-label="unpin" hidden>×</button>
-      <div class="hexid" id="roHex">hover a cell</div>
       <div class="big" id="roVal">—</div>
-      <div class="row"><span id="roAircraft">aircraft —</span>
-        <span class="conf" id="roConf">—</span></div>
+      <div class="row"><span id="roAircraft">hover a cell</span>
+        <span class="conf" id="roConf"></span></div>
       <div class="ro-flights" id="roFlights" hidden></div>
     </div>
 
@@ -152,7 +158,8 @@
     <div class="toast" id="toast"></div>
   </div>
 
-  <div class="scrubber">
+  <div class="scrubber collapsible" id="scrubber">
+    <button class="collapse-btn" data-collapse aria-label="collapse timeline"></button>
     <div class="scrub-head">
       <span class="scrub-date" id="scrubDate">————-——-——</span>
       <span class="scrub-meta" id="scrubMeta"></span>
