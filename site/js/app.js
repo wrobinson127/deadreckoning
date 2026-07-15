@@ -70,8 +70,10 @@
     prevActive: new Set(),
     activeRegion: null,
     eventsDraft: false,   // file-level draft flag from events.json
+    regionsDraft: false,  // file-level draft flag from regions.json
     eventMarkers: [],     // live maplibregl.Marker pins for the current day
     regionCentroids: {},  // rid -> [lon,lat] cache
+    pinnedHex: null,      // hex id pinned in the readout (affected-aircraft view)
   };
 
   // Preview builds (localhost) show draft content; the public origin never does.
@@ -472,6 +474,7 @@
   async function goTo(idx) {
     idx = Math.max(0, Math.min(state.manifest.days.length - 1, idx));
     state.idx = idx;
+    clearPin();   // a pinned cell's affected-aircraft list is day-specific
     const day = state.manifest.days[idx];
     el("scrubDate").textContent = fmtDate(day);
     el("slider").value = idx;
@@ -490,9 +493,10 @@
     updateEventPins(day);   // spatial markers for events within ±1 day of this date
   }
 
-  // ---------- hover readout ----------
+  // ---------- hover readout + pinned affected-aircraft ----------
   function wireHexInteraction() {
     map.on("mousemove", "hex-fill", (e) => {
+      if (state.pinnedHex) return;   // a pinned readout is not disturbed by hover
       const f = e.features && e.features[0];
       if (!f) return;
       map.getCanvas().style.cursor = "crosshair";
@@ -511,15 +515,50 @@
         const pad = 7, p = e.point;
         const box = [[p.x - pad, p.y - pad], [p.x + pad, p.y + pad]];
         const zf = live.length ? map.queryRenderedFeatures(box, { layers: live }) : [];
-        if (zf.length) { showZoneCard(zf[0].properties.id, e.point); return; }
+        if (zf.length) { clearPin(); showZoneCard(zf[0].properties.id, e.point); return; }
+      }
+      // A degraded hex carries its top affected-aircraft list — pin it in the
+      // readout (regions stay reachable via the chips).
+      const hf = map.getLayer("hex-fill")
+        ? map.queryRenderedFeatures(e.point, { layers: ["hex-fill"] }) : [];
+      if (hf.length) {
+        const rec = state.dayData && state.dayData.get(hf[0].id);
+        if (rec && Array.isArray(rec.flights)) { pinFlights(rec); return; }
       }
       // otherwise region hit-test on click (point in region polygon)
       const rid = regionAt(e.lngLat.lng, e.lngLat.lat);
-      if (rid) openRegion(rid);
+      if (rid) { clearPin(); openRegion(rid); return; }
+      clearPin();   // clicking empty airspace/water unpins
     });
+    el("roClose").addEventListener("click", clearPin);
   }
 
-  function showReadout(rec) {
+  function pinFlights(rec) {
+    state.pinnedHex = rec.hex;
+    showReadout(rec, true);
+  }
+  function clearPin() {
+    if (!state.pinnedHex) return;
+    state.pinnedHex = null;
+    el("roClose").hidden = true;
+    el("roFlights").hidden = true;
+    el("roFlights").innerHTML = "";
+    el("readout").classList.add("empty");
+    el("roHex").textContent = "hover a cell";
+    el("roVal").textContent = "—";
+    el("roAircraft").textContent = "aircraft —";
+    el("roConf").textContent = "—";
+    el("roConf").className = "conf";
+  }
+
+  // unix-seconds -> UTC HH:MM (aggregates and dates are UTC everywhere)
+  function utcHM(ts) {
+    const d = new Date(ts * 1000);
+    const p = (n) => String(n).padStart(2, "0");
+    return `${p(d.getUTCHours())}:${p(d.getUTCMinutes())}`;
+  }
+
+  function showReadout(rec, pinned) {
     const ro = el("readout");
     ro.classList.remove("empty");
     el("roHex").textContent = rec.hex;
@@ -533,6 +572,29 @@
     const c = el("roConf");
     c.textContent = rec.confidence;
     c.className = "conf " + rec.confidence;
+
+    // pinned view: the aircraft that drove this cell's degraded reading, from the
+    // daily artifact (public ADS-B callsigns). Graceful empty state otherwise.
+    const fl = el("roFlights"), close = el("roClose");
+    if (pinned) {
+      close.hidden = false;
+      const flights = rec.flights || [];
+      if (flights.length) {
+        const rows = flights.map((f) =>
+          `<div class="fl"><span class="fl-cs">${escapeHtml(f.cs || f.ic || "—")}</span>` +
+          `<span class="fl-win">${utcHM(f.t0)}–${utcHM(f.t1)}Z</span>` +
+          `<span class="fl-nd">${f.nd}</span></div>`).join("");
+        fl.innerHTML =
+          `<div class="fl-head">affected aircraft · top ${flights.length}` +
+          `<span class="fl-key">callsign · window · degraded reports</span></div>` + rows;
+      } else {
+        fl.innerHTML = `<div class="fl-empty">no affected-aircraft detail for this cell</div>`;
+      }
+      fl.hidden = false;
+    } else {
+      close.hidden = true;
+      fl.hidden = true;
+    }
   }
 
   // ---------- regions ----------
@@ -568,13 +630,20 @@
     el("drRid").textContent = rid;
     el("drName").textContent = prof.display_name || rid;
     const body = el("drBody");
-    body.innerHTML = `<span class="draft-tag">DRAFT — pending author review</span>`;
+    // Draft badge gates like events do: approved content (draft:false) never
+    // shows it; genuinely-draft regions show it in preview builds only, never
+    // on the public origin. (Previously hardcoded, which mislabeled every
+    // approved region as DRAFT on the live site.)
+    const regionDraft = state.regionsDraft || !!prof.draft;
+    body.innerHTML = (regionDraft && PREVIEW)
+      ? `<span class="draft-tag">DRAFT — pending author review</span>`
+      : "";
 
     // trend sparkline
     let series = [];
     try { series = (await getJSON(`data/regions/${rid}.json`)).series || []; } catch (e) {}
     body.insertAdjacentHTML("beforeend",
-      `<div class="section-label">90-day trend · mean degraded ratio</div>
+      `<div class="section-label">${series.length ? series.length + "-day " : ""}trend · mean degraded ratio</div>
        <svg class="spark" id="sparkSvg"></svg>
        <div class="spark-axis"><span>${series[0]?.date || ""}</span><span>${series.at(-1)?.date || ""}</span></div>`);
     drawSpark(series);
@@ -879,6 +948,7 @@
     state.regions = Object.fromEntries((regions.regions || []).map((r) => [r.id, r]));
     state.events = events.events || [];
     state.eventsDraft = !!events.draft;
+    state.regionsDraft = !!regions.draft;   // file-level draft flag from regions.json
     state.airspaceGeo = airspaceGeo;
     state.airspace = Object.fromEntries((airspace.zones || []).map((z) => [z.id, z]));
     addAirspace();
@@ -919,6 +989,12 @@
     el("drClose").addEventListener("click", closeRegion);
     el("introGo").addEventListener("click", hideIntro);
     el("helpBtn").addEventListener("click", showIntro);
+    // Legend is tap-collapsible; on phones it starts collapsed so it never
+    // covers the map (collapse styling is mobile-only, so this is a no-op on
+    // desktop). The map's color key stays reachable — the mobile contract.
+    el("legendTitle").addEventListener("click", () => el("legend").classList.toggle("collapsed"));
+    if (window.matchMedia && window.matchMedia("(max-width: 760px)").matches)
+      el("legend").classList.add("collapsed");
     document.addEventListener("keydown", (e) => {
       if (!el("intro").hidden) { if (e.key === "Escape") hideIntro(); return; }
       if (e.key === "ArrowLeft") goTo(state.idx - 1);

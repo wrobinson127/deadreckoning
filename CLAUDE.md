@@ -67,7 +67,7 @@ python -m pipeline.backfill --last 14              # most recent 14 days (UTC)
 python -m pipeline.baselines                       # recompute data/baselines.json
 python -m pipeline.regions                         # recompute region series
 python -m pipeline.build_site_data                 # manifest + content json
-python -m pytest pipeline/tests -q                 # tests (14)
+python -m pytest pipeline/tests -q                 # run the test suite
 
 # serve the site locally (assemble site + data + content into one root):
 rm -rf _site && mkdir _site && cp -r site/* _site/ && cp -r data _site/ && cp -r content _site/

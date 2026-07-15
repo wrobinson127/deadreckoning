@@ -108,6 +108,7 @@ header.topbar {
 }
 .seg button + button { border-left: 1px solid var(--line); }
 .seg button[aria-pressed="true"] { background: var(--phosphor-dim); color: #eafffb; }
+.seg-hint { margin: 6px 0 0; font-size: 10px; line-height: 1.4; color: var(--ink-faint); }
 
 .check { display: flex; align-items: center; gap: 8px; margin-top: 9px;
   font-size: 12px; color: var(--ink-dim); cursor: pointer; user-select: none; }
@@ -146,6 +147,26 @@ header.topbar {
 .conf.medium { color: var(--warn); }
 .conf.insufficient { color: var(--ink-faint); }
 .readout.empty .big { color: var(--ink-faint); }
+
+/* pinned affected-aircraft list (click a degraded cell).
+   The readout is already position:absolute (via .map-overlay), so it is the
+   containing block for the close button — do not override its positioning. */
+.ro-close { position: absolute; top: 6px; right: 8px; background: none; border: 0;
+  color: var(--ink-dim); font-size: 16px; line-height: 1; cursor: pointer; padding: 0; }
+.ro-close:hover { color: var(--phosphor); }
+.ro-flights { margin-top: 9px; padding-top: 8px; border-top: 1px solid var(--line);
+  max-height: 188px; overflow-y: auto; }
+.ro-flights .fl-head { font-family: var(--mono); font-size: 9px; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--ink-faint); margin-bottom: 6px;
+  display: flex; flex-direction: column; gap: 2px; }
+.ro-flights .fl-key { text-transform: none; letter-spacing: 0.02em; opacity: 0.8; }
+.ro-flights .fl { display: grid; grid-template-columns: 1fr auto auto; gap: 10px;
+  font-family: var(--mono); font-size: 11px; color: var(--ink-dim); padding: 2px 0;
+  font-variant-numeric: tabular-nums; }
+.ro-flights .fl-cs { color: var(--ink); }
+.ro-flights .fl-win { color: var(--ink-faint); }
+.ro-flights .fl-nd { color: var(--warn); text-align: right; min-width: 1.4em; }
+.ro-flights .fl-empty { font-family: var(--mono); font-size: 11px; color: var(--ink-faint); }
 
 /* ================= region panel (right drawer) ================= */
 .drawer {
@@ -333,20 +354,29 @@ input.slider::-moz-range-thumb { width:14px; height:14px; border-radius:50%;
   letter-spacing:.04em; cursor:pointer; transition:background .15s; }
 .intro-go:hover { background:var(--phosphor); color:#04110f; }
 .intro-actions a { font-family:var(--mono); font-size:12px; color:var(--ink-dim); }
-.help-btn { position:absolute; z-index:6; bottom:14px; left:238px; width:26px; height:26px;
-  border-radius:50%; border:1px solid var(--line-2); background:var(--bg-panel);
-  color:var(--ink-dim); font-family:var(--mono); cursor:pointer; font-size:13px;
-  transition:color .15s, border-color .15s; }
-.help-btn:hover { color:var(--phosphor); border-color:var(--phosphor); }
+/* "what is this?" lives in the top bar next to the nav (was a floating overlay
+   button that collided with the bottom-left readout). */
+.nav-help { margin-left:16px; width:22px; height:22px; padding:0; line-height:1;
+  border-radius:50%; border:1px solid var(--line-2); background:transparent;
+  color:var(--ink-dim); font-family:var(--mono); font-size:12px; cursor:pointer;
+  vertical-align:middle; transition:color .15s, border-color .15s; }
+.nav-help:hover { color:var(--phosphor); border-color:var(--phosphor); }
 @keyframes fade { from { opacity:0 } to { opacity:1 } }
-@media (max-width:760px){ .intro-card{padding:20px} .intro-card h2{font-size:20px}
-  .help-btn{left:auto; right:14px; bottom:70px} }
+@media (max-width:760px){ .intro-card{padding:20px} .intro-card h2{font-size:20px} }
 
 /* ================= loading / states ================= */
 .loader { position:absolute; inset:0; z-index:20; display:grid; place-items:center;
-  background:var(--bg); transition:opacity .4s; }
+  background:var(--bg); transition:opacity .4s; overflow:hidden; }
+/* Signature frame behind the loader: the acquiring-signal sweep runs over the
+   poster (the Degraded% Baltic bloom), not over black. Same asset is the OG
+   card. Falls back gracefully to the dark ground if the poster is absent. */
+.loader::before { content:""; position:absolute; inset:0; z-index:0;
+  background:
+    linear-gradient(rgba(10,12,15,0.60), rgba(10,12,15,0.82)),
+    url("assets/og-image.jpg") center / cover no-repeat;
+}
 .loader.hide { opacity:0; pointer-events:none; }
-.loader .core { text-align:center; }
+.loader .core { position:relative; z-index:1; text-align:center; }
 .loader .sweep { width:54px; height:54px; margin:0 auto 16px; border-radius:50%;
   border:2px solid var(--line-2); border-top-color:var(--phosphor); animation:spin 1s linear infinite; }
 .loader .msg { font-family:var(--mono); font-size:12px; letter-spacing:.1em;
@@ -392,7 +422,17 @@ footer.site-footer .footer-note { flex-basis:100%; color:var(--ink-faint);
 /* ================= responsive ================= */
 @media (max-width: 760px) {
   .controls { max-width: 44vw; }
-  .legend { display: none; }
+  /* Legend stays accessible on phones (the map is meaningless without its key).
+     Compact, docked above the scrubber, and tap-to-collapse via its title.
+     The designed legend is the light-mode batch; this is the minimal contract fix. */
+  .legend { top: auto; bottom: 96px; right: 8px; width: auto; max-width: 66vw; }
+  #legendTitle { cursor: pointer; margin-bottom: 6px; }
+  #legendTitle::after { content: " ▾"; color: var(--ink-faint); }
+  .legend.collapsed #legendTitle { margin-bottom: 0; }
+  .legend.collapsed #legendTitle::after { content: " ▸"; }
+  .legend.collapsed .ramp,
+  .legend.collapsed .ramp-labels,
+  .legend.collapsed .swatch-row { display: none; }
   .region-chips { display: none; }
   .drawer { width: 100%; }
   .readout { min-width: 150px; }
