@@ -87,6 +87,9 @@ The nightly workflow then processes yesterday and deploys. Manual test any time:
 Actions → *Nightly build & deploy* → *Run workflow*.
 
 ## Depth / pointers
+- `DESIGN.md` — the project's visual design truth (tokens, semantic color rules,
+  states). Design truth lives here; it wins conflicts with any design skill
+  (anti-slop-design law, Taste Skill).
 - `docs/verification_report.md` — Phase 0 gate (real measurements, the numbers).
 - `docs/METHODOLOGY.md` — NIC, thresholds + sensitivity, limits, the honesty rule.
 - `docs/backfill_strategy.md` — expansion plan + size/time budgets.
