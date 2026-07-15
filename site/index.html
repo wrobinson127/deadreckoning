@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
+<script>/* set theme before paint (no flash). Dark is default; light follows OS pref. */
+(function(){try{var t=localStorage.getItem('dr_theme');if(t!=='light'&&t!=='dark')t=(window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark';document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','dark');}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 <title>DEAD RECKONING: a GPS interference archive</title>
 <meta name="description" content="A longitudinal archive of GPS/GNSS interference, indicated by degraded aircraft navigation integrity (ADS-B NIC). Scrub multi-day history, per-hex baselines, named watch regions." />
@@ -34,6 +36,7 @@
       <a href="index.html">Map</a>
       <a href="methodology.html">Methodology</a>
       <a href="about.html">About</a>
+      <button class="nav-help" data-theme-toggle aria-label="toggle light or dark theme">☾</button>
       <button class="nav-help" id="helpBtn" title="What is this?" aria-label="help">?</button>
     </nav>
   </header>
@@ -181,6 +184,7 @@
 <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 <script src="https://unpkg.com/h3-js@4.1.0/dist/h3-js.umd.js"></script>
 <script src="https://unpkg.com/d3@7.9.0/dist/d3.min.js"></script>
+<script src="js/theme.js"></script>
 <script src="js/color.js"></script>
 <script src="js/app.js"></script>
 </body>

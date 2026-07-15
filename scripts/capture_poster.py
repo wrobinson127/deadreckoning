@@ -50,10 +50,15 @@ HIDE_CHROME = """
 def main() -> int:
     ap = argparse.ArgumentParser(description="Render the hero/OG poster frame.")
     ap.add_argument("--url", default="http://localhost:8777")
-    ap.add_argument("--out", default="site/assets/og-image.jpg")
+    ap.add_argument("--theme", choices=["dark", "light"], default="dark")
+    ap.add_argument("--out", default=None,
+                    help="default: og-image.jpg (dark) / og-image-light.jpg (light)")
     ap.add_argument("--width", type=int, default=1200)
     ap.add_argument("--height", type=int, default=630)
     args = ap.parse_args()
+    if not args.out:
+        args.out = ("site/assets/og-image-light.jpg" if args.theme == "light"
+                    else "site/assets/og-image.jpg")
 
     try:
         from playwright.sync_api import sync_playwright
@@ -72,9 +77,17 @@ def main() -> int:
             viewport={"width": args.width, "height": args.height},
             device_scale_factor=1,
         )
+        # pick the theme before the page's inline theme script runs
+        page.add_init_script(
+            "try{localStorage.setItem('dr_theme','%s')}catch(e){}" % args.theme)
         page.goto(args.url, wait_until="networkidle", timeout=60000)
         # Wait for the localhost debug handle + a fully-loaded style.
         page.wait_for_function("window.__drMap && window.__drMap.loaded()", timeout=60000)
+        # Wait for the ARCHIVE to load + first render (loader gets .hide when the
+        # app is ready) so the poster actually shows the blooms, not a bare map.
+        page.wait_for_function(
+            "(() => { const l = document.querySelector('.loader');"
+            " return l && l.classList.contains('hide'); })()", timeout=90000)
         # Frame the Baltic bloom (default mode is already Degraded%).
         page.evaluate(
             "([c, z]) => window.__drMap.jumpTo({ center: c, zoom: z })",

@@ -19,9 +19,55 @@
   --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
   --sans: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
 
+  /* spacing scale — 4px base (C2). Use these on new/redesigned components. */
+  --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px; --sp-5: 24px;
   --pad: 16px;
-  --radius: 4px;
+  /* radius scale — 3 steps (C1): data chips / panels / cards */
+  --radius-1: 2px; --radius: 4px; --radius-2: 8px;
+  --focus: var(--phosphor);   /* keyboard focus ring (C4) */
 }
+
+/* ===== LIGHT THEME =====
+   A per-theme REBUILD, not a variable flip: the data ramps invert (dark/
+   saturated high ends so the signal survives a light ground), the carpet/
+   hatch/violet/glow recalibrate, and CVD is re-verified per theme. Dark stays
+   the default identity; light is an accommodation. Map ramp/layer colors live
+   in js/color.js (DR_COLOR.setTheme) and js/app.js (THEME map palette). */
+html[data-theme="light"] {
+  --bg:        #e9edf2;   /* soft paper-slate, not pure white */
+  --bg-panel:  #ffffff;
+  --bg-panel2: #f2f5f9;
+  --line:      rgba(22,32,46,0.12);
+  --line-2:    rgba(22,32,46,0.20);
+  --ink:       #182430;   /* dark slate */
+  --ink-dim:   #45525e;
+  --ink-faint: #667381;   /* meets AA on white panels */
+  --phosphor:  #0c8478;   /* darker teal — readable accent on light */
+  --phosphor-dim: #0c8478;/* active-fill (paired with near-white text) */
+  --warn:      #9a6410;
+  --extreme:   #cf3323;   /* reserved extreme, darkened for the light ground */
+}
+
+/* light-theme component overrides: the legend ramp previews + swatches + loader
+   poster must match the light DATA ramps (see js/color.js light set). */
+html[data-theme="light"] .ramp.raw  { background: linear-gradient(90deg,#f5ead3,#f3c877,#ec8a2f,#d8531c,#a82814,#6e1108); }
+html[data-theme="light"] .ramp.anom { background: linear-gradient(90deg,#efe6ee,#c99fca,#9c4a9c,#6a1f6b,#37103c); }
+html[data-theme="light"] .ramp.cov  { background: linear-gradient(90deg,#dbe6f0,#9fbdd8,#5f8fbe,#356199,#183a63); }
+html[data-theme="light"] .swatch.quiet { background-color:#3f9184; }
+html[data-theme="light"] .swatch.outlined { border-color:#6d4fb0; }
+html[data-theme="light"] .swatch.insufficient {
+  background-color:#dfe4ea;
+  background-image: repeating-linear-gradient(45deg, rgba(40,52,68,.5) 0 1px, transparent 1px 4px);
+}
+html[data-theme="light"] .loader::before {
+  background:
+    linear-gradient(rgba(233,237,242,0.30), rgba(233,237,242,0.55)),
+    url("../assets/og-image-light.jpg") center / cover no-repeat;
+}
+/* on light, the MapLibre control icons are already dark — do NOT invert them
+   (the dark-theme invert made them near-invisible on the white control). */
+html[data-theme="light"] .maplibregl-ctrl-icon,
+html[data-theme="light"] .maplibregl-ctrl-attrib-button { filter: none !important; }
 
 * { box-sizing: border-box; }
 
