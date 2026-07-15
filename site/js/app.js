@@ -18,6 +18,12 @@
       hatch: "rgba(150,165,180,0.9)",
       airspace: "#b39ddb",
       cityDot: "#9aa6b2",
+      // Basemap layer ids differ per style (OpenFreeMap dark vs positron): the
+      // Cities / Regional-borders toggles and label curation must target the
+      // right ids per theme or they silently no-op.
+      cityLayers: ["place_city_large", "place_city", "place_town"],
+      adminLayer: "boundary_state",
+      dropLayers: ["place_state"],
     },
     light: {
       basemap: "https://tiles.openfreemap.org/styles/positron",
@@ -28,6 +34,9 @@
       hatch: "rgba(40,52,68,0.5)",
       airspace: "#6d4fb0",
       cityDot: "#5a6470",
+      cityLayers: ["label_city", "label_city_capital", "label_town"],
+      adminLayer: "boundary_3",
+      dropLayers: ["label_state"],
     },
   };
   const themeName = () => (window.DR_THEME && DR_THEME.current()) || "dark";
@@ -194,7 +203,7 @@
   function curateStyle(style) {
     const EN = ["coalesce", ["get", "name:en"], ["get", "name_en"],
                 ["get", "name:latin"], ["get", "name"]];
-    const DROP = new Set(["place_state"]);           // oblast / admin-1 clutter
+    const DROP = new Set(pal().dropLayers);          // oblast / admin-1 label clutter (per theme)
     const MIN_ZOOM = {                                // continental view stays clean
       place_country_other: 3.2, place_country_minor: 2.6,
       place_other: 6, place_suburb: 7, place_village: 6, place_town: 4.5, place_city: 3,
@@ -202,8 +211,8 @@
     style.layers = (style.layers || []).filter((l) => !DROP.has(l.id));
     for (const l of style.layers) {
       // Regional (admin-1) boundary lines start hidden — toggled by "Regional
-      // borders". Country borders (boundary_country_*) stay on.
-      if (l.id === "boundary_state") {
+      // borders". Country borders stay on. The admin-1 layer id is per-theme.
+      if (l.id === pal().adminLayer) {
         l.layout = l.layout || {};
         l.layout.visibility = "none";
         continue;
@@ -905,13 +914,13 @@
     map.setLayoutProperty("hex-insuf", "visibility", on ? "visible" : "none");
   }
   // Basemap layer toggles (city labels/dots; admin-1 "regional" boundary lines).
-  const CITY_LAYERS = ["place_city_large", "place_city", "place_town"];
+  // Layer ids are per-theme (dark and positron name these differently).
   function setBasemapLayers(ids, on) {
     for (const id of ids)
       if (map.getLayer(id)) map.setLayoutProperty(id, "visibility", on ? "visible" : "none");
   }
-  function setCities(on) { state.cities = on; setBasemapLayers(CITY_LAYERS, on); }
-  function setRegional(on) { state.regional = on; setBasemapLayers(["boundary_state"], on); }
+  function setCities(on) { state.cities = on; setBasemapLayers(pal().cityLayers, on); }
+  function setRegional(on) { state.regional = on; setBasemapLayers([pal().adminLayer], on); }
 
   // ---------- chrome ----------
   function buildChips() {
