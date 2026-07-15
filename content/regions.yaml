@@ -1,5 +1,5 @@
 # DeadReckoning — Watch Region Profiles
-# STATUS: DRAFT — every region below is PENDING AUTHOR (Walker Robinson) APPROVAL.
+# STATUS: APPROVED — content pass complete (Walker Robinson), 2026-07-14.
 #
 # Sourcing discipline:
 #   - Regions describe "GPS/GNSS interference indicated by degraded navigation
@@ -9,12 +9,13 @@
 #     attribute, always attributed to the cited source.
 #   - interpretation_notes are the analyst's own framing (Walker's layer);
 #     they are honest and cautious and are not individually sourced.
-#   - Any claim that could not be verified against a real fetched source is
-#     marked "[NEEDS SOURCE — author to verify]".
+#   - Where attribution is genuinely uncertain, the prose STATES the uncertainty
+#     rather than naming a party — that stated uncertainty is the finding, by
+#     decision, not a deferral.
 #
 # draft: true
 
-draft: true
+draft: false
 
 regions:
   - id: baltic
@@ -27,7 +28,7 @@ regions:
         affecting both aviation and shipping. Reporting describes hotspots
         persistently co-located with areas of heavy Russian military presence,
         and by 2025 detected events increasingly combined jamming with spoofed
-        GPS L1 signals.
+        GPS signals.
       known_actors: >-
         Widely attributed by European reporting and analysis to Russian
         electronic-warfare activity, principally from the Kaliningrad exclave
@@ -200,8 +201,8 @@ regions:
         electromagnetic environment where multiple state actors plausibly emit.
         Resist single-actor framing; present the competing attributions side by
         side. Degradation tracks conflict tempo closely, so date-align
-        interference with `persian-gulf` and `red-sea` events before drawing
-        conclusions.
+        interference with documented events in this region and `red-sea`
+        (events.yaml) before drawing conclusions.
       sources:
         - title: "Scientific American — GPS Spoofing Is Scrambling Ships in the Strait of Hormuz"
           url: "https://www.scientificamerican.com/article/gps-spoofing-is-scrambling-ships-in-the-strait-of-hormuz/"
@@ -228,8 +229,7 @@ regions:
         a side effect of military jammers near the conflict zone rather than a
         single confirmed actor; the MSC Antonia grounding is described as a
         SUSPECTED spoofing/jamming case, not a proven one (per Maritime
-        Executive / gCaptain / S&P Global). [Actor identity for Red Sea
-        interference — NEEDS SOURCE — author to verify before naming any party.]
+        Executive / gCaptain / S&P Global).
       interpretation_notes: >-
         Treat Red Sea interference as conflict spillover with no clean
         attribution. The MSC Antonia grounding is a valuable *effect* datapoint
@@ -257,8 +257,7 @@ regions:
         Reporting attributes interference in this theater broadly to
         wartime electronic warfare by both sides, with Russian jamming/spoofing
         most frequently cited for spillover affecting civil aviation (per
-        Foreign Policy / RFE-RL). [Precise emitter attribution for specific
-        western-Ukraine events — NEEDS SOURCE — author to verify.]
+        Foreign Policy / RFE-RL).
       interpretation_notes: >-
         This is a live combat EW environment; degradation is expected and
         near-continuous, so ABSENCE of degradation is the more notable signal.
@@ -328,7 +327,7 @@ regions:
         degradation cluster over the US Southwest, the correct first move is to
         check for a published GPS NOTAM / flight advisory before treating it as
         anomalous. This region exists to remind the analyst that
-        NIC-degradation alone proves interference, NOT hostility — benign
+        NIC-degradation alone indicates interference, NOT hostility — benign
         test-range activity and adversarial jamming look the same to the sensor
         and are separated only by interpretation.
       sources:

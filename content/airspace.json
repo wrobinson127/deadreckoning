@@ -1,5 +1,5 @@
 {
-  "draft": true,
+  "draft": false,
   "zones": [
     {
       "id": "ukraine",
@@ -30,7 +30,7 @@
       "label": "Russia",
       "type": "reduced_coverage",
       "since": "2022-02-28",
-      "note": "Western carriers are barred from and avoid Russian airspace and volunteer ADS-B receivers thin out east of the EU, so coverage here is sparse rather than absent — the visible Moscow-area blooms are the domestic and Asian/Gulf carriers that still overfly, which is why interference reads only where aircraft are actually seen.",
+      "note": "Western carriers are barred from and avoid Russian airspace, and volunteer ADS-B receivers thin out east of the EU, so coverage here is sparse rather than absent. The visible Moscow-area blooms are domestic and Asian/Gulf carriers that still overfly — interference reads only where aircraft are actually seen.",
       "sources": [
         {
           "title": "The Flying Engineer — Russian airspace ban: airlines, routes & impact",
@@ -63,7 +63,7 @@
         },
         {
           "title": "FlightGlobal — Sudanese airspace closed (Apr 2023)",
-          "url": "https://www.flightglobal.com/air-transport/sudanese-airspace-closed-as-armed-conflict-erupts/152865.article",
+          "url": "https://www.flightglobal.com/ops-safety/2023/04/sudanese-airspace-closed-as-armed-conflict-erupts/",
           "note": "Closure at the onset of the April 2023 civil war."
         }
       ]
@@ -72,7 +72,7 @@
       "id": "libya",
       "label": "Libya",
       "type": "reduced_coverage",
-      "since": "2014-05-01",
+      "since": "2014",
       "note": "EASA advises against flying over Libya at all levels except coastal approaches from the sea, so interior traffic — and therefore coverage — is thin.",
       "sources": [
         {
@@ -92,17 +92,17 @@
       "label": "China Lake (NAWS), CA",
       "type": "known_test_area",
       "since": "recurring",
-      "note": "A recurring, announced US Navy GPS-testing range. FAA flight advisories for these tests have made GPS unreliable over roughly a 253 nm radius below 50 ft, widening to about 950 nm across at altitude — benign, scheduled testing announced in advance, not interference from closed or avoided airspace.",
+      "note": "A recurring, announced US Navy GPS-testing range; China Lake's GPS-interference tests are documented in FAA advisories and press. Such tests degrade GPS for airborne aircraft (ground users are unaffected) over a footprint that widens with altitude — on a representative FAA advisory, roughly a 253 nm radius at 50 ft AGL out to about 476 nm (≈950 nm across) near 40,000 ft. Benign, scheduled, announced in advance — not interference from closed or avoided airspace.",
       "sources": [
         {
           "title": "IEEE Spectrum — FAA Files Reveal a Surprising Threat to Airline Safety: the US Military's GPS Tests",
           "url": "https://spectrum.ieee.org/faa-files-reveal-a-surprising-threat-to-airline-safety-the-us-militarys-gps-tests",
-          "note": "Documents recurring FAA GPS-test advisories centred on China Lake and their radii."
+          "note": "Documents recurring US military GPS-test advisories and their effect on civil aviation."
         },
         {
           "title": "GPS World — FAA issues GPS interference flight advisory",
           "url": "https://www.gpsworld.com/faa-issues-gps-interference-flight-advisory/",
-          "note": "253 nm radius below 50 ft AGL; ~950 nm across at 40,000 ft."
+          "note": "Representative FAA GPS-test advisory geometry: ~253 nm radius at 50 ft AGL, widening with altitude to ~476 nm radius (≈950 nm across) at FL400."
         }
       ]
     },

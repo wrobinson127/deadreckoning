@@ -650,7 +650,7 @@
       else if (e.date > last) left = 100;
       else continue;
       const pin = document.createElement("div");
-      pin.className = "tick event";
+      pin.className = "tick event" + (e.date_precision === "approximate" ? " approx" : "");
       pin.style.left = left + "%";
       pin.addEventListener("mouseenter", (ev) => showEventCard(e, ev.target));
       pin.addEventListener("mouseleave", hideEventCard);
@@ -663,9 +663,11 @@
     const card = el("eventCard");
     const disputed = e.disputed ? `<span class="e-tag">disputed</span>` : "";
     const draftTag = (state.eventsDraft || e.draft) ? `<span class="e-tag draft">draft</span>` : "";
+    const approx = e.date_precision === "approximate"
+      ? `<span class="e-tag approx">date approximate</span>` : "";
     const note = e.editorial_note
       ? `<div class="e-note">${escapeHtml(e.editorial_note)}</div>` : "";
-    card.innerHTML = `<div class="e-date">${e.date} · ${e.type || ""}${disputed}${draftTag}</div>
+    card.innerHTML = `<div class="e-date">${e.date} · ${e.type || ""}${disputed}${draftTag}${approx}</div>
       <div class="e-title">${escapeHtml(e.title)}</div>
       <div class="e-one">${escapeHtml(e.one_line || "")}</div>${note}`;
     const tr = target.getBoundingClientRect();
@@ -713,7 +715,9 @@
       const c = (e.lon != null && e.lat != null) ? [e.lon, e.lat] : regionCentroid(e.region_id);
       if (!c) continue;
       const pin = document.createElement("div");
-      pin.className = "event-pin" + ((state.eventsDraft || e.draft) ? " draft" : "");
+      pin.className = "event-pin"
+        + ((state.eventsDraft || e.draft) ? " draft" : "")
+        + (e.date_precision === "approximate" ? " approx" : "");
       pin.setAttribute("aria-label", e.title);
       pin.addEventListener("mouseenter", () => showEventCard(e, pin));
       pin.addEventListener("mouseleave", hideEventCard);

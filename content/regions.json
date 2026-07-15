@@ -1,5 +1,5 @@
 {
-  "draft": true,
+  "draft": false,
   "regions": [
     {
       "id": "baltic",
@@ -9,7 +9,7 @@
         20.0
       ],
       "context": {
-        "typical_causes": "Chronic multi-constellation GNSS jamming (and, increasingly, spoofing) degrades navigation integrity across the central and eastern Baltic, affecting both aviation and shipping. Reporting describes hotspots persistently co-located with areas of heavy Russian military presence, and by 2025 detected events increasingly combined jamming with spoofed GPS L1 signals.",
+        "typical_causes": "Chronic multi-constellation GNSS jamming (and, increasingly, spoofing) degrades navigation integrity across the central and eastern Baltic, affecting both aviation and shipping. Reporting describes hotspots persistently co-located with areas of heavy Russian military presence, and by 2025 detected events increasingly combined jamming with spoofed GPS signals.",
         "known_actors": "Widely attributed by European reporting and analysis to Russian electronic-warfare activity, principally from the Kaliningrad exclave and the St. Petersburg area. On 15 July 2025 the EU Council sanctioned Russia's 841st Separate Electronic Warfare Center over GNSS jamming and spoofing affecting the Baltic states (per Consilium / Militarnyi).",
         "interpretation_notes": "Treat the Baltic as a CHRONIC adversarial zone: degraded NIC here is the baseline, not the anomaly. Coverage is dense (busy airspace, many ADS-B receivers), so apparent \"spikes\" can partly reflect observation density rather than a real change in emitter behavior. Distinguish transient overflights near Kaliningrad from sustained wide-area degradation. Attribution to a specific emitter is analytically plausible but rarely court-proof; keep it attributed to reporting.",
         "sources": [
@@ -146,7 +146,7 @@
       "context": {
         "typical_causes": "GNSS jamming and spoofing degrade navigation integrity for shipping and aircraft in and around the Strait of Hormuz, at times leaving vessels displaying impossible positions (over land, over airports). Interference surged sharply following the June 2025 Israel-Iran conflict and again during escalation in early 2026, affecting well over a thousand vessels per maritime-intelligence firms.",
         "known_actors": "Attribution is contested. Some reporting says the strait spoofing is \"almost certainly\" Iran's doing; other researchers attribute much of the surge to non-Iranian systems around the Gulf (Israeli, US and NATO) (per Scientific American / CNN / Windward). Treat attribution here as genuinely unsettled.",
-        "interpretation_notes": "The MOST attribution-ambiguous region in the archive — a crowded electromagnetic environment where multiple state actors plausibly emit. Resist single-actor framing; present the competing attributions side by side. Degradation tracks conflict tempo closely, so date-align interference with `persian-gulf` and `red-sea` events before drawing conclusions.",
+        "interpretation_notes": "The MOST attribution-ambiguous region in the archive — a crowded electromagnetic environment where multiple state actors plausibly emit. Resist single-actor framing; present the competing attributions side by side. Degradation tracks conflict tempo closely, so date-align interference with documented events in this region and `red-sea` (events.yaml) before drawing conclusions.",
         "sources": [
           {
             "title": "Scientific American — GPS Spoofing Is Scrambling Ships in the Strait of Hormuz",
@@ -175,7 +175,7 @@
       ],
       "context": {
         "typical_causes": "GNSS jamming and spoofing degrade navigation integrity for shipping in the Red Sea corridor amid the broader Houthi-related shipping crisis; interference has been linked to at least one grounding (the container ship MSC Antonia near Jeddah on 10 May 2025). Levels spiked during the June 2025 Iran-Israel conflict and remained sporadic thereafter.",
-        "known_actors": "Attribution is uncertain. Reporting frames much of the interference as a side effect of military jammers near the conflict zone rather than a single confirmed actor; the MSC Antonia grounding is described as a SUSPECTED spoofing/jamming case, not a proven one (per Maritime Executive / gCaptain / S&P Global). [Actor identity for Red Sea interference — NEEDS SOURCE — author to verify before naming any party.]",
+        "known_actors": "Attribution is uncertain. Reporting frames much of the interference as a side effect of military jammers near the conflict zone rather than a single confirmed actor; the MSC Antonia grounding is described as a SUSPECTED spoofing/jamming case, not a proven one (per Maritime Executive / gCaptain / S&P Global).",
         "interpretation_notes": "Treat Red Sea interference as conflict spillover with no clean attribution. The MSC Antonia grounding is a valuable *effect* datapoint but its causal link to GNSS interference is inferred, not confirmed — phrase it as suspected. Overlaps heavily with `persian-gulf` in tempo; analyze them together.",
         "sources": [
           {
@@ -200,7 +200,7 @@
       ],
       "context": {
         "typical_causes": "GNSS jamming degrades navigation integrity across Ukrainian and adjacent NATO-border airspace as a consequence of active air defense and counter-drone electronic warfare during the Russia-Ukraine war; effects extend into neighboring Romanian/Polish airspace.",
-        "known_actors": "Reporting attributes interference in this theater broadly to wartime electronic warfare by both sides, with Russian jamming/spoofing most frequently cited for spillover affecting civil aviation (per Foreign Policy / RFE-RL). [Precise emitter attribution for specific western-Ukraine events — NEEDS SOURCE — author to verify.]",
+        "known_actors": "Reporting attributes interference in this theater broadly to wartime electronic warfare by both sides, with Russian jamming/spoofing most frequently cited for spillover affecting civil aviation (per Foreign Policy / RFE-RL).",
         "interpretation_notes": "This is a live combat EW environment; degradation is expected and near-continuous, so ABSENCE of degradation is the more notable signal. Because both belligerents emit, avoid single-actor attribution for the border footprint. Distinguish Ukrainian interior airspace (largely closed to civil traffic) from the NATO-border fringe where most ADS-B observations actually come from.",
         "sources": [
           {
@@ -251,7 +251,7 @@
       "context": {
         "typical_causes": "BENIGN, SCHEDULED GPS interference test events at US military ranges (e.g., White Sands Missile Range, NM; China Lake, CA; the Nevada Test and Training Range area) degrade navigation integrity in a bounded volume for a bounded time. These are coordinated, published in advance, and de-conflicted with civil aviation.",
         "known_actors": "The interference source is the US government / military conducting planned tests and training. The FAA publishes these as Notices to Airmen (NOTAMs) / GPS Flight Advisories at least ~24 hours ahead; e.g., the White Sands \"WSMRNM GPS\" advisory series (per FAA/FAASafety flight advisory PDF and AOPA reporting).",
-        "interpretation_notes": "THIS REGION IS DELIBERATE AND IS THE ARCHIVE'S CONTROL CASE. The raw signal — a drop in Navigation Integrity Category over a defined area — is IDENTICAL to what appears in Kaliningrad or the Black Sea. The difference is entirely in context: here it is announced, geographically fenced, time-boxed, and NOTAM'd. Whenever this archive surfaces a degradation cluster over the US Southwest, the correct first move is to check for a published GPS NOTAM / flight advisory before treating it as anomalous. This region exists to remind the analyst that NIC-degradation alone proves interference, NOT hostility — benign test-range activity and adversarial jamming look the same to the sensor and are separated only by interpretation.",
+        "interpretation_notes": "THIS REGION IS DELIBERATE AND IS THE ARCHIVE'S CONTROL CASE. The raw signal — a drop in Navigation Integrity Category over a defined area — is IDENTICAL to what appears in Kaliningrad or the Black Sea. The difference is entirely in context: here it is announced, geographically fenced, time-boxed, and NOTAM'd. Whenever this archive surfaces a degradation cluster over the US Southwest, the correct first move is to check for a published GPS NOTAM / flight advisory before treating it as anomalous. This region exists to remind the analyst that NIC-degradation alone indicates interference, NOT hostility — benign test-range activity and adversarial jamming look the same to the sensor and are separated only by interpretation.",
         "sources": [
           {
             "title": "FAA / FAASafety — Federal Aviation Administration Flight Advisory: GPS Interference Testing (WSMRNM 26-13)",
