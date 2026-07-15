@@ -68,6 +68,16 @@ html[data-theme="light"] .loader::before {
    (the dark-theme invert made them near-invisible on the white control). */
 html[data-theme="light"] .maplibregl-ctrl-icon,
 html[data-theme="light"] .maplibregl-ctrl-attrib-button { filter: none !important; }
+/* first-run orientation key must match the LIGHT map (R1): light swatches +
+   a dark hatch (the white hatch was invisible on the white intro card). */
+html[data-theme="light"] .intro-how .k-quiet { background:#3f9184; }
+html[data-theme="light"] .intro-how .k-degraded { background:#a82814; }
+html[data-theme="light"] .intro-how .k-outlined { background:#6d4fb0; }
+html[data-theme="light"] .intro-how .k-coverage { background:#356199; }
+html[data-theme="light"] .intro-how .k.hatch {
+  background-color:#dfe4ea;
+  background-image:repeating-linear-gradient(45deg,rgba(40,52,68,.5) 0 1px,transparent 1px 4px);
+}
 
 * { box-sizing: border-box; }
 
@@ -460,6 +470,12 @@ input.slider::-moz-range-thumb { width:14px; height:14px; border-radius:50%;
   vertical-align:middle; margin-right:9px; border:1px solid var(--line-2); }
 .intro-how .k.hatch { background-color:#232a33;
   background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.22) 0 1px,transparent 1px 4px); }
+/* orientation-key swatches — theme-aware so the briefing matches the live map
+   (dark defaults here; light overrides in the light block). */
+.intro-how .k-quiet { background:#245f58; }
+.intro-how .k-degraded { background:#e0673a; }
+.intro-how .k-outlined { background:#b39ddb; }
+.intro-how .k-coverage { background:#3a6690; }
 .intro-guide { border-top:1px solid var(--line); padding-top:15px; margin-bottom:20px; }
 .intro-guide-title { font-family:var(--mono); font-size:11px; letter-spacing:.06em;
   color:var(--ink); margin-bottom:9px; }
