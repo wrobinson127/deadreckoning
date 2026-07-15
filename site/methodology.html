@@ -219,6 +219,50 @@
       positions) is future work.</li>
     </ul>
 
+    <!-- DRAFT (pending Walker review): Verification & quality + Design semantics -->
+    <h2>Verification &amp; quality</h2>
+    <p>The instrument is built to be checked, not trusted on faith.</p>
+    <ul>
+      <li><strong>Independent review passes.</strong> Every batch goes through
+      separate reviews for code correctness, content sourcing, visual design, and a
+      pre-publication audit before it ships. No pass reviews its own author's
+      summary.</li>
+      <li><strong>Automated tests with regression guards.</strong> 36 tests lock
+      the honesty rules in place: the majority-rule boundary, the baseline math,
+      parser filtering, draft gating, and a check that every listed day resolves to
+      a present, well-formed artifact.</li>
+      <li><strong>Deterministic pipeline.</strong> Re-running a day regenerates its
+      file byte-for-byte, and every derived aggregate is reproducible from the
+      dailies.</li>
+      <li><strong>Sources are link-verified.</strong> Region, event, and airspace
+      sources are checked live, and claims are corrected before content clears
+      draft.</li>
+    </ul>
+    <p>The external cross-check against independent instruments is covered under
+    Validation above.</p>
+
+    <h2>Reading the map honestly (design semantics)</h2>
+    <p>The color choices are part of the method, not decoration. A few rules make
+    the map trustworthy:</p>
+    <ul>
+      <li><strong>Colorblind-safe, verified per theme.</strong> Every
+      meaning-bearing ramp is checked for the three main types of color blindness
+      and re-verified separately on the light and dark grounds. The same rules hold
+      in both themes.</li>
+      <li><strong>Saturated red means one thing.</strong> Alarm-red is reserved for
+      extreme anomaly and appears nowhere else, so a red cell is never
+      ambiguous.</li>
+      <li><strong>Insufficient data is never a value.</strong> Cells below the
+      aircraft floor render as a hatch, distinct from both quiet and signal. Low
+      sample never earns a confident color.</li>
+      <li><strong>Context is outlined, never filled.</strong> Airspace zones and
+      event markers use outlines and markers in a hue never used for signal, so
+      annotation can never be read as data.</li>
+      <li><strong>The numbers stay honest.</strong> Ramp scaling can be nonlinear
+      for legibility, but the value shown on hover or click is always the true
+      number.</li>
+    </ul>
+
     <h2>Time, data &amp; licensing</h2>
     <p>Everything is <strong>UTC</strong>; the source dumps are UTC days. Source
     flight data © <a href="https://www.adsb.lol" target="_blank" rel="noopener">adsb.lol</a>

@@ -149,6 +149,48 @@ zone — do not zone the Atlantic.
 - **Spoofing vs jamming** — v1 measures integrity degradation broadly; separating
   spoofing (false positions) from jamming (lost positions) is future work.
 
+## Verification & quality
+The instrument is built to be checked, not trusted on faith.
+
+- **Independent review passes before release.** Every batch goes through separate
+  reviews for code correctness, content sourcing, visual design, and a
+  pre-publication audit. Findings are triaged and fixed before the work ships, and
+  no pass reviews its own author's summary.
+- **Automated tests with regression guards.** The pipeline ships 36 tests,
+  including guards that lock the honesty rules in place: the majority-rule
+  boundary case, the baseline math, parser filtering, draft gating, and a
+  manifest-integrity check that every listed day resolves to a present, decodable,
+  well-formed artifact.
+- **Deterministic pipeline.** Re-running a day regenerates its artifact
+  byte-for-byte, and the derived data (baselines, region series, manifest) is
+  reproducible from the dailies. Storage is deterministic gzip, so the archive
+  stays diff-clean.
+- **Every source link-verified.** Region, event, and airspace sources are checked
+  live. Dead links and claim mismatches are corrected before content clears draft.
+- **External cross-validation.** The archive is checked against independent
+  instruments built on different feeder networks (GPSJam, Flightradar24), with a
+  dated side-by-side comparison kept on the record (`docs/validation/`). Two
+  pipelines agreeing on the same date is corroboration, not ground truth.
+
+## Design semantics: reading the map honestly
+The color choices are part of the method, not decoration. The rules that make the
+map trustworthy:
+
+- **Colorblind-safe, verified per theme.** Every meaning-bearing ramp is checked
+  for deuteranopia, protanopia, and tritanopia, and re-verified separately on the
+  light and dark grounds. The same rules hold in both themes.
+- **Saturated red means one thing.** Alarm-red is reserved for extreme anomaly and
+  appears nowhere else in the interface, so a red cell is never ambiguous.
+- **Insufficient data is never a value.** Hexes below the aircraft floor render as
+  a desaturated hatch, unmistakably distinct from both quiet and signal. Low
+  sample never earns a confident color.
+- **Context is outlined, never filled.** Airspace zones and event markers use an
+  outline-and-marker grammar in a hue never used for the signal ramp, so
+  annotation can never be read as data.
+- **The numbers stay honest.** Ramp scaling can be nonlinear for legibility, but
+  the value shown on hover or click is always the true number, and geography
+  ghosts through at peak signal so the map never lies by saturation.
+
 ## Time, data, licensing
 Everything is **UTC** (source dumps are UTC days). Source data © adsb.lol
 feeders and partners, **ODbL 1.0**; published aggregates are a derivative
