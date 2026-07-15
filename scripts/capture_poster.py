@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Render the DeadReckoning hero / OG poster: the Degraded% Baltic-bloom frame.
 
-This is the *reproducible* generator for ``site/assets/og-image.png`` — the
+This is the *reproducible* generator for ``site/assets/og-image.jpg`` — the
 signature frame shown behind the loader (the "acquiring signal" sweep runs over
 it) and used as the Open Graph / social card. Re-run it whenever the map's look
 changes (e.g. after the light-mode batch) so the poster never drifts from the
@@ -20,7 +20,7 @@ Prereqs:
 
 Usage:
     python scripts/capture_poster.py [--url http://localhost:8777] \
-        [--out site/assets/og-image.png] [--width 1200] [--height 630]
+        [--out site/assets/og-image.jpg] [--width 1200] [--height 630]
 
 Notes:
     * Needs the localhost debug handle ``window.__drMap`` (set only on
@@ -50,7 +50,7 @@ HIDE_CHROME = """
 def main() -> int:
     ap = argparse.ArgumentParser(description="Render the hero/OG poster frame.")
     ap.add_argument("--url", default="http://localhost:8777")
-    ap.add_argument("--out", default="site/assets/og-image.png")
+    ap.add_argument("--out", default="site/assets/og-image.jpg")
     ap.add_argument("--width", type=int, default=1200)
     ap.add_argument("--height", type=int, default=630)
     args = ap.parse_args()
