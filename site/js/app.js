@@ -55,6 +55,8 @@
     mode: "raw",
     quiet: true,    // quiet-coverage carpet on by default
     hatch: false,   // low-sample hatch off by default
+    cities: true,   // major-city dots + names on by default
+    regional: false,// admin-1 (regional) borders off by default
     airspaceOn: true,   // airspace-context overlay on by default
     airspaceGeo: null,  // FeatureCollection of zone outlines
     airspace: {},       // id -> zone metadata (label/type/since/note/sources)
@@ -65,7 +67,13 @@
     geomFC: { type: "FeatureCollection", features: [] },
     prevActive: new Set(),
     activeRegion: null,
+    eventsDraft: false,   // file-level draft flag from events.json
+    eventMarkers: [],     // live maplibregl.Marker pins for the current day
+    regionCentroids: {},  // rid -> [lon,lat] cache
   };
+
+  // Preview builds (localhost) show draft content; the public origin never does.
+  const PREVIEW = /^(localhost|127\.|0\.0\.0\.0|\[?::1\]?)$/.test(location.hostname);
 
   // ---------- data ----------
   async function getJSON(url) {
@@ -109,8 +117,19 @@
     return FILL_OP_MIN + (FILL_OP_MAX - FILL_OP_MIN) * s;
   }
 
+  // Traffic density is heavily skewed (corridors are orders of magnitude denser
+  // than peripheries: floor 5, median ~50, max ~2300), so map it on a log scale.
+  const COV_LO = Math.log(5), COV_HI = Math.log(1500);
+  function covNorm(n) {
+    return Math.max(0, Math.min(1, (Math.log(Math.max(n, 5)) - COV_LO) / (COV_HI - COV_LO)));
+  }
+
   function styleFor(rec) {
     if (rec.n_aircraft < state.floor) return { k: "insuf", c: null, op: null };
+    if (state.mode === "coverage") {
+      const t = covNorm(rec.n_aircraft);
+      return { k: "val", c: DR_COLOR.coverage(t), op: 0.32 + 0.45 * t };
+    }
     if (state.mode === "raw") {
       return { k: "val", c: DR_COLOR.raw(rec.bad_ratio), op: opFor(rec.bad_ratio) };
     }
@@ -147,6 +166,13 @@
     };
     style.layers = (style.layers || []).filter((l) => !DROP.has(l.id));
     for (const l of style.layers) {
+      // Regional (admin-1) boundary lines start hidden — toggled by "Regional
+      // borders". Country borders (boundary_country_*) stay on.
+      if (l.id === "boundary_state") {
+        l.layout = l.layout || {};
+        l.layout.visibility = "none";
+        continue;
+      }
       if (l.type !== "symbol") continue;
       l.layout = l.layout || {};
       if (l.layout["text-field"]) l.layout["text-field"] = EN;
@@ -186,6 +212,14 @@
     if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
       window.__drMap = map;
     }
+    // The basemap's city layers reference a "circle-11" dot sprite that isn't in
+    // the CDN sprite sheet; provide a small muted dot so major cities show a
+    // marker, not just a name.
+    map.on("styleimagemissing", (e) => {
+      if (e.id === "circle-11" && !map.hasImage("circle-11")) {
+        map.addImage("circle-11", makeDotImage(3, "#9aa6b2"), { pixelRatio: 2 });
+      }
+    });
     map.addControl(new maplibregl.AttributionControl({
       compact: true,
       customAttribution:
@@ -213,6 +247,17 @@
         toast("basemap slow — using a minimal map");
       } catch (e) { ready(); }
     }, 11000);
+  }
+
+  function makeDotImage(r, color) {
+    const d = r * 2 + 2, cv = document.createElement("canvas");
+    cv.width = cv.height = d;
+    const ctx = cv.getContext("2d");
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.arc(d / 2, d / 2, r, 0, 2 * Math.PI);
+    ctx.fill();
+    return ctx.getImageData(0, 0, d, d);
   }
 
   function makeHatchImage() {
@@ -295,6 +340,17 @@
     const before = firstSymbolId();
     if (map.getSource("airspace")) map.getSource("airspace").setData(state.airspaceGeo);
     else map.addSource("airspace", { type: "geojson", data: state.airspaceGeo });
+    // Faint violet wash BENEATH the hex layers: it clarifies the zone's extent in
+    // the empty (sensor-desert) interior, while any coverage/signal hexes render on
+    // top of it. Violet is off the signal palette, and it sits under the data, so
+    // it can't be read as jamming. Toggles with the outline.
+    if (!map.getLayer("airspace-fill")) {
+      map.addLayer({
+        id: "airspace-fill", type: "fill", source: "airspace",
+        paint: { "fill-color": AIRSPACE_COLOR, "fill-opacity": 0.06 },
+        layout: { visibility: state.airspaceOn ? "visible" : "none" },
+      }, map.getLayer("hex-quiet") ? "hex-quiet" : before);
+    }
     // One line layer per status type — same violet hue, distinct dash. Outline
     // only: a filled zone would read as jamming signal, the exact confusion this
     // layer exists to cure. Sits above the hex fills but below the basemap labels.
@@ -318,27 +374,29 @@
   }
   function setAirspace(on) {
     state.airspaceOn = on;
-    for (const id of airspaceLayerIds())
+    for (const id of airspaceLayerIds().concat(["airspace-fill"]))
       if (map.getLayer(id)) map.setLayoutProperty(id, "visibility", on ? "visible" : "none");
   }
 
-  const ZONE_TYPE_LABEL = {
-    closed: "Airspace closed",
-    reduced_coverage: "Reduced coverage",
-    known_test_area: "Known test area",
+  // Cards LEAD with the regulatory fact (airspace status), not the reasons — this
+  // layer describes the instrument's blindness, never "conflict zones".
+  const ZONE_LEAD = {
+    closed: (z) => `Closed to civil aviation since ${z.since}.`,
+    reduced_coverage: (z) => `Reduced coverage — widely avoided, sparsely received`
+      + (z.since && z.since !== "recurring" ? ` since ${z.since}` : "") + ".",
+    known_test_area: (z) => `Known GPS-testing range — recurring, announced tests.`,
   };
   function showZoneCard(id, point) {
     const z = state.airspace[id];
     if (!z) return;
     const card = el("zoneCard");
-    const since = z.since === "recurring" ? "recurring"
-      : (z.since ? "since " + z.since : "");
+    const lead = (ZONE_LEAD[z.type] || (() => ""))(z);
     const srcs = (z.sources || []).map((s) =>
       `<a href="${s.url}" target="_blank" rel="noopener">${escapeHtml(s.title)}</a>`).join("");
     card.innerHTML =
       `<button class="zc-close" aria-label="close">×</button>
-       <div class="zc-type">${ZONE_TYPE_LABEL[z.type] || z.type}${since ? " · " + since : ""}</div>
        <div class="zc-title">${escapeHtml(z.label)}</div>
+       <div class="zc-lead">${escapeHtml(lead)}</div>
        <div class="zc-note">${escapeHtml(z.note || "")}</div>
        <div class="zc-src">${srcs}</div>`;
     card.querySelector(".zc-close").addEventListener("click", hideZoneCard);
@@ -407,6 +465,7 @@
       el("scrubMeta").textContent = `no data for ${day} — see console`;
       toast(`no data for ${day}`);
     }
+    updateEventPins(day);   // spatial markers for events within ±1 day of this date
   }
 
   // ---------- hover readout ----------
@@ -583,6 +642,7 @@
     // else clamped to nearest edge (still discoverable).
     const first = days[0], last = days.at(-1);
     for (const e of state.events) {
+      if (!eventVisible(e)) continue;   // draft events: preview builds only
       let i = days.indexOf(e.date);
       let left;
       if (i >= 0) left = n === 1 ? 50 : (i / (n - 1)) * 100;
@@ -602,17 +662,65 @@
   function showEventCard(e, target) {
     const card = el("eventCard");
     const disputed = e.disputed ? `<span class="e-tag">disputed</span>` : "";
+    const draftTag = (state.eventsDraft || e.draft) ? `<span class="e-tag draft">draft</span>` : "";
     const note = e.editorial_note
       ? `<div class="e-note">${escapeHtml(e.editorial_note)}</div>` : "";
-    card.innerHTML = `<div class="e-date">${e.date} · ${e.type || ""}${disputed}</div>
+    card.innerHTML = `<div class="e-date">${e.date} · ${e.type || ""}${disputed}${draftTag}</div>
       <div class="e-title">${escapeHtml(e.title)}</div>
       <div class="e-one">${escapeHtml(e.one_line || "")}</div>${note}`;
-    const wrap = target.closest(".track-wrap").getBoundingClientRect();
     const tr = target.getBoundingClientRect();
-    card.style.left = Math.min(window.innerWidth - 300, tr.left) + "px";
+    card.style.left = Math.max(8, Math.min(window.innerWidth - 300, tr.left)) + "px";
+    if (target.closest(".track-wrap")) {           // timeline tick: anchored above the strip
+      card.style.top = "auto"; card.style.bottom = "";
+    } else {                                        // map pin: float near the marker
+      card.style.bottom = "auto";
+      card.classList.add("show");
+      const ch = card.offsetHeight || 120;
+      let top = tr.top - ch - 10;
+      if (top < 8) top = tr.bottom + 10;
+      card.style.top = Math.max(8, Math.min(window.innerHeight - ch - 8, top)) + "px";
+      return;
+    }
     card.classList.add("show");
   }
   function hideEventCard() { el("eventCard").classList.remove("show"); }
+
+  // ---------- event pins (spatial markers) ----------
+  function eventVisible(e) {
+    const draft = state.eventsDraft || !!e.draft;
+    return !draft || PREVIEW;   // draft events only render in local/preview builds
+  }
+  function regionCentroid(rid) {
+    if (rid in state.regionCentroids) return state.regionCentroids[rid];
+    let c = null;
+    const f = (state.regionsGeo.features || []).find((x) => x.properties.id === rid);
+    if (f) {
+      let sx = 0, sy = 0, n = 0;
+      for (const ring of ringsOf(f.geometry)) for (const p of ring) { sx += p[0]; sy += p[1]; n++; }
+      if (n) c = [sx / n, sy / n];
+    }
+    state.regionCentroids[rid] = c;
+    return c;
+  }
+  function updateEventPins(day) {
+    for (const m of state.eventMarkers) m.remove();
+    state.eventMarkers = [];
+    if (!day) return;
+    const t0 = Date.parse(day);
+    for (const e of state.events) {
+      if (!eventVisible(e)) continue;
+      if (Math.abs((Date.parse(e.date) - t0) / 86400000) > 1) continue;   // within ±1 day
+      const c = (e.lon != null && e.lat != null) ? [e.lon, e.lat] : regionCentroid(e.region_id);
+      if (!c) continue;
+      const pin = document.createElement("div");
+      pin.className = "event-pin" + ((state.eventsDraft || e.draft) ? " draft" : "");
+      pin.setAttribute("aria-label", e.title);
+      pin.addEventListener("mouseenter", () => showEventCard(e, pin));
+      pin.addEventListener("mouseleave", hideEventCard);
+      pin.addEventListener("click", (ev) => { ev.stopPropagation(); showEventCard(e, pin); });
+      state.eventMarkers.push(new maplibregl.Marker({ element: pin }).setLngLat(c).addTo(map));
+    }
+  }
 
   function updateTrackFill() {
     const n = state.manifest.days.length;
@@ -636,11 +744,20 @@
     state.mode = mode;
     document.querySelectorAll("#modeToggle button").forEach((b) =>
       b.setAttribute("aria-pressed", String(b.dataset.mode === mode)));
-    el("legendTitle").textContent = mode === "anomaly"
-      ? "Anomaly vs baseline (σ)" : "Aircraft with degraded GPS";
-    el("legendRamp").className = "ramp " + (mode === "anomaly" ? "anom" : "raw");
-    el("legLo").textContent = mode === "anomaly" ? "normal" : "0%";
-    el("legHi").textContent = mode === "anomaly" ? state.anomalyClip + "σ+" : "100%";
+    const L = ({
+      raw:      { title: "Aircraft with degraded GPS", ramp: "raw",  lo: "0%",     hi: "100%" },
+      anomaly:  { title: "Anomaly vs baseline (σ)",    ramp: "anom", lo: "normal", hi: state.anomalyClip + "σ+" },
+      coverage: { title: "Aircraft per cell (log)",    ramp: "cov",  lo: "few",    hi: "dense" },
+    })[mode] || {};
+    el("legendTitle").textContent = L.title || "";
+    el("legendRamp").className = "ramp " + (L.ramp || "raw");
+    el("legLo").textContent = L.lo || "";
+    el("legHi").textContent = L.hi || "";
+    // The quiet carpet is context for the signal views; in Coverage mode the
+    // density ramp already shows "how heavily watched", so hide it to avoid tinting.
+    const showCarpet = state.quiet && mode !== "coverage";
+    if (map.getLayer("hex-quiet"))
+      map.setLayoutProperty("hex-quiet", "visibility", showCarpet ? "visible" : "none");
     renderDay();
   }
   function setQuiet(on) {
@@ -651,6 +768,14 @@
     state.hatch = on;
     map.setLayoutProperty("hex-insuf", "visibility", on ? "visible" : "none");
   }
+  // Basemap layer toggles (city labels/dots; admin-1 "regional" boundary lines).
+  const CITY_LAYERS = ["place_city_large", "place_city", "place_town"];
+  function setBasemapLayers(ids, on) {
+    for (const id of ids)
+      if (map.getLayer(id)) map.setLayoutProperty(id, "visibility", on ? "visible" : "none");
+  }
+  function setCities(on) { state.cities = on; setBasemapLayers(CITY_LAYERS, on); }
+  function setRegional(on) { state.regional = on; setBasemapLayers(["boundary_state"], on); }
 
   // ---------- chrome ----------
   function buildChips() {
@@ -727,6 +852,7 @@
     state.regionsGeo = regionsGeo;
     state.regions = Object.fromEntries((regions.regions || []).map((r) => [r.id, r]));
     state.events = events.events || [];
+    state.eventsDraft = !!events.draft;
     state.airspaceGeo = airspaceGeo;
     state.airspace = Object.fromEntries((airspace.zones || []).map((z) => [z.id, z]));
     addAirspace();
@@ -744,14 +870,21 @@
     document.querySelectorAll("#modeToggle button").forEach((b) =>
       b.addEventListener("click", () => setMode(b.dataset.mode)));
     const quietEl = el("quietToggle"), hatchEl = el("hatchToggle"),
-          airspaceEl = el("airspaceToggle");
+          airspaceEl = el("airspaceToggle"),
+          citiesEl = el("citiesToggle"), regionalEl = el("regionalToggle");
     quietEl.checked = state.quiet;      // default on
     hatchEl.checked = state.hatch;      // default off
     airspaceEl.checked = state.airspaceOn;  // default on
+    citiesEl.checked = state.cities;    // default on
+    regionalEl.checked = state.regional;// default off
     quietEl.addEventListener("change", (e) => setQuiet(e.target.checked));
     hatchEl.addEventListener("change", (e) => setHatch(e.target.checked));
     airspaceEl.addEventListener("change", (e) => setAirspace(e.target.checked));
+    citiesEl.addEventListener("change", (e) => setCities(e.target.checked));
+    regionalEl.addEventListener("change", (e) => setRegional(e.target.checked));
     setQuiet(state.quiet);           // apply initial visibility to the carpet layer
+    setCities(state.cities);
+    setRegional(state.regional);
     el("slider").addEventListener("input", (e) => {
       if (state.playing) togglePlay();
       goTo(+e.target.value);

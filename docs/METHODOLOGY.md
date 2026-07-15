@@ -111,20 +111,23 @@ readers don't mistake it for a causal early-warning signal.
 
 ## The sensor-desert paradox
 The instrument measures interference **where civil aircraft fly**, which is
-systematically **not** the airspace that is closed or avoided. When conflict or a
-formal closure empties the sky, the sensors leave with the traffic — so the worst
-jamming can sit inside a **dark zone that means "nobody was looking," not "all
-clear."** We measure the *edges* of such airspace, not its interior.
+systematically **not** the airspace that is closed or avoided. When airspace is
+closed or widely avoided the sky empties and the sensors leave with the traffic —
+so the worst jamming can sit inside a **dark zone that means "nobody was looking,"
+not "all clear."** We measure the *edges* of such airspace, not its interior. The
+overlay describes the instrument's blindness (an airspace-status fact), not the
+reasons behind it.
 
 The **Airspace context** overlay (on by default) exists to keep that honest: it
 outlines airspace that is `closed` (e.g., Ukraine, closed to civil traffic since
 Feb 2022) or of `reduced_coverage` (e.g., Russia, widely avoided by Western
 carriers and thin on volunteer receivers), plus `known_test_area` ranges where
-GPS testing is recurring, announced, and benign. The outline is a violet dash —
-never a fill, and never coloured like the signal ramp — so a reader can never
-mistake *absence of data* for *absence of jamming*. Zone polygons are drawn from
-Natural Earth boundaries and are context, not precise FIR geometry; each carries a
-sourced note (see `content/airspace.yaml`, draft pending review).
+GPS testing is recurring and announced. It renders as a violet dashed outline
+with a faint wash — a hue never used for the signal ramp — so a reader can never
+mistake *absence of data* for *absence of jamming*. Each zone card leads with the
+regulatory fact ("closed to civil aviation since …") and its source. Zone polygons
+are drawn from Natural Earth boundaries and are context, not precise FIR geometry
+(see `content/airspace.yaml`, draft pending review).
 
 ## What the instrument cannot see
 - **Coverage bias** — signal exists only where aircraft fly and receivers hear
