@@ -252,6 +252,10 @@ input.slider::-moz-range-thumb { width:14px; height:14px; border-radius:50%;
 .event-card .e-tag.draft {
   background:rgba(150,155,165,.18); color:#aab3bf; border:1px solid rgba(150,155,165,.35);
 }
+.event-card .e-tag.approx {
+  background:rgba(210,150,70,.12); color:#c8a06e; border:1px dashed rgba(210,150,70,.4);
+  text-transform:none; letter-spacing:0;
+}
 /* spatial event marker — minimal amber ring, matches the timeline event ticks;
    dashed when the event is still draft (preview only). */
 .event-pin {
@@ -262,6 +266,9 @@ input.slider::-moz-range-thumb { width:14px; height:14px; border-radius:50%;
 }
 .event-pin:hover { transform:scale(1.3); }
 .event-pin.draft { border-style:dashed; opacity:.85; box-shadow:0 0 0 1px rgba(0,0,0,.5); }
+/* approximate-date events read as softer/hollow on both the timeline and the map. */
+.event-pin.approx { border-style:dotted; opacity:.6; }
+.tick.event.approx { opacity:.5; }
 .event-card .e-note {
   margin-top:7px; padding-top:7px; border-top:1px solid var(--line);
   color:var(--ink-dim); font-size:11px; font-style:italic; line-height:1.45;

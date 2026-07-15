@@ -3,13 +3,13 @@
   "metadata": {
     "project": "DeadReckoning",
     "layer": "watch-regions",
-    "draft": true,
+    "draft": false,
     "note": "Analyst-defined watch-area polygons (Walker Robinson). These are approximate bounding areas for visualization, NOT factual claims. Coordinates are [lon, lat] per RFC 7946."
   },
   "features": [
     {
       "type": "Feature",
-      "properties": { "id": "baltic", "display_name": "Baltic Sea", "draft": true },
+      "properties": { "id": "baltic", "display_name": "Baltic Sea", "draft": false },
       "geometry": {
         "type": "Polygon",
         "coordinates": [[
@@ -21,7 +21,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "id": "kaliningrad", "display_name": "Kaliningrad Approaches", "draft": true },
+      "properties": { "id": "kaliningrad", "display_name": "Kaliningrad Approaches", "draft": false },
       "geometry": {
         "type": "Polygon",
         "coordinates": [[
@@ -32,7 +32,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "id": "black-sea", "display_name": "Black Sea", "draft": true },
+      "properties": { "id": "black-sea", "display_name": "Black Sea", "draft": false },
       "geometry": {
         "type": "Polygon",
         "coordinates": [[
@@ -44,7 +44,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "id": "eastern-med", "display_name": "Eastern Mediterranean", "draft": true },
+      "properties": { "id": "eastern-med", "display_name": "Eastern Mediterranean", "draft": false },
       "geometry": {
         "type": "Polygon",
         "coordinates": [[
@@ -56,7 +56,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "id": "levant", "display_name": "Levant (Israel / Lebanon)", "draft": true },
+      "properties": { "id": "levant", "display_name": "Levant (Israel / Lebanon)", "draft": false },
       "geometry": {
         "type": "Polygon",
         "coordinates": [[
@@ -67,7 +67,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "id": "persian-gulf", "display_name": "Persian Gulf / Strait of Hormuz", "draft": true },
+      "properties": { "id": "persian-gulf", "display_name": "Persian Gulf / Strait of Hormuz", "draft": false },
       "geometry": {
         "type": "Polygon",
         "coordinates": [[
@@ -79,7 +79,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "id": "red-sea", "display_name": "Red Sea", "draft": true },
+      "properties": { "id": "red-sea", "display_name": "Red Sea", "draft": false },
       "geometry": {
         "type": "Polygon",
         "coordinates": [[
@@ -91,7 +91,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "id": "ukraine-west", "display_name": "Western Ukraine / Border Airspace", "draft": true },
+      "properties": { "id": "ukraine-west", "display_name": "Western Ukraine / Border Airspace", "draft": false },
       "geometry": {
         "type": "Polygon",
         "coordinates": [[
@@ -103,7 +103,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "id": "korea", "display_name": "Korean Peninsula", "draft": true },
+      "properties": { "id": "korea", "display_name": "Korean Peninsula", "draft": false },
       "geometry": {
         "type": "Polygon",
         "coordinates": [[
@@ -115,7 +115,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "id": "us-southwest", "display_name": "US Southwest Test Ranges", "draft": true },
+      "properties": { "id": "us-southwest", "display_name": "US Southwest Test Ranges", "draft": false },
       "geometry": {
         "type": "MultiPolygon",
         "coordinates": [
