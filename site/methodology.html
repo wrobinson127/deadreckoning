@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
+<script>(function(){try{var t=localStorage.getItem('dr_theme');if(t!=='light'&&t!=='dark')t=(window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark';document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','dark');}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Methodology: DEAD RECKONING</title>
 <meta name="description" content="How DEAD RECKONING infers GPS/GNSS interference from ADS-B Navigation Integrity Category (NIC), and what it can and cannot see." />
@@ -16,7 +17,7 @@
   <header class="topbar">
     <a class="brand" href="index.html" style="text-decoration:none">DEAD<span class="dot">·</span>RECKONING</a>
     <span class="spacer"></span>
-    <nav><a href="index.html">Map</a><a href="methodology.html">Methodology</a><a href="about.html">About</a></nav>
+    <nav><a href="index.html">Map</a><a href="methodology.html">Methodology</a><a href="about.html">About</a><button class="nav-help" data-theme-toggle aria-label="toggle light or dark theme">☾</button></nav>
   </header>
 
   <main class="doc">
@@ -238,5 +239,6 @@
     <span class="footer-note">Basemap borders reflect OpenStreetMap's rendering and imply no position on territorial disputes.</span>
   </footer>
 </div>
+<script src="js/theme.js"></script>
 </body>
 </html>

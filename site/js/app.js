@@ -5,16 +5,45 @@
 (function () {
   "use strict";
 
-  const MAP_STYLE_URL = "https://tiles.openfreemap.org/styles/dark";
-  // Minimal offline fallback if the hosted basemap CDN is slow/unreachable —
-  // the instrument still works (hexes on a plain charcoal ground); coastlines
-  // are simply absent. Loads instantly, no network.
-  const FALLBACK_STYLE = {
-    version: 8,
-    sources: {},
-    layers: [{ id: "bg", type: "background", paint: { "background-color": "#0a0c0f" } }],
-    glyphs: "https://fonts.openmaptiles.org/{fontstack}/{range}.pbf",
+  // Per-theme map palette. Static layer colours (carpet, hex outline, glow,
+  // hatch, airspace, city dot) and the basemap style differ per ground; the
+  // DATA ramps live in color.js (DR_COLOR.setTheme). Dark is the default.
+  const THEME = {
+    dark: {
+      basemap: "https://tiles.openfreemap.org/styles/dark",
+      bg: "#0a0c0f",
+      quietFill: "#6aa79c", quietOp: 0.14,
+      hexLine: "rgba(10,12,15,0.55)",
+      glow: "#ffdf8f",
+      hatch: "rgba(150,165,180,0.9)",
+      airspace: "#b39ddb",
+      cityDot: "#9aa6b2",
+    },
+    light: {
+      basemap: "https://tiles.openfreemap.org/styles/positron",
+      bg: "#e9edf2",
+      quietFill: "#3f9184", quietOp: 0.24,
+      hexLine: "rgba(28,40,56,0.30)",
+      glow: "#d8531c",
+      hatch: "rgba(40,52,68,0.5)",
+      airspace: "#6d4fb0",
+      cityDot: "#5a6470",
+    },
   };
+  const themeName = () => (window.DR_THEME && DR_THEME.current()) || "dark";
+  const pal = () => THEME[themeName()];
+
+  // Minimal offline fallback if the hosted basemap CDN is slow/unreachable —
+  // the instrument still works (hexes on a plain ground); coastlines are simply
+  // absent. Loads instantly, no network. Background follows the theme.
+  function fallbackStyle() {
+    return {
+      version: 8,
+      sources: {},
+      layers: [{ id: "bg", type: "background", paint: { "background-color": pal().bg } }],
+      glyphs: "https://fonts.openmaptiles.org/{fontstack}/{range}.pbf",
+    };
+  }
 
   // ---- Render tuning (all in one place; see docs/METHODOLOGY.md "Showing
   // coverage"). Absence of signal is only meaningful where monitoring is shown,
@@ -196,12 +225,16 @@
 
   async function initMap() {
     // Fetch + curate the style ourselves so the label surgery applies from the
-    // first paint. If the CDN is unreachable, fall back to the minimal dark bg.
-    let style = FALLBACK_STYLE;
+    // first paint. If the CDN is unreachable, fall back to the minimal bg.
+    DR_COLOR.setTheme(themeName());   // data ramps follow the boot theme
+    // A theme toggle reloads so the map re-initialises cleanly in the new
+    // basemap + ramps (a live, no-reload swap is a post-launch enhancement).
+    window.addEventListener("dr:themechange", () => location.reload());
+    let style = fallbackStyle();
     try {
-      const r = await fetch(MAP_STYLE_URL);
+      const r = await fetch(pal().basemap);
       if (r.ok) style = curateStyle(await r.json());
-    } catch (e) { /* offline: keep FALLBACK_STYLE */ }
+    } catch (e) { /* offline: keep fallback */ }
 
     map = new maplibregl.Map({
       container: "map",
@@ -223,7 +256,7 @@
     // marker, not just a name.
     map.on("styleimagemissing", (e) => {
       if (e.id === "circle-11" && !map.hasImage("circle-11")) {
-        map.addImage("circle-11", makeDotImage(3, "#9aa6b2"), { pixelRatio: 2 });
+        map.addImage("circle-11", makeDotImage(3, pal().cityDot), { pixelRatio: 2 });
       }
     });
     map.addControl(new maplibregl.AttributionControl({
@@ -256,7 +289,7 @@
     setTimeout(() => {
       if (mapReady) return;
       try {
-        map.setStyle(FALLBACK_STYLE);
+        map.setStyle(fallbackStyle());
         map.once("styledata", ready);
         toast("basemap slow — using a minimal map");
       } catch (e) { ready(); }
@@ -279,7 +312,7 @@
     cv.width = cv.height = s;
     const ctx = cv.getContext("2d");
     ctx.clearRect(0, 0, s, s);
-    ctx.strokeStyle = "rgba(150,165,180,0.9)";
+    ctx.strokeStyle = pal().hatch;
     ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(0, s); ctx.lineTo(s, 0); ctx.stroke();
     ctx.beginPath(); ctx.moveTo(-2, 2); ctx.lineTo(2, -2); ctx.stroke();
@@ -310,8 +343,8 @@
     map.addLayer({
       id: "hex-quiet", type: "fill", source: "hexes",
       paint: {
-        "fill-color": QUIET_FILL,
-        "fill-opacity": ["case", ["==", ["feature-state", "k"], "val"], QUIET_OP, 0],
+        "fill-color": pal().quietFill,
+        "fill-opacity": ["case", ["==", ["feature-state", "k"], "val"], pal().quietOp, 0],
       },
     }, before);
     // Signal (the blooms) — color + capped opacity ramp, on top of the carpet.
@@ -326,7 +359,7 @@
     map.addLayer({
       id: "hex-line", type: "line", source: "hexes",
       paint: {
-        "line-color": "rgba(10,12,15,0.55)",
+        "line-color": pal().hexLine,
         "line-width": 0.4,
         "line-opacity": ["case", ["==", ["feature-state", "k"], "val"], 0.6, 0],
       },
@@ -336,7 +369,7 @@
     map.addLayer({
       id: "hex-glow", type: "line", source: "hexes",
       paint: {
-        "line-color": "#ffdf8f",
+        "line-color": pal().glow,
         "line-blur": 6,
         "line-width": ["case", ["==", ["feature-state", "ex"], 1], 2.4, 0],
         "line-opacity": ["case", ["==", ["feature-state", "ex"], 1], 0.65, 0],
@@ -372,7 +405,7 @@
     if (!map.getLayer("airspace-fill")) {
       map.addLayer({
         id: "airspace-fill", type: "fill", source: "airspace",
-        paint: { "fill-color": AIRSPACE_COLOR, "fill-opacity": 0.06 },
+        paint: { "fill-color": pal().airspace, "fill-opacity": 0.06 },
         layout: { visibility: state.airspaceOn ? "visible" : "none" },
       }, map.getLayer("hex-quiet") ? "hex-quiet" : before);
     }
@@ -386,7 +419,7 @@
         id, type: "line", source: "airspace",
         filter: ["==", ["get", "type"], type],
         paint: {
-          "line-color": AIRSPACE_COLOR,
+          "line-color": pal().airspace,
           "line-width": type === "closed" ? 1.7 : 1.3,
           "line-dasharray": dash,
           "line-opacity": 0.9,
@@ -484,7 +517,7 @@
     state.idx = idx;
     clearPin();   // a pinned cell's affected-aircraft list is day-specific
     const day = state.manifest.days[idx];
-    el("scrubDate").textContent = fmtDate(day);
+    el("mapDate").textContent = fmtDate(day);
     el("slider").value = idx;
     updateTrackFill();
     try {

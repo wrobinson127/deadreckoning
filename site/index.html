@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
+<script>/* set theme before paint (no flash). Dark is default; light follows OS pref. */
+(function(){try{var t=localStorage.getItem('dr_theme');if(t!=='light'&&t!=='dark')t=(window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark';document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','dark');}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 <title>DEAD RECKONING: a GPS interference archive</title>
 <meta name="description" content="A longitudinal archive of GPS/GNSS interference, indicated by degraded aircraft navigation integrity (ADS-B NIC). Scrub multi-day history, per-hex baselines, named watch regions." />
@@ -34,12 +36,15 @@
       <a href="index.html">Map</a>
       <a href="methodology.html">Methodology</a>
       <a href="about.html">About</a>
+      <button class="nav-help" data-theme-toggle aria-label="toggle light or dark theme">☾</button>
       <button class="nav-help" id="helpBtn" title="What is this?" aria-label="help">?</button>
     </nav>
   </header>
 
   <div id="map">
     <!-- overlays -->
+    <div class="map-overlay map-date" id="mapDate" aria-live="polite">————-——-——</div>
+
     <div class="map-overlay controls">
       <div class="panel collapsible" id="controlsPanel">
         <button class="collapse-btn" data-collapse aria-label="collapse layer panel"></button>
@@ -119,16 +124,16 @@
         aircraft at once</em> report degraded satellite navigation, something on
         the ground is interfering with it. This map remembers that, day by day.</p>
         <div class="intro-how">
-          <div><span class="k" style="background:#245f58"></span> <b>Quiet</b>:
+          <div><span class="k k-quiet"></span> <b>Quiet</b>:
             faint teal is <em>watched airspace</em>: aircraft seen, GPS healthy.</div>
-          <div><span class="k" style="background:#e0673a"></span> <b>Degraded</b>:
+          <div><span class="k k-degraded"></span> <b>Degraded</b>:
             brighter cells = many aircraft reporting degraded GPS (the signal).</div>
           <div><span class="k hatch"></span> <b>Hatched</b>: too few aircraft to
             judge (not the same as "clear").</div>
-          <div><span class="k" style="background:#b39ddb"></span> <b>Outlined</b>:
+          <div><span class="k k-outlined"></span> <b>Outlined</b>:
             airspace closed or reduced-coverage: the instrument is blind here, and
             that blindness is itself information.</div>
-          <div><span class="k" style="background:#3a6690"></span> <b>Coverage</b>
+          <div><span class="k k-coverage"></span> <b>Coverage</b>
             view (top-left): how <em>heavily</em> each area is watched, so you can
             tell confidence from blindness.</div>
           <div><span class="k" style="background:var(--phosphor)"></span> Scrub the
@@ -163,7 +168,6 @@
   <div class="scrubber collapsible" id="scrubber">
     <button class="collapse-btn" data-collapse aria-label="collapse timeline"></button>
     <div class="scrub-head">
-      <span class="scrub-date" id="scrubDate">————-——-——</span>
       <span class="scrub-meta" id="scrubMeta"
         title="each cell is an H3 hex (~1,770 km²) that had at least one aircraft this UTC day; high-confidence = 10+ aircraft"></span>
     </div>
@@ -181,6 +185,7 @@
 <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 <script src="https://unpkg.com/h3-js@4.1.0/dist/h3-js.umd.js"></script>
 <script src="https://unpkg.com/d3@7.9.0/dist/d3.min.js"></script>
+<script src="js/theme.js"></script>
 <script src="js/color.js"></script>
 <script src="js/app.js"></script>
 </body>

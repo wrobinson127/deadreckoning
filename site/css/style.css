@@ -19,8 +19,64 @@
   --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
   --sans: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
 
+  /* spacing scale — 4px base (C2). Use these on new/redesigned components. */
+  --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px; --sp-5: 24px;
   --pad: 16px;
-  --radius: 4px;
+  /* radius scale — 3 steps (C1): data chips / panels / cards */
+  --radius-1: 2px; --radius: 4px; --radius-2: 8px;
+  --focus: var(--phosphor);   /* keyboard focus ring (C4) */
+}
+
+/* ===== LIGHT THEME =====
+   A per-theme REBUILD, not a variable flip: the data ramps invert (dark/
+   saturated high ends so the signal survives a light ground), the carpet/
+   hatch/violet/glow recalibrate, and CVD is re-verified per theme. Dark stays
+   the default identity; light is an accommodation. Map ramp/layer colors live
+   in js/color.js (DR_COLOR.setTheme) and js/app.js (THEME map palette). */
+html[data-theme="light"] {
+  --bg:        #e9edf2;   /* soft paper-slate, not pure white */
+  --bg-panel:  #ffffff;
+  --bg-panel2: #f2f5f9;
+  --line:      rgba(22,32,46,0.12);
+  --line-2:    rgba(22,32,46,0.20);
+  --ink:       #182430;   /* dark slate */
+  --ink-dim:   #45525e;
+  --ink-faint: #667381;   /* meets AA on white panels */
+  --phosphor:  #0c8478;   /* darker teal — readable accent on light */
+  --phosphor-dim: #0c8478;/* active-fill (paired with near-white text) */
+  --warn:      #9a6410;
+  --extreme:   #cf3323;   /* reserved extreme, darkened for the light ground */
+}
+
+/* light-theme component overrides: the legend ramp previews + swatches + loader
+   poster must match the light DATA ramps (see js/color.js light set). */
+html[data-theme="light"] .ramp.raw  { background: linear-gradient(90deg,#f5ead3,#f3c877,#ec8a2f,#d8531c,#a82814,#6e1108); }
+html[data-theme="light"] .ramp.anom { background: linear-gradient(90deg,#efe6ee,#c99fca,#9c4a9c,#6a1f6b,#37103c); }
+html[data-theme="light"] .ramp.cov  { background: linear-gradient(90deg,#dbe6f0,#9fbdd8,#5f8fbe,#356199,#183a63); }
+html[data-theme="light"] .swatch.quiet { background-color:#3f9184; }
+html[data-theme="light"] .swatch.outlined { border-color:#6d4fb0; }
+html[data-theme="light"] .swatch.insufficient {
+  background-color:#dfe4ea;
+  background-image: repeating-linear-gradient(45deg, rgba(40,52,68,.5) 0 1px, transparent 1px 4px);
+}
+html[data-theme="light"] .loader::before {
+  background:
+    linear-gradient(rgba(233,237,242,0.30), rgba(233,237,242,0.55)),
+    url("../assets/og-image-light.jpg") center / cover no-repeat;
+}
+/* on light, the MapLibre control icons are already dark — do NOT invert them
+   (the dark-theme invert made them near-invisible on the white control). */
+html[data-theme="light"] .maplibregl-ctrl-icon,
+html[data-theme="light"] .maplibregl-ctrl-attrib-button { filter: none !important; }
+/* first-run orientation key must match the LIGHT map (R1): light swatches +
+   a dark hatch (the white hatch was invisible on the white intro card). */
+html[data-theme="light"] .intro-how .k-quiet { background:#3f9184; }
+html[data-theme="light"] .intro-how .k-degraded { background:#a82814; }
+html[data-theme="light"] .intro-how .k-outlined { background:#6d4fb0; }
+html[data-theme="light"] .intro-how .k-coverage { background:#356199; }
+html[data-theme="light"] .intro-how .k.hatch {
+  background-color:#dfe4ea;
+  background-image:repeating-linear-gradient(45deg,rgba(40,52,68,.5) 0 1px,transparent 1px 4px);
 }
 
 * { box-sizing: border-box; }
@@ -170,10 +226,12 @@ header.topbar {
 }
 
 /* ---- readout (hover) ---- */
-.readout { bottom: 14px; left: 14px; min-width: 210px; }
+/* top gutter reserves room for the collapse chip (top-left) + × close (top-right)
+   so neither overlaps the big percent value below them. */
+.readout { bottom: 14px; left: 14px; min-width: 210px; padding-top: 28px; }
 .readout.pinned { min-width: 292px; }   /* roomier when the flights list is shown */
 .readout .big { font-family: var(--mono); font-size: 26px; font-weight: 600;
-  line-height: 1.1; margin: 4px 0 2px; }
+  line-height: 1.1; margin: 0 0 2px; }
 .readout .row { display: flex; justify-content: space-between; gap: 12px;
   font-size: 12px; color: var(--ink-dim); font-family: var(--mono); margin-top: 3px; }
 .readout .conf { text-transform: uppercase; letter-spacing: 0.1em; font-size: 10px; }
@@ -281,12 +339,12 @@ header.topbar {
 .collapsible.collapsed > *:not(.collapse-btn) { display: none !important; }
 .collapsible.collapsed .collapse-btn { position: static; width: 32px; height: 28px;
   font-size: 13px; }
-/* the timeline folds down to just its date bar (keeps the date, hides the track);
-   its chip stays pinned in the corner rather than becoming the whole bar */
+/* the timeline collapses ALL the way to a single corner chip (no strip): the
+   current date lives in the always-on badge at top-center, so nothing is lost. */
 .scrubber .collapse-btn { top: 8px; right: 16px; }
-.scrubber.collapsed { padding-top: 9px; padding-bottom: 9px; }
-.scrubber.collapsed > .scrub-head { display: flex !important; }
-.scrubber.collapsed .collapse-btn { position: absolute; width: 22px; height: 22px; }
+.scrubber.collapsed { display: flex; justify-content: flex-end;
+  padding: 4px 16px !important; }
+.scrubber.collapsed .collapse-btn { position: static; width: 32px; height: 28px; }
 
 /* ================= scrubber ================= */
 .scrubber {
@@ -295,9 +353,18 @@ header.topbar {
   padding: 12px 18px 14px; z-index: 5;
 }
 .scrub-head { display:flex; align-items:baseline; gap:16px; margin-bottom:8px; }
-.scrub-date { font-family: var(--mono); font-size: 20px; font-weight: 600;
-  letter-spacing: 0.04em; }
 .scrub-meta { font-family: var(--mono); font-size: 11px; color: var(--ink-faint); }
+
+/* always-on UTC date, floating top-center over the map, independent of the
+   timeline so it stays visible when the scrubber is fully collapsed. */
+.map-date {
+  top: 12px; left: 50%; transform: translateX(-50%);
+  font-family: var(--mono); font-size: 15px; font-weight: 600;
+  letter-spacing: 0.06em; color: var(--ink);
+  background: color-mix(in srgb, var(--bg-panel) 82%, transparent);
+  border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 4px 12px; backdrop-filter: blur(8px); pointer-events: none;
+}
 .scrub-row { display: flex; align-items: center; gap: 14px; }
 .play {
   width: 34px; height: 34px; flex: none; border-radius: 50%;
@@ -414,6 +481,12 @@ input.slider::-moz-range-thumb { width:14px; height:14px; border-radius:50%;
   vertical-align:middle; margin-right:9px; border:1px solid var(--line-2); }
 .intro-how .k.hatch { background-color:#232a33;
   background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.22) 0 1px,transparent 1px 4px); }
+/* orientation-key swatches — theme-aware so the briefing matches the live map
+   (dark defaults here; light overrides in the light block). */
+.intro-how .k-quiet { background:#245f58; }
+.intro-how .k-degraded { background:#e0673a; }
+.intro-how .k-outlined { background:#b39ddb; }
+.intro-how .k-coverage { background:#3a6690; }
 .intro-guide { border-top:1px solid var(--line); padding-top:15px; margin-bottom:20px; }
 .intro-guide-title { font-family:var(--mono); font-size:11px; letter-spacing:.06em;
   color:var(--ink); margin-bottom:9px; }
@@ -502,7 +575,7 @@ footer.site-footer .footer-note { flex-basis:100%; color:var(--ink-faint);
   .drawer { width: 100%; }
   .readout { min-width: 150px; }
   .readout.pinned { min-width: 62vw; }
-  .scrub-date { font-size: 16px; }
+  .map-date { font-size: 13px; padding: 3px 10px; }
 }
 @media (prefers-reduced-motion: reduce) {
   * { animation-duration: .01ms !important; transition-duration: .01ms !important; }
