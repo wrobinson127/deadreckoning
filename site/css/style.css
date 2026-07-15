@@ -92,14 +92,18 @@ header.topbar {
   border-radius: var(--radius) !important;
 }
 .maplibregl-ctrl-attrib a { color: var(--ink-dim) !important; }
+/* the "i" button carries the info icon as its OWN background, so invert must run
+   on a transparent button (else it flips the dark chip to grey). The dark chip
+   comes from the compact container below. */
 .maplibregl-ctrl-attrib-button {
-  background-color: color-mix(in srgb, var(--bg-panel) 90%, transparent) !important;
-  filter: invert(1) brightness(0.85) !important; border-radius: var(--radius) !important;
+  background-color: transparent !important;
+  filter: invert(0.92) !important;
 }
-/* collapsed compact state: just the "i", no wash */
+/* collapsed compact state: a dark rounded chip holding just the "i" */
 .maplibregl-ctrl-attrib.maplibregl-compact:not(.maplibregl-compact-show) {
   background: color-mix(in srgb, var(--bg-panel) 90%, transparent) !important;
-  min-height: 22px; box-shadow: none !important;
+  border: 1px solid var(--line) !important; min-height: 24px; min-width: 24px;
+  box-shadow: none !important;
 }
 
 /* legend + mode controls float over the map */
@@ -141,8 +145,12 @@ header.topbar {
 .check input { accent-color: var(--phosphor); }
 .check.basemap-check { margin-top: 12px; padding-top: 11px; border-top: 1px solid var(--line); }
 
+/* right-hand column: legend stacked over the watch-regions box (keeps the
+   bottom-right corner free for the zoom control) */
+.right-stack { top: 14px; right: 14px; display: flex; flex-direction: column;
+  gap: 10px; align-items: flex-end; max-height: calc(100% - 28px); }
 /* legend ramp */
-.legend { top: 14px; right: 14px; width: 190px; }
+.legend { position: relative; width: 190px; }
 .ramp { height: 9px; border-radius: 2px; margin: 6px 0 4px;
   border: 1px solid var(--line); }
 .ramp.anom { background: linear-gradient(90deg,#000004,#3b0f70,#8c2981,#de4968,#fe9f6d,#fcfdbf); }
@@ -163,7 +171,7 @@ header.topbar {
 
 /* ---- readout (hover) ---- */
 .readout { bottom: 14px; left: 14px; min-width: 210px; }
-.readout.pinned { min-width: 256px; }   /* roomier when the flights list is shown */
+.readout.pinned { min-width: 292px; }   /* roomier when the flights list is shown */
 .readout .big { font-family: var(--mono); font-size: 26px; font-weight: 600;
   line-height: 1.1; margin: 4px 0 2px; }
 .readout .row { display: flex; justify-content: space-between; gap: 12px;
@@ -181,7 +189,7 @@ header.topbar {
   color: var(--ink-dim); font-size: 16px; line-height: 1; cursor: pointer; padding: 0; }
 .ro-close:hover { color: var(--phosphor); }
 .ro-flights { margin-top: 9px; padding-top: 8px; border-top: 1px solid var(--line);
-  max-height: 188px; overflow-y: auto; }
+  max-height: 300px; overflow-y: auto; padding-right: 5px; }
 .ro-flights .fl-head { font-family: var(--mono); font-size: 9px; letter-spacing: 0.08em;
   text-transform: uppercase; color: var(--ink-faint); margin-bottom: 6px;
   display: flex; flex-direction: column; gap: 2px; }
@@ -233,8 +241,8 @@ header.topbar {
 .src-list li { font-size: 12px; margin-bottom: 5px; color: var(--ink-faint); }
 .needs-source { color: var(--warn); font-family: var(--mono); font-size: 11px; }
 
-/* watch-regions box (bottom-right, sits above the zoom control) */
-.region-box { bottom: 100px; right: 14px; width: 196px; max-height: 40vh;
+/* watch-regions box: docked under the legend in the right-hand column */
+.region-box { position: relative; width: 196px; min-height: 0; max-height: 300px;
   display: flex; flex-direction: column; }
 .region-list { display: flex; flex-direction: column; gap: 4px;
   overflow-y: auto; margin-top: 2px; }
@@ -252,22 +260,33 @@ header.topbar {
    containing block for the collapse button). Only the two collapsibles that are
    otherwise static need an explicit containing block: */
 #controlsPanel, .scrubber.collapsible { position: relative; }
-.collapse-btn { position: absolute; top: 7px; right: 8px; z-index: 4;
-  width: 18px; height: 18px; padding: 0; line-height: 1; background: none;
-  border: 0; color: var(--ink-faint); cursor: pointer; font-family: var(--mono);
-  font-size: 12px; transition: color .15s; }
-.collapse-btn:hover { color: var(--phosphor); }
+/* The toggle is a clearly-visible bordered chip in BOTH states (the earlier
+   bare glyph was almost invisible when a box was folded). */
+.collapse-btn { position: absolute; top: 6px; right: 6px; z-index: 5;
+  width: 22px; height: 22px; padding: 0; display: grid; place-items: center;
+  background: color-mix(in srgb, var(--bg-panel2) 94%, transparent);
+  border: 1px solid var(--line-2); border-radius: var(--radius);
+  color: var(--ink); cursor: pointer; font-family: var(--mono); font-size: 12px;
+  transition: color .15s, border-color .15s, background .15s; }
+.collapse-btn:hover { color: var(--phosphor); border-color: var(--phosphor);
+  background: var(--bg-panel2); }
 .collapse-btn::before { content: "\25BE"; }               /* ▾ expanded: click to fold */
 .collapsible.collapsed .collapse-btn::before { content: "\25B8"; }  /* ▸ folded: click to open */
-.readout-collapse { right: auto; left: 8px; }
-.collapsible > h3 { padding-right: 18px; }
+.readout-collapse { right: auto; left: 6px; }
+.collapsible > h3 { padding-right: 28px; }
+/* folded: the box becomes just the chip — an obvious, sized tab you can find */
 .collapsible.collapsed { min-width: 0 !important; width: auto !important;
-  max-height: none !important; padding: 5px 7px !important; }
+  max-height: none !important; padding: 0 !important; border: none !important;
+  background: none !important; backdrop-filter: none !important; }
 .collapsible.collapsed > *:not(.collapse-btn) { display: none !important; }
-/* the timeline folds down to just its date bar (keeps the date, hides the track) */
-.scrubber .collapse-btn { top: 10px; right: 18px; }
+.collapsible.collapsed .collapse-btn { position: static; width: 32px; height: 28px;
+  font-size: 13px; }
+/* the timeline folds down to just its date bar (keeps the date, hides the track);
+   its chip stays pinned in the corner rather than becoming the whole bar */
+.scrubber .collapse-btn { top: 8px; right: 16px; }
 .scrubber.collapsed { padding-top: 9px; padding-bottom: 9px; }
 .scrubber.collapsed > .scrub-head { display: flex !important; }
+.scrubber.collapsed .collapse-btn { position: absolute; width: 22px; height: 22px; }
 
 /* ================= scrubber ================= */
 .scrubber {
@@ -476,9 +495,10 @@ footer.site-footer .footer-note { flex-basis:100%; color:var(--ink-faint);
 @media (max-width: 760px) {
   .controls { max-width: 44vw; }
   /* Legend + watch-regions stay accessible on phones but start folded to their
-     arrow tabs (JS) so they never cover the map. Docked above the scrubber. */
-  .legend { top: auto; bottom: 150px; right: 8px; width: auto; max-width: 66vw; }
-  .region-box { bottom: 96px; right: 8px; width: auto; max-width: 66vw; max-height: 34vh; }
+     arrow tabs (JS) so they never cover the map. */
+  .right-stack { top: 10px; right: 8px; max-width: 60vw; }
+  .legend, .region-box { width: auto; max-width: 60vw; }
+  .region-box { max-height: 30vh; }
   .drawer { width: 100%; }
   .readout { min-width: 150px; }
   .readout.pinned { min-width: 62vw; }

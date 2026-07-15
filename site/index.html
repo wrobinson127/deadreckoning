@@ -63,23 +63,25 @@
       </div>
     </div>
 
-    <div class="map-overlay legend panel collapsible" id="legend">
-      <button class="collapse-btn" data-collapse aria-label="collapse legend"></button>
-      <h3 id="legendTitle">Aircraft with degraded GPS</h3>
-      <div class="ramp raw" id="legendRamp"></div>
-      <div class="ramp-labels"><span id="legLo">0%</span><span id="legHi">100%</span></div>
-      <div class="swatch-row"><span class="swatch quiet"></span>
-        <span>watched &amp; quiet: aircraft seen, GPS healthy</span></div>
-      <div class="swatch-row"><span class="swatch insufficient"></span>
-        <span>too few aircraft: not measured</span></div>
-      <div class="swatch-row"><span class="swatch outlined"></span>
-        <span>outlined: airspace closed or reduced coverage (blind here)</span></div>
-    </div>
+    <div class="map-overlay right-stack">
+      <div class="legend panel collapsible" id="legend">
+        <button class="collapse-btn" data-collapse aria-label="collapse legend"></button>
+        <h3 id="legendTitle">Aircraft with degraded GPS</h3>
+        <div class="ramp raw" id="legendRamp"></div>
+        <div class="ramp-labels"><span id="legLo">0%</span><span id="legHi">100%</span></div>
+        <div class="swatch-row"><span class="swatch quiet"></span>
+          <span>watched &amp; quiet: aircraft seen, GPS healthy</span></div>
+        <div class="swatch-row"><span class="swatch insufficient"></span>
+          <span>too few aircraft: not measured</span></div>
+        <div class="swatch-row"><span class="swatch outlined"></span>
+          <span>outlined: airspace closed or reduced coverage (blind here)</span></div>
+      </div>
 
-    <div class="map-overlay region-box panel collapsible" id="regionBox">
-      <button class="collapse-btn" data-collapse aria-label="collapse regions"></button>
-      <h3>Watch regions</h3>
-      <div class="region-list" id="regionChips"></div>
+      <div class="region-box panel collapsible" id="regionBox">
+        <button class="collapse-btn" data-collapse aria-label="collapse regions"></button>
+        <h3>Watch regions</h3>
+        <div class="region-list" id="regionChips"></div>
+      </div>
     </div>
 
     <div class="map-overlay readout panel empty collapsible" id="readout">
@@ -162,7 +164,8 @@
     <button class="collapse-btn" data-collapse aria-label="collapse timeline"></button>
     <div class="scrub-head">
       <span class="scrub-date" id="scrubDate">————-——-——</span>
-      <span class="scrub-meta" id="scrubMeta"></span>
+      <span class="scrub-meta" id="scrubMeta"
+        title="each cell is an H3 hex (~1,770 km²) that had at least one aircraft this UTC day; high-confidence = 10+ aircraft"></span>
     </div>
     <div class="scrub-row">
       <button class="play" id="playBtn" aria-label="play">▶</button>
