@@ -22,21 +22,35 @@
   };
   var shortName = function (n) { return SHORT[n] || n; };
 
-  // Per-point scatter labels with a greedy vertical declutter: coincident points
-  // stack their labels instead of overprinting. items: [{d, label, nx, ny}] with
-  // nx/ny normalized to [0,1]. xf/yf are the dot's x/y field names.
-  function labelMarks(items, xf, yf) {
-    var placed = [];
-    return items.slice().sort(function (a, b) { return b.ny - a.ny; }).map(function (it) {
-      var k = placed.filter(function (p) { return Math.abs(p.nx - it.nx) < 0.14 && Math.abs(p.ny - it.ny) < 0.05; }).length;
-      var right = it.nx > 0.62;
-      placed.push(it);
-      return P.text([it.d], {
-        x: xf, y: yf, text: function () { return it.label; },
-        dx: right ? -9 : 9, dy: -5 - k * 11, fill: C.INK_DIM, fontSize: 9,
-        textAnchor: right ? "end" : "start"
+  // Per-point scatter labels with a greedy vertical declutter done in approximate
+  // PIXEL space, so labels for near-coincident points get a guaranteed gap (a
+  // dy nudge alone fails when the points themselves sit at different heights).
+  // items: [{d, label, nx, ny}] normalized to [0,1] (ny: 0 = bottom). plotW/plotH
+  // are the plot area size in px. xf/yf are the dot's x/y field names.
+  // ymaxDom is the (linear) y-domain max, used to convert a decluttered label's
+  // pixel height back to data space for a faint leader line to its dot.
+  function labelMarks(items, xf, yf, plotW, plotH, ymaxDom) {
+    var placed = [], texts = [], links = [];
+    items
+      .map(function (it) { return { it: it, px: it.nx * plotW, py: (1 - it.ny) * plotH }; })
+      .sort(function (a, b) { return a.py - b.py; })     // top-down for stable stacking
+      .forEach(function (o) {
+        var right = o.it.nx > 0.62;
+        var ly = o.py - 6, guard = 0;                    // label baseline just above the dot
+        while (guard++ < 14 && placed.some(function (p) { return Math.abs(p.px - o.px) < 74 && Math.abs(p.ly - ly) < 12; })) ly -= 12;
+        placed.push({ px: o.px, ly: ly });
+        texts.push(P.text([o.it.d], {
+          x: xf, y: yf, text: function () { return o.it.label; },
+          dx: right ? -9 : 9, dy: ly - o.py, fill: C.INK_DIM, fontSize: 9,
+          textAnchor: right ? "end" : "start"
+        }));
+        if (o.py - ly > 13) {                            // label pulled clear: draw a leader to its dot
+          var ldy = (1 - ly / plotH) * ymaxDom;
+          links.push(P.link([o.it.d], { x1: xf, y1: yf, x2: xf, y2: function () { return ldy; },
+            stroke: C.INK_FAINT, strokeWidth: 0.6, strokeOpacity: 0.6 }));
+        }
       });
-    });
+    return links.concat(texts);
   }
 
   var stats, events, sharedDomain = null;
@@ -59,7 +73,7 @@
     var evs = evForRegion(rid).map(function (e) { return { title: e.title, date: e.date, y: ratioAt(rid, e.date) }; });
     return P.plot({
       width: W(el), height: compact ? 116 : 180,
-      marginLeft: compact ? 34 : 44, marginRight: 12, marginTop: 6, marginBottom: compact ? 20 : 24,
+      marginLeft: compact ? 34 : 44, marginRight: 12, marginTop: compact ? 8 : 20, marginBottom: compact ? 20 : 24,
       style: STYLE,
       x: { type: "utc", domain: sharedDomain || undefined, grid: true, tickFormat: "%b %d", label: null, ticks: compact ? 4 : undefined },
       y: { domain: [0, ymax], grid: true, label: compact ? null : "ratio", ticks: compact ? 3 : undefined },
@@ -128,16 +142,17 @@
     var mm = stats.quadrant_medians.mean_interference, ms = stats.quadrant_medians.spikiness_std;
     var xmax = Math.max.apply(null, rows.map(function (d) { return d.x; }));
     var ymax = Math.max.apply(null, rows.map(function (d) { return d.y; }));
+    var w = W(el), mL = 52, mR = 20, mT = 16, mB = 34, yd = ymax * 1.12;
     fill(el, P.plot({
-      width: W(el), height: 460, marginLeft: 52, marginRight: 20, marginTop: 16, style: STYLE,
+      width: w, height: 460, marginLeft: mL, marginRight: mR, marginTop: mT, marginBottom: mB, style: STYLE,
       x: { grid: true, domain: [0, xmax * 1.08], label: "mean interference (archive mean of daily degraded ratio)" },
-      y: { grid: true, domain: [0, ymax * 1.12], label: "spikiness (std of daily degraded ratio)" },
+      y: { grid: true, domain: [0, yd], label: "spikiness (std of daily degraded ratio)" },
       marks: [
         P.ruleX([mm], { stroke: C.QUAD, strokeDasharray: "3", strokeOpacity: 0.5 }),
         P.ruleY([ms], { stroke: C.QUAD, strokeDasharray: "3", strokeOpacity: 0.5 }),
         P.dot(rows, { x: "x", y: "y", fill: C.SIGNAL, r: 6, stroke: C.BG,
           title: function (d) { return d.name + "\nmean " + d.x + "\nspikiness " + d.y + "\n" + d.cls; }, tip: true })
-      ].concat(labelMarks(rows.map(function (d) { return { d: d, label: d.label, nx: d.x / (xmax * 1.08), ny: d.y / (ymax * 1.12) }; }), "x", "y"), [
+      ].concat(labelMarks(rows.map(function (d) { return { d: d, label: d.label, nx: d.x / (xmax * 1.08), ny: d.y / yd }; }), "x", "y", w - mL - mR, 460 - mT - mB, yd), [
         P.text(["chronic"], { frameAnchor: "bottom-right", text: function (d) { return d; }, fill: C.INK_FAINT, fontSize: 10, fontStyle: "italic", dx: -6, dy: -6 }),
         P.text(["volatile"], { frameAnchor: "top-right", text: function (d) { return d; }, fill: C.INK_FAINT, fontSize: 10, fontStyle: "italic", dx: -6, dy: 8 }),
         P.text(["episodic"], { frameAnchor: "top-left", text: function (d) { return d; }, fill: C.INK_FAINT, fontSize: 10, fontStyle: "italic", dx: 6, dy: 8 }),
@@ -155,14 +170,15 @@
     var lg = function (v) { return Math.log(v) / Math.LN10; };
     var lo = Math.min.apply(null, rows.map(function (d) { return lg(d.x); }));
     var hi = Math.max.apply(null, rows.map(function (d) { return lg(d.x); }));
+    var w = W(el), mL = 52, mR = 20, mT = 12, mB = 34, yd = ymax * 1.18;
     fill(el, P.plot({
-      width: W(el), height: 380, marginLeft: 52, marginRight: 20, marginTop: 12, style: STYLE,
+      width: w, height: 380, marginLeft: mL, marginRight: mR, marginTop: mT, marginBottom: mB, style: STYLE,
       x: { type: "log", grid: true, label: "coverage (mean aircraft/day, log)" },
-      y: { grid: true, domain: [0, ymax * 1.18], label: "mean interference" },
+      y: { grid: true, domain: [0, yd], label: "mean interference" },
       marks: [
         P.dot(rows, { x: "x", y: "y", fill: C.WARM, r: 6, stroke: C.BG,
           title: function (d) { return d.name + "\n" + Math.round(d.x).toLocaleString() + " aircraft/day\nmean interference " + d.y; }, tip: true })
-      ].concat(labelMarks(rows.map(function (d) { return { d: d, label: d.label, nx: (lg(d.x) - lo) / (hi - lo), ny: d.y / (ymax * 1.18) }; }), "x", "y"))
+      ].concat(labelMarks(rows.map(function (d) { return { d: d, label: d.label, nx: (lg(d.x) - lo) / (hi - lo), ny: d.y / yd }; }), "x", "y", w - mL - mR, 380 - mT - mB, yd))
     }));
   }
 
