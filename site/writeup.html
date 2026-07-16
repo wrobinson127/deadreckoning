@@ -58,6 +58,11 @@
     background: var(--bg-panel2); border: 1px solid var(--line-2); border-radius: 3px; padding: 2px 8px; cursor: pointer; }
   .tc-head button:hover { color: var(--phosphor); border-color: var(--phosphor); }
   .tc-hint { font-family: var(--mono); font-size: 11px; color: var(--ink-faint); margin: 4px 0 0; }
+  .minigrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; margin: 12px 0 18px; }
+  .minipanel { border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px 2px; background: var(--bg-panel); }
+  .minipanel h4 { font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: .04em;
+    color: var(--ink-dim); margin: 2px 0 2px; }
+  .minipanel .plot { min-height: 0; }
 </style>
 </head>
 <body>
@@ -150,7 +155,10 @@
     </div>
 
     <h3>All regions, at a glance</h3>
-    <p>Mechanical reference rows for the remaining regions (no commentary).</p>
+    <p>Every other tracked region on the same daily degraded-ratio series (baseline band, event markers,
+      hover or tap for values). These follow the shared time window above too. Mechanical reference numbers
+      are in the table below; no commentary.</p>
+    <div class="minigrid" id="miniPanels"></div>
     <table class="summary" id="summaryTable">
       <thead><tr><th>Region</th><th class="num">mean</th><th class="num">peak</th><th>classification</th><th class="num">events (in-window / total)</th></tr></thead>
       <tbody></tbody>
