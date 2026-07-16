@@ -13,7 +13,7 @@ adsb.lol dump ─► pipeline/ ─► data/ ─► site/ (static MapLibre) ◄�
   deleted)       aggregate     aggregates  as static fetches          events)
                                   │
                                   └► baselines.json + regions/*.json + manifest.json
-board/  = self-contained kanban (project state, rides git history)
+board/  = self-contained kanban (LOCAL working tool, gitignored — not published)
 ```
 - **pipeline/** (Python 3.11+): `config.py` (ALL tunables) · `download.py`
   (resolve+fetch split-tar release, delete after) · `parse.py` (stream tar,
