@@ -50,6 +50,21 @@ def _tag_variants(day: str) -> list[str]:
     ]
 
 
+def _select_parts(assets: list[dict]) -> list[dict]:
+    """Pick a day's tar payload asset(s), across archive-format eras.
+
+    2024+ split each day into byte-parts (``.tar.aa``, ``.tar.ab``, ...); the
+    2023 archive ships a single ``.tar``. Prefer split parts (sorted so ``.aa``
+    precedes ``.ab``); otherwise fall back to a lone ``.tar``. Either way the
+    parser concatenates the returned parts in order and reassembles an identical
+    tar stream, so downstream normalization is byte-for-byte format-agnostic.
+    """
+    split = sorted((a for a in assets if ".tar.a" in a["name"]), key=lambda a: a["name"])
+    if split:
+        return split
+    return [a for a in assets if a["name"].endswith(".tar")]
+
+
 def resolve_release(day: str) -> tuple[str, list[dict]]:
     """Return (tag, assets) for the given YYYY-MM-DD day, preferring prod.
 
@@ -61,9 +76,8 @@ def resolve_release(day: str) -> tuple[str, list[dict]]:
     for tag in _tag_variants(day):
         data = _api_get(f"https://api.github.com/repos/{repo}/releases/tags/{tag}")
         if data and data.get("assets"):
-            parts = [a for a in data["assets"] if ".tar.a" in a["name"]]
+            parts = _select_parts(data["assets"])
             if parts:
-                parts.sort(key=lambda a: a["name"])  # .aa before .ab
                 return tag, parts
     raise ReleaseNotAvailable(f"No prod/staging release with tar parts for {day}")
 
