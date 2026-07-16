@@ -156,8 +156,8 @@ The instrument is built to be checked, not trusted on faith.
   reviews for code correctness, content sourcing, visual design, and a
   pre-publication audit. Findings are triaged and fixed before the work ships, and
   no pass reviews its own author's summary.
-- **Automated tests with regression guards.** The pipeline ships 36 tests,
-  including guards that lock the honesty rules in place: the majority-rule
+- **Automated tests with regression guards.** The pipeline ships a suite of
+  automated tests, including guards that lock the honesty rules in place: the majority-rule
   boundary case, the baseline math, parser filtering, draft gating, and a
   manifest-integrity check that every listed day resolves to a present, decodable,
   well-formed artifact.

@@ -21,6 +21,11 @@
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<!-- warm the cold-cache first paint: the JS libs (unpkg) and the basemap tile
+     origin are the two biggest cross-origin fetches on load. -->
+<link rel="preconnect" href="https://unpkg.com" crossorigin />
+<link rel="preconnect" href="https://tiles.openfreemap.org" crossorigin />
+<link rel="dns-prefetch" href="https://tiles.openfreemap.org" />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
 <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
 <link rel="stylesheet" href="css/style.css" />

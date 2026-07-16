@@ -3,6 +3,8 @@
 > *Dead reckoning* is how you navigate when GPS is denied: from last known
 > position, heading, and speed. The name is the thesis.
 
+**Live:** [deadreckoning.walker-robinson.com](https://deadreckoning.walker-robinson.com)
+
 A longitudinal instrument for **GPS/GNSS interference**, built entirely from open
 ADS-B data. Aircraft broadcast a Navigation Integrity Category (**NIC**) alongside
 each position. When many aircraft in one area simultaneously report degraded
