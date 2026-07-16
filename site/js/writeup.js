@@ -150,13 +150,13 @@
       marks: [
         P.ruleX([mm], { stroke: C.QUAD, strokeDasharray: "3", strokeOpacity: 0.5 }),
         P.ruleY([ms], { stroke: C.QUAD, strokeDasharray: "3", strokeOpacity: 0.5 }),
-        P.dot(rows, { x: "x", y: "y", fill: C.SIGNAL, r: 6, stroke: C.BG,
+        P.dot(rows, { x: "x", y: "y", fill: C.SIGNAL, r: 6, stroke: C.BG, strokeWidth: 1.8,
           title: function (d) { return d.name + "\nmean " + d.x + "\nspikiness " + d.y + "\n" + d.cls; }, tip: true })
       ].concat(labelMarks(rows.map(function (d) { return { d: d, label: d.label, nx: d.x / (xmax * 1.08), ny: d.y / yd }; }), "x", "y", w - mL - mR, 460 - mT - mB, yd), [
         P.text(["chronic"], { frameAnchor: "bottom-right", text: function (d) { return d; }, fill: C.INK_FAINT, fontSize: 10, fontStyle: "italic", dx: -6, dy: -6 }),
         P.text(["volatile"], { frameAnchor: "top-right", text: function (d) { return d; }, fill: C.INK_FAINT, fontSize: 10, fontStyle: "italic", dx: -6, dy: 8 }),
         P.text(["episodic"], { frameAnchor: "top-left", text: function (d) { return d; }, fill: C.INK_FAINT, fontSize: 10, fontStyle: "italic", dx: 6, dy: 8 }),
-        P.text(["quiet"], { frameAnchor: "bottom-left", text: function (d) { return d; }, fill: C.INK_FAINT, fontSize: 10, fontStyle: "italic", dx: 6, dy: -6 })
+        P.text(["quiet"], { frameAnchor: "bottom", text: function (d) { return d; }, fill: C.INK_FAINT, fontSize: 10, fontStyle: "italic", dx: -70, dy: -6 })
       ])
     }));
   }
