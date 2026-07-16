@@ -103,7 +103,11 @@ a:hover { text-decoration: underline; text-underline-offset: 2px; }
 
 /* ================= app shell ================= */
 #app { position: fixed; inset: 0; display: grid;
-  grid-template-rows: auto 1fr auto; }
+  grid-template-rows: auto 1fr auto;
+  /* clamp the single column to the viewport: without this, a wide row (the
+     top bar's min-content nav on narrow phones) stretches every row past the
+     viewport, pushing map overlays (e.g. the intro close button) off-screen. */
+  grid-template-columns: minmax(0, 1fr); overflow: hidden; }
 
 /* ---- top bar ---- */
 header.topbar {
@@ -465,14 +469,25 @@ input.slider::-moz-range-thumb { width:14px; height:14px; border-radius:50%;
 .zone-card .zc-region:hover { text-decoration:underline; }
 
 /* ================= intro / orientation ================= */
-.intro-scrim { position:absolute; inset:0; z-index:18; display:grid; place-items:center;
-  padding:20px; background:radial-gradient(120% 90% at 50% 30%,
+.intro-scrim { position:absolute; inset:0; z-index:18; display:flex;
+  align-items:center; justify-content:center; padding:20px;
+  background:radial-gradient(120% 90% at 50% 30%,
     rgba(10,12,15,.72), rgba(10,12,15,.93)); backdrop-filter:blur(3px);
   animation:fade .35s ease; }
 .intro-scrim[hidden] { display:none; }
-.intro-card { max-width:560px; width:100%; background:var(--bg-panel);
-  border:1px solid var(--line-2); border-radius:8px; padding:26px 28px 22px;
-  box-shadow:0 24px 80px rgba(0,0,0,.6); }
+/* always-visible corner dismiss (a secondary escape hatch to the pinned action row) */
+.intro-close { position:absolute; top:14px; right:16px; z-index:2;
+  width:30px; height:30px; border-radius:50%; border:1px solid var(--line-2);
+  background:color-mix(in srgb, var(--bg-panel) 90%, transparent); color:var(--ink);
+  font-size:18px; line-height:1; cursor:pointer; display:grid; place-items:center; }
+.intro-close:hover { color:var(--phosphor); border-color:var(--phosphor); }
+/* Launch-day P1 fix: cap the card to the viewport and let it scroll INTERNALLY,
+   so the pinned action row (below) can never be pushed off-screen on short
+   viewports. dvh handles mobile browser chrome; 100% bounds it to the scrim. */
+.intro-card { max-width:560px; width:100%; max-height:100%;
+  display:flex; flex-direction:column; overflow-y:auto; overscroll-behavior:contain;
+  background:var(--bg-panel); border:1px solid var(--line-2); border-radius:8px;
+  padding:26px 28px 0; box-shadow:0 24px 80px rgba(0,0,0,.6); }
 .intro-kicker { font-family:var(--mono); font-size:10px; letter-spacing:.2em;
   text-transform:uppercase; color:var(--phosphor); margin-bottom:12px; }
 .intro-card h2 { margin:0 0 10px; font-size:24px; font-weight:600; letter-spacing:.01em; }
@@ -496,7 +511,9 @@ input.slider::-moz-range-thumb { width:14px; height:14px; border-radius:50%;
 .intro-guide ul { margin:0; padding-left:16px; }
 .intro-guide li { color:var(--ink-dim); line-height:1.55; font-size:13px; margin-bottom:6px; }
 .intro-guide b { color:var(--ink); font-weight:600; }
-.intro-actions { display:flex; align-items:center; gap:18px; }
+.intro-actions { position:sticky; bottom:0; display:flex; align-items:center; gap:18px;
+  margin:0 -28px 0; padding:14px 28px 18px; background:var(--bg-panel);
+  border-top:1px solid var(--line); }
 .intro-go { background:var(--phosphor-dim); color:#eafffb; border:1px solid var(--phosphor);
   border-radius:4px; padding:9px 18px; font-family:var(--mono); font-size:13px;
   letter-spacing:.04em; cursor:pointer; transition:background .15s; }
@@ -510,7 +527,8 @@ input.slider::-moz-range-thumb { width:14px; height:14px; border-radius:50%;
   vertical-align:middle; transition:color .15s, border-color .15s; }
 .nav-help:hover { color:var(--phosphor); border-color:var(--phosphor); }
 @keyframes fade { from { opacity:0 } to { opacity:1 } }
-@media (max-width:760px){ .intro-card{padding:20px} .intro-card h2{font-size:20px} }
+@media (max-width:760px){ .intro-card{padding:20px 20px 0} .intro-card h2{font-size:20px}
+  .intro-actions{margin:0 -20px 0; padding:14px 20px 18px} }
 
 /* ================= loading / states ================= */
 .loader { position:absolute; inset:0; z-index:20; display:grid; place-items:center;
