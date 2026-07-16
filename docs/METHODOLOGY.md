@@ -1,7 +1,7 @@
 # METHODOLOGY
 
-*Draft — technical reference. The site's `methodology.html` is the reader-facing
-version; this is the engineering companion. Walker edits voice before publishing.*
+*Technical companion to the site's methodology page: the engineering reference for
+how the signal is computed, with the exact thresholds and config.*
 
 ## The signal: ADS-B Navigation Integrity Category (NIC)
 Every ADS-B–equipped aircraft broadcasts a **NIC** (integer `0`–`11`, DO-260B)
@@ -20,7 +20,7 @@ mapping used for thresholding:
 
 ## Pipeline
 1. **Fetch** one UTC day's open ADS-B dump from adsb.lol (split-tar GitHub
-   release; concatenate parts, stream the tar member-by-member — the full day
+   release; concatenate parts, stream the tar member-by-member, so the full day
    never sits in memory).
 2. **Filter** to airborne positions (`alt != "ground"`) with valid lat/lon that
    carry a numeric `nic`. Ground and non-positional records are dropped.
@@ -49,16 +49,16 @@ All tunables live in `pipeline/config.py`. The current values:
 | `BASELINE_STD_FLOOR` | 0.02 | floor on std for z-scores |
 
 ## Threshold rationale & sensitivity
-`nic ≤ 6` is chosen because NIC 6 ⇒ rc ≈ 926 m (~1 km) — the point at which a
+`nic ≤ 6` is chosen because NIC 6 ⇒ rc ≈ 926 m (~1 km), the point at which a
 position is too loose to trust. NIC 7+ (rc < ~370 m) is healthy.
 
-**`nic = 0` is folded into "degraded" — by design.** On the reference day the
+**`nic = 0` is folded into "degraded", by design.** On the reference day the
 degraded signal is **dominated by `nic = 0`** (~85% of all degraded points),
 which makes the physical rationale the load-bearing one: NIC 0 ("integrity
 unknown") is the *expected signature of a receiver under interference that cannot
 compute an integrity bound at all*. Excluding it would discard the strongest,
 most characteristic evidence of GPS denial and leave only the milder "degraded
-but still reporting" cases. The spatial evidence supports inclusion — with
+but still reporting" cases. The spatial evidence supports inclusion: with
 `nic = 0` in, the surface concentrates in known interference zones
 (Baltic/Kaliningrad `bad_ratio` up to 1.0) and stays near-absent over a quiet
 control (central US ~0.10 max), which is the behavior we would demand of a real
@@ -69,14 +69,14 @@ consequential, the with/without figures are kept on the record: the degraded-poi
 fraction is **5.98% including `nic = 0`** vs **0.87% excluding it**. These are
 sample-day figures, not recomputed per render; treat them as the calibrated order
 of magnitude. A per-hex *strict* view (`bad_ratio` excluding `nic = 0`) is a
-planned UI toggle so a reader can see the band directly — deferred, not dropped.
+planned UI toggle so a reader can see the band directly. Deferred, not dropped.
 ADS-B v0 aircraft (~3.8% of reports, different NIC derivation) are treated with
 the same coarse `≤ 6` rule; their small share is noted rather than special-cased.
 
 ## Confidence & the honesty rule (invariant)
 Every hex carries its unique-aircraft count and a tier: **high** (≥10),
 **medium** (5–9), **insufficient** (<5). Insufficient hexes are never rendered as
-a ratio or confident color — on the map they appear as a dim diagonal hatch (the
+a ratio or confident color. On the map they appear as a dim diagonal hatch (the
 "Low-sample cells" toggle). This makes *no interference* visually distinct from
 *no coverage*.
 
@@ -84,7 +84,7 @@ a ratio or confident color — on the map they appear as a dim diagonal hatch (t
 presence of monitoring is shown: a dark cell could mean "watched and calm" or
 "nobody was looking," and those are opposite claims. So measured-but-quiet hexes
 (tier ≥ medium, low degraded ratio) render as a faint "watched airspace" carpet
-(the "Quiet coverage" toggle, on by default) — distinct from the near-black of
+(the "Quiet coverage" toggle, on by default), distinct from the near-black of
 genuine no-data. The carpet is deliberately a whisper: it must never compete with
 a real bloom.
 
@@ -107,13 +107,13 @@ days on which the hex met the aircraft floor; a hex needs ≥ `BASELINE_MIN_DAYS
 qualifying days before it earns one. Anomaly z = `(bad_ratio − mean) /
 max(std, std_floor)`, computed client-side and clamped to the color scale
 (±`anomaly_clip`). The baseline uses the window of days *around* each date, which
-suits a **retrospective archive** rather than a real-time alarm — documented so
+suits a **retrospective archive** rather than a real-time alarm. It is documented so
 readers don't mistake it for a causal early-warning signal.
 
 ## The sensor-desert paradox
 The instrument measures interference **where civil aircraft fly**, which is
 systematically **not** the airspace that is closed or avoided. When airspace is
-closed or widely avoided the sky empties and the sensors leave with the traffic —
+closed or widely avoided the sky empties and the sensors leave with the traffic,
 so the worst jamming can sit inside a **dark zone that means "nobody was looking,"
 not "all clear."** We measure the *edges* of such airspace, not its interior. The
 overlay describes the instrument's blindness (an airspace-status fact), not the
@@ -124,7 +124,7 @@ outlines airspace that is `closed` (e.g., Ukraine, closed to civil traffic since
 Feb 2022) or of `reduced_coverage` (e.g., Russia, widely avoided by Western
 carriers and thin on volunteer receivers), plus `known_test_area` ranges where
 GPS testing is recurring and announced. It renders as a violet dashed outline
-with a faint wash — a hue never used for the signal ramp — so a reader can never
+with a faint wash, a hue never used for the signal ramp, so a reader can never
 mistake *absence of data* for *absence of jamming*. Each zone card leads with the
 regulatory fact ("closed to civil aviation since …") and its source. Zone polygons
 are drawn from Natural Earth boundaries and are context, not precise FIR geometry
@@ -132,21 +132,21 @@ are drawn from Natural Earth boundaries and are context, not precise FIR geometr
 
 **Not every dark cell is a zone.** Oceanic and remote-region darkness reflects
 **terrestrial ADS-B receiver range** (roughly 250 nm offshore before line-of-sight
-runs out) and volunteer-receiver sparsity — *not* airspace status. The
+runs out) and volunteer-receiver sparsity, *not* airspace status. The
 traffic-density **Coverage** view is the honest instrument for reading where the
 sensors are; the zone layer is reserved for regulatory / conflict causes only. So
 a dark ocean or an empty stretch of central Asia is a coverage fact, not a closed
-zone — do not zone the Atlantic.
+zone. Do not zone the Atlantic.
 
 ## What the instrument cannot see
-- **Coverage bias** — signal exists only where aircraft fly and receivers hear
+- **Coverage bias:** signal exists only where aircraft fly and receivers hear
   them; open ocean, closed airspace, and receiver-sparse regions read as
   *no data*, not *no interference*.
-- **Equipment / multipath false positives** — suppressed by the multi-aircraft
+- **Equipment / multipath false positives:** suppressed by the multi-aircraft
   rule but never zero; a single anomalous hex is not proof.
-- **Cause & attribution** — NIC shows *that* integrity dropped, not *why* or *by
-  whom*. Attribution lives only in region profiles, sourced and flagged as draft.
-- **Spoofing vs jamming** — v1 measures integrity degradation broadly; separating
+- **Cause & attribution:** NIC shows *that* integrity dropped, not *why* or *by
+  whom*. Attribution lives only in region profiles, sourced and labeled as analyst interpretation.
+- **Spoofing vs jamming:** v1 measures integrity degradation broadly; separating
   spoofing (false positions) from jamming (lost positions) is future work.
 
 ## Verification & quality
@@ -176,9 +176,9 @@ The instrument is built to be checked, not trusted on faith.
 The color choices are part of the method, not decoration. The rules that make the
 map trustworthy:
 
-- **Colorblind-safe, verified per theme.** Every meaning-bearing ramp is checked
-  for deuteranopia, protanopia, and tritanopia, and re-verified separately on the
-  light and dark grounds. The same rules hold in both themes.
+- **Colorblind-safe, verified per theme.** Every meaning-bearing ramp uses
+  colorblind-safe palette families and is verified for monotonic lightness on both
+  the light and dark grounds; formal per-deficiency simulation is on the roadmap.
 - **Saturated red means one thing.** Alarm-red is reserved for extreme anomaly and
   appears nowhere else in the interface, so a red cell is never ambiguous.
 - **Insufficient data is never a value.** Hexes below the aircraft floor render as

@@ -53,7 +53,7 @@ content/ (regions.yaml, events.yaml, geojson) ─┘   board/ tracks project sta
   processes one UTC day → `data/daily/YYYY-MM-DD.json`; `backfill.py` a range;
   `baselines.py` recomputes `data/baselines.json` + per-region series.
 - `data/`: committed **aggregates only**. Never raw traces (see `.gitignore`).
-- `content/`: named regions + curated events (analyst layer; drafts flagged).
+- `content/`: named regions + curated events (sourced analyst layer).
 - `site/`: buildless static frontend (MapLibre GL JS, h3-js, D3).
 - `.github/workflows/`: `ci.yml` (tests) and `nightly.yml` (fetch→process→
   deploy; **dormant until the repo is made public + Pages enabled**).
@@ -83,5 +83,5 @@ See `CLAUDE.md` for the full command reference and conventions.
 ## Author
 Built by **Walker Robinson**. [walker-robinson.com](https://walker-robinson.com) · [github.com/wrobinson127](https://github.com/wrobinson127)
 
-*Status: v1 overnight build. Region context profiles and event annotations are
-**drafts pending author review**. See `docs/` and the `board/` Review column.*
+*Region context profiles and event annotations are analyst interpretation:
+sourced, and labeled as such, not measurement.*

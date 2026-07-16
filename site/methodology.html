@@ -212,14 +212,13 @@
       single anomalous hex is never proof.</li>
       <li><strong>Cause.</strong> NIC degradation shows <em>that</em> integrity
       dropped, not <em>why</em> or <em>by whom</em>. Attribution lives only in the
-      region context profiles, with sources, and is flagged as draft analysis,
+      region context profiles, with sources, and is labeled as analyst interpretation,
       not asserted by the map.</li>
       <li><strong>Spoofing vs jamming.</strong> v1 measures integrity degradation
       broadly; distinguishing spoofing (false positions) from jamming (lost
       positions) is future work.</li>
     </ul>
 
-    <!-- DRAFT (pending Walker review): Verification & quality + Design semantics -->
     <h2>Verification &amp; quality</h2>
     <p>The instrument is built to be checked, not trusted on faith.</p>
     <ul>
@@ -246,9 +245,9 @@
     the map trustworthy:</p>
     <ul>
       <li><strong>Colorblind-safe, verified per theme.</strong> Every
-      meaning-bearing ramp is checked for the three main types of color blindness
-      and re-verified separately on the light and dark grounds. The same rules hold
-      in both themes.</li>
+      meaning-bearing ramp uses colorblind-safe palette families and is verified
+      for monotonic lightness on both the light and dark grounds; formal
+      per-deficiency simulation is on the roadmap.</li>
       <li><strong>Saturated red means one thing.</strong> Alarm-red is reserved for
       extreme anomaly and appears nowhere else, so a red cell is never
       ambiguous.</li>
