@@ -111,7 +111,14 @@ TIMEZONE = "UTC"
 GHIST_REPO_TEMPLATE = "adsblol/globe_history_{year}"
 RELEASE_TAG_TEMPLATE = "v{date}-planes-readsb-prod-0"   # date as YYYY.MM.DD
 RELEASE_STAGING_TEMPLATE = "v{date}-planes-readsb-staging-0"
-# Reassembly: concatenate .tar.aa + .tar.ab (+...) then untar.
+# Reassembly: concatenate .tar.aa + .tar.ab (+...) then untar. The 2023 archive
+# ships a single .tar (no split) — download._select_parts handles both eras.
+
+# Bulk-backfill disk guard: a single day's raw dump peaks at ~4 GB (2026) and is
+# deleted immediately after that day aggregates, so scratch never holds more than
+# one day. The backfill loop pauses (and flags) before starting a day if free
+# space on the scratch volume drops below this floor, rather than filling the disk.
+MIN_FREE_DISK_GB = 15
 
 # --- Output ------------------------------------------------------------------
 # Daily aggregates are stored gzip-compressed (~13x smaller). This is a hard

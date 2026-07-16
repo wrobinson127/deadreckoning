@@ -5,17 +5,29 @@ Backfill a range of UTC days, then recompute baselines and region series once.
     python -m pipeline.backfill 2026-07-13               # single day
     python -m pipeline.backfill --last 14                # most recent 14 days ending yesterday
 
-Idempotent: days whose daily JSON already exists are skipped unless --force.
+RESUMABLE + IDEMPOTENT: days whose daily .gz already exists are skipped (unless
+--force), so an interrupted bulk run resumes just by re-invoking the same command
+— completed days are never re-downloaded. Safe to Ctrl-C and re-kick, or to
+schedule (a cron / Task Scheduler entry re-running the same range until the
+archive fills over days, no babysitting).
+
+DISK-SAFE: one day's raw dump is deleted immediately after that day aggregates
+(run_daily.process_day's finally), so scratch holds at most ONE day (~4 GB peak,
+2026). Before each day the loop checks free space on the scratch volume and
+PAUSES cleanly (with a flag) if it falls below --min-free-gb (default
+config.MIN_FREE_DISK_GB), rather than filling the disk. Free space and re-run.
+
 Designed to run both in Actions (one day at a time) and locally for bulk.
 """
 from __future__ import annotations
 
 import argparse
 import os
+import shutil
 import sys
 from datetime import date as date_cls, timedelta
 
-from . import baselines, build_site_data, dailyio, download, regions
+from . import baselines, build_site_data, config as C, dailyio, download, regions
 from .run_daily import default_scratch, process_day
 
 
@@ -54,6 +66,9 @@ def main(argv=None) -> int:
     ap.add_argument("--force", action="store_true", help="reprocess days already present")
     ap.add_argument("--keep-raw", action="store_true")
     ap.add_argument("--scratch", default=None)
+    ap.add_argument("--min-free-gb", type=float, default=C.MIN_FREE_DISK_GB,
+                    help="pause (don't start a new day) if free disk on the scratch volume "
+                         "falls below this many GB")
     ap.add_argument("--no-derived", action="store_true",
                     help="skip baselines/region recompute (do it once at the end of a larger job)")
     args = ap.parse_args(argv)
@@ -63,8 +78,10 @@ def main(argv=None) -> int:
 
     start, end = _resolve_range(args)
     scratch = args.scratch or default_scratch()
+    os.makedirs(scratch, exist_ok=True)   # so the disk-space check has a real path
 
     done, skipped, notready, failed = [], [], [], []
+    paused = False
     for d in _daterange(start, end):
         day = d.isoformat()
         out = dailyio.daily_path(day)
@@ -72,6 +89,14 @@ def main(argv=None) -> int:
             skipped.append(day)
             print(f"[skip] {day} (exists)")
             continue
+        free_gb = shutil.disk_usage(scratch).free / 1e9
+        if free_gb < args.min_free_gb:
+            paused = True
+            print(f"[PAUSE] free disk {free_gb:.1f} GB < {args.min_free_gb} GB floor on "
+                  f"{scratch}; stopping before {day} rather than filling the disk. "
+                  f"Free space, then re-run the same command to resume (done days skip).",
+                  file=sys.stderr)
+            break
         try:
             summary = process_day(day, scratch, keep_raw=args.keep_raw)
             done.append(day)
@@ -90,7 +115,8 @@ def main(argv=None) -> int:
         build_site_data.build_all()
 
     print(f"\nprocessed={len(done)} skipped={len(skipped)} "
-          f"not_ready={len(notready)} failed={len(failed)}")
+          f"not_ready={len(notready)} failed={len(failed)}"
+          + (" PAUSED (low disk — free space and re-run to resume)" if paused else ""))
     return 1 if failed else 0
 
 
