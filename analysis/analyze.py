@@ -142,8 +142,17 @@ def region_stats(regions, events):
         win = (dates[0], dates[-1])
         evs = ev_by_region.get(rid, [])
         evs_in = [e for e in evs if win[0] <= e["date"] <= win[1]]
+        # compact per-day series with baseline, for the client-side interactive
+        # charts (date, ratio, baseline mean/std). Nulls preserved as gaps.
+        series = [{
+            "d": dates[i],
+            "r": round(ratio[i], 4) if ratio[i] is not None else None,
+            "bm": round(base_m[i], 4) if base_m[i] is not None else None,
+            "bs": round(base_s[i], 4) if base_s[i] is not None else None,
+        } for i in range(len(dates))]
         rows[rid] = {
             "name": r["name"],
+            "series": series,
             "n_days": len(vals),
             "mean_interference": round(stats.fmean(vals), 4),
             "spikiness_std": round(stats.pstdev(vals), 4),
@@ -273,14 +282,18 @@ def chart_distribution():
             if r.get("n_aircraft", 0) >= C.MIN_AIRCRAFT_FLOOR:
                 ratios.append(r["bad_ratio"])
     fig, ax = plt.subplots(figsize=(8.5, 4.0))
-    ax.hist(ratios, bins=40, color=WARM, alpha=0.85)
+    counts, edges, _ = ax.hist(ratios, bins=40, color=WARM, alpha=0.85)
     ax.set_yscale("log")
     ax.set_xlabel("per-hex degraded ratio (hexes meeting the 5-aircraft floor)")
     ax.set_ylabel("hex-days (log scale)")
     ax.set_title("Distribution of interference intensity across all hex-days",
                  color=INK, fontsize=12.5, loc="left")
     _save(fig, "distribution.svg")
-    return {"n_hexdays": len(ratios),
+    # pre-binned histogram so the browser renders the interactive version without
+    # re-reading ~2M hex-days.
+    bins = [{"x0": round(float(edges[i]), 4), "x1": round(float(edges[i + 1]), 4),
+             "c": int(counts[i])} for i in range(len(counts))]
+    return {"n_hexdays": len(ratios), "bins": bins,
             "median_ratio": round(stats.median(ratios), 4) if ratios else None,
             "frac_zero": round(sum(1 for x in ratios if x == 0) / len(ratios), 4) if ratios else None}
 
