@@ -45,6 +45,19 @@
     border: 1px solid color-mix(in srgb, var(--warn) 40%, transparent); border-radius: 6px;
     padding: 10px 14px; margin: 14px 0 4px; font-family: var(--mono); font-size: 12px; color: var(--ink-dim); }
   .prov { font-family: var(--mono); font-size: 11px; color: var(--ink-faint); }
+  /* interactive Observable Plot charts */
+  .plot { min-height: 60px; }
+  .plot svg { max-width: 100%; height: auto; }
+  .plot text { font-family: var(--mono); }
+  .plot [aria-label="tip"] text { font-family: var(--mono); }
+  .timectrl { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px 6px;
+    margin: 14px 0 6px; background: var(--bg-panel); }
+  .tc-head { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--ink-faint); display: flex; align-items: center; gap: 10px; }
+  .tc-head button { font-family: var(--mono); font-size: 10px; color: var(--ink-dim);
+    background: var(--bg-panel2); border: 1px solid var(--line-2); border-radius: 3px; padding: 2px 8px; cursor: pointer; }
+  .tc-head button:hover { color: var(--phosphor); border-color: var(--phosphor); }
+  .tc-hint { font-family: var(--mono); font-size: 11px; color: var(--ink-faint); margin: 4px 0 0; }
 </style>
 </head>
 <body>
@@ -79,18 +92,18 @@
     <div class="ph"><span class="ph-tag">Walker</span> One or two framing sentences for the aggregate views below.
       Mechanical captions state what each chart shows; interpretation is yours.</div>
 
-    <figure class="chart"><img src="assets/analysis/ranking.svg" alt="Regions ranked by peak anomaly" />
+    <figure class="chart"><div class="plot" data-chart="ranking"></div>
       <figcaption>Regions ranked by peak anomaly, the largest single-day deviation above each region's
-        own 28-day rolling baseline, over the covered window.</figcaption></figure>
+        own 28-day rolling baseline, over the covered window. Hover or tap a bar for the value.</figcaption></figure>
 
-    <figure class="chart"><img src="assets/analysis/quadrant.svg" alt="Chronic vs flare quadrant scatter" />
+    <figure class="chart"><div class="plot" data-chart="quadrant"></div>
       <figcaption>Each region by mean interference (x) and day-to-day variability (y), split at the medians
-        into chronic, episodic, quiet, and volatile quadrants.</figcaption></figure>
+        into chronic, episodic, quiet, and volatile quadrants. Hover a point for its values.</figcaption></figure>
     <div class="ph"><span class="ph-tag">Walker</span> The chronic-vs-flare framing is the analytical spine.
       Describe the quadrants in your terms (no causal language).</div>
 
-    <figure class="chart"><img src="assets/analysis/sensor_desert.svg" alt="Coverage versus signal scatter" />
-      <figcaption>Coverage (mean aircraft observed per day, log x) against mean interference (y), per region.</figcaption></figure>
+    <figure class="chart"><div class="plot" data-chart="sensor"></div>
+      <figcaption>Coverage (mean aircraft observed per day, log x) against mean interference (y), per region. Hover a point for its values.</figcaption></figure>
     <div class="ph"><span class="ph-tag">Walker</span> Callout: least-observed is not least-degraded. Tie to the
       sensor-desert paradox (deferred to the caveats section).</div>
 
@@ -100,30 +113,37 @@
       any in-window annotated events marked on that region's own line. The US Southwest test ranges are included
       deliberately as the interpretive control case.</p>
 
+    <div class="timectrl">
+      <div class="tc-head">Shared time window
+        <button id="brushReset" style="display:none">reset</button></div>
+      <div class="plot" data-chart="overview"></div>
+      <p class="tc-hint">Drag across to brush a date range; the region charts below zoom to it. Reset to clear.</p>
+    </div>
+
     <div class="panel">
       <h3>Baltic Sea</h3>
-      <figure class="chart"><img src="assets/analysis/region_baltic.svg" alt="Baltic Sea daily degraded ratio with baseline and events" /></figure>
+      <figure class="chart"><div class="plot" data-panel="baltic"></div></figure>
       <p class="statline" data-region="baltic"></p>
       <div class="ph"><span class="ph-tag">Walker</span> 2–3 sourced sentences on the Baltic/Kaliningrad chronic signature.</div>
     </div>
 
     <div class="panel">
       <h3>Eastern Mediterranean</h3>
-      <figure class="chart"><img src="assets/analysis/region_eastern-med.svg" alt="Eastern Mediterranean daily degraded ratio with baseline and events" /></figure>
+      <figure class="chart"><div class="plot" data-panel="eastern-med"></div></figure>
       <p class="statline" data-region="eastern-med"></p>
       <div class="ph"><span class="ph-tag">Walker</span> 2–3 sourced sentences on the eastern-Med signature.</div>
     </div>
 
     <div class="panel">
       <h3>Black Sea</h3>
-      <figure class="chart"><img src="assets/analysis/region_black-sea.svg" alt="Black Sea daily degraded ratio with baseline and events" /></figure>
+      <figure class="chart"><div class="plot" data-panel="black-sea"></div></figure>
       <p class="statline" data-region="black-sea"></p>
       <div class="ph"><span class="ph-tag">Walker</span> 2–3 sourced sentences on the Black Sea signature.</div>
     </div>
 
     <div class="panel">
       <h3>US Southwest Test Ranges (control case)</h3>
-      <figure class="chart"><img src="assets/analysis/region_us-southwest.svg" alt="US Southwest daily degraded ratio with baseline and the scheduled test event" /></figure>
+      <figure class="chart"><div class="plot" data-panel="us-southwest"></div></figure>
       <p class="statline" data-region="us-southwest"></p>
       <div class="ph"><span class="ph-tag">Walker</span> 2–3 sentences: identical reading, opposite meaning
         (scheduled, published GPS-test exercises). This anchors the interpretive discipline.</div>
@@ -138,9 +158,9 @@
 
     <!-- 5 -->
     <h2>5. Honest caveats</h2>
-    <figure class="chart"><img src="assets/analysis/distribution.svg" alt="Histogram of per-hex degraded ratio across all hex-days" />
+    <figure class="chart"><div class="plot" data-chart="distribution"></div>
       <figcaption>Distribution of the per-hex degraded ratio across every hex-day meeting the five-aircraft floor
-        (log y). Most hex-days sit at or near zero.</figcaption></figure>
+        (log y). Most hex-days sit at or near zero. Hover a bar for its count.</figcaption></figure>
     <div class="ph"><span class="ph-tag">Walker</span> The three load-bearing caveats: the sensor-desert paradox
       (we see edges, not interiors), the map being largely a nic=0 density surface, and why a continuous scale
       preserves information that 3-bin thresholds discard. (Seed: writeup_draft.md beat 7 + METHODOLOGY.)</div>
@@ -173,42 +193,8 @@
 </div>
 
 <script src="js/theme.js"></script>
-<script>
-// Populate the mechanical numbers from the generated stats so they stay current
-// with the archive. No interpretation here, just formatted facts.
-(async function () {
-  try {
-    const s = await (await fetch('assets/analysis/stats.json')).json();
-    const pct = v => (v == null ? 'n/a' : v + '%');
-    document.getElementById('prov').textContent =
-      `Built against ${s.archive.n_days} days (${s.archive.start} to ${s.archive.end}).`;
-    // featured stat lines
-    document.querySelectorAll('.statline[data-region]').forEach(el => {
-      const r = s.regions[el.dataset.region]; if (!r) return;
-      el.innerHTML =
-        `<span class="k">mean</span> ${r.mean_interference}  ·  ` +
-        `<span class="k">peak</span> ${r.peak_ratio} on ${r.peak_day}  ·  ` +
-        `<span class="k">days above baseline band</span> ${pct(r.pct_days_above_band)}  ·  ` +
-        `<span class="k">class</span> ${r.classification}  ·  ` +
-        `<span class="k">events</span> ${r.n_events_in_window} in-window / ${r.n_events_total} total`;
-    });
-    // summary table for the non-featured regions
-    const feat = new Set(s.featured);
-    const rows = Object.entries(s.regions).filter(([id]) => !feat.has(id))
-      .sort((a, b) => b[1].mean_interference - a[1].mean_interference);
-    const tb = document.querySelector('#summaryTable tbody');
-    tb.innerHTML = rows.map(([, r]) =>
-      `<tr><td>${r.name}</td><td class="num">${r.mean_interference}</td>` +
-      `<td class="num">${r.peak_ratio}</td><td>${r.classification}</td>` +
-      `<td class="num">${r.n_events_in_window} / ${r.n_events_total}</td></tr>`).join('');
-    // deferred-section stats
-    const set = (k, v) => document.querySelectorAll(`[data-stat="${k}"]`).forEach(e => e.textContent = v);
-    set('window', `${s.events.window[0]} to ${s.events.window[1]}`);
-    set('ndays', s.archive.n_days);
-    set('nevents', s.events.n_total);
-    set('ninwindow', s.events.n_in_window);
-  } catch (e) { console.error('writeup stats load failed', e); }
-})();
-</script>
+<script src="https://unpkg.com/d3@7.9.0/dist/d3.min.js"></script>
+<script src="https://unpkg.com/@observablehq/plot@0.6.16/dist/plot.umd.min.js"></script>
+<script src="js/writeup.js"></script>
 </body>
 </html>
