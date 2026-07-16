@@ -11,7 +11,33 @@
     WARM:"#e0673a", QUAD:"#6d4fb0" };
   var STYLE = { background:"transparent", color:C.INK_DIM, fontSize:"11px", overflow:"visible" };
   var pd = function (s) { return new Date(s + "T00:00:00Z"); };
-  var W = function (el) { return Math.max(300, Math.min(820, el.clientWidth || 760)); };
+  var W = function (el) { return Math.max(240, Math.min(820, el.clientWidth || 760)); };
+
+  // Short labels for on-chart text (the full name always stays in the hover tip).
+  var SHORT = {
+    "Baltic Sea": "Baltic", "Eastern Mediterranean": "E. Med", "Black Sea": "Black Sea",
+    "US Southwest Test Ranges": "US SW", "Kaliningrad Approaches": "Kaliningrad",
+    "Persian Gulf / Strait of Hormuz": "Persian Gulf", "Levant (Israel / Lebanon)": "Levant",
+    "Western Ukraine / Border Airspace": "W. Ukraine", "Korean Peninsula": "Korea", "Red Sea": "Red Sea"
+  };
+  var shortName = function (n) { return SHORT[n] || n; };
+
+  // Per-point scatter labels with a greedy vertical declutter: coincident points
+  // stack their labels instead of overprinting. items: [{d, label, nx, ny}] with
+  // nx/ny normalized to [0,1]. xf/yf are the dot's x/y field names.
+  function labelMarks(items, xf, yf) {
+    var placed = [];
+    return items.slice().sort(function (a, b) { return b.ny - a.ny; }).map(function (it) {
+      var k = placed.filter(function (p) { return Math.abs(p.nx - it.nx) < 0.14 && Math.abs(p.ny - it.ny) < 0.05; }).length;
+      var right = it.nx > 0.62;
+      placed.push(it);
+      return P.text([it.d], {
+        x: xf, y: yf, text: function () { return it.label; },
+        dx: right ? -9 : 9, dy: -5 - k * 11, fill: C.INK_DIM, fontSize: 9,
+        textAnchor: right ? "end" : "start"
+      });
+    });
+  }
 
   var stats, events, sharedDomain = null;
 
@@ -23,17 +49,20 @@
   function fill(el, node) { el.innerHTML = ""; el.append(node); }
 
   // ---- region time-series panel (line + baseline band + event markers) ----
-  function panel(rid, el) {
+  function panel(rid, el, opts) {
+    opts = opts || {};
+    var compact = !!opts.compact;
     var r = stats.regions[rid], s = r.series;
     var withB = s.filter(function (x) { return x.bm != null; });
     var withR = s.filter(function (x) { return x.r != null; });
     var ymax = Math.max.apply(null, withR.map(function (x) { return x.r; }).concat([0.05])) * 1.15;
     var evs = evForRegion(rid).map(function (e) { return { title: e.title, date: e.date, y: ratioAt(rid, e.date) }; });
     return P.plot({
-      width: W(el), height: 180, marginLeft: 44, marginRight: 12, marginTop: 6, marginBottom: 24,
+      width: W(el), height: compact ? 116 : 180,
+      marginLeft: compact ? 34 : 44, marginRight: 12, marginTop: 6, marginBottom: compact ? 20 : 24,
       style: STYLE,
-      x: { type: "utc", domain: sharedDomain || undefined, grid: true, tickFormat: "%b %d", label: null },
-      y: { domain: [0, ymax], grid: true, label: "ratio" },
+      x: { type: "utc", domain: sharedDomain || undefined, grid: true, tickFormat: "%b %d", label: null, ticks: compact ? 4 : undefined },
+      y: { domain: [0, ymax], grid: true, label: compact ? null : "ratio", ticks: compact ? 3 : undefined },
       marks: [
         P.areaY(withB, { x: function (d) { return pd(d.d); }, y1: function (d) { return Math.max(0, d.bm - d.bs); }, y2: function (d) { return d.bm + d.bs; }, fill: C.BAND, fillOpacity: 0.26, clip: true }),
         P.line(withB, { x: function (d) { return pd(d.d); }, y: "bm", stroke: C.BAND, strokeOpacity: 0.75, strokeWidth: 1, clip: true }),
@@ -59,16 +88,35 @@
     });
   }
 
+  // Compact small-multiples for every non-featured region, so §4 shows them all.
+  function renderMini() {
+    var host = document.getElementById("miniPanels"); if (!host) return;
+    var feat = {}; stats.featured.forEach(function (id) { feat[id] = 1; });
+    var ids = Object.keys(stats.regions).filter(function (id) { return !feat[id]; })
+      .sort(function (a, b) { return stats.regions[b].mean_interference - stats.regions[a].mean_interference; });
+    host.innerHTML = "";
+    ids.forEach(function (id) {
+      var r = stats.regions[id];
+      var cell = document.createElement("div"); cell.className = "minipanel";
+      var h = document.createElement("h4"); h.textContent = r.name + "  ·  " + r.classification; cell.appendChild(h);
+      var pl = document.createElement("div"); pl.className = "plot"; cell.appendChild(pl);
+      host.appendChild(cell);
+      fill(pl, panel(id, pl, { compact: true }));
+    });
+  }
+
+  function redrawSeries() { renderPanels(); renderMini(); }
+
   // ---- ranking (horizontal bars by peak anomaly) ----
   function renderRanking() {
     var el = document.querySelector('.plot[data-chart="ranking"]'); if (!el) return;
-    var rows = Object.keys(stats.regions).map(function (id) { var r = stats.regions[id]; return { id: id, name: r.name, z: r.peak_anomaly_z || 0 }; })
+    var rows = Object.keys(stats.regions).map(function (id) { var r = stats.regions[id]; return { id: id, name: r.name, label: shortName(r.name), z: r.peak_anomaly_z || 0 }; })
       .sort(function (a, b) { return b.z - a.z; });
     fill(el, P.plot({
-      width: W(el), height: 300, marginLeft: 190, marginRight: 16, style: STYLE,
+      width: W(el), height: 300, marginLeft: 96, marginRight: 16, style: STYLE,
       x: { grid: true, label: "peak anomaly (σ above the region's own 28-day baseline)" },
-      y: { domain: rows.map(function (d) { return d.name; }), label: null },
-      marks: [P.barX(rows, { x: "z", y: "name", fill: C.SIGNAL, fillOpacity: 0.85,
+      y: { domain: rows.map(function (d) { return d.label; }), label: null },
+      marks: [P.barX(rows, { x: "z", y: "label", fill: C.SIGNAL, fillOpacity: 0.85,
         title: function (d) { return d.name + "\npeak anomaly " + d.z + "σ"; }, tip: true })]
     }));
   }
@@ -76,40 +124,45 @@
   // ---- chronic/flare quadrant scatter ----
   function renderQuadrant() {
     var el = document.querySelector('.plot[data-chart="quadrant"]'); if (!el) return;
-    var rows = Object.keys(stats.regions).map(function (id) { var r = stats.regions[id]; return { name: r.name, x: r.mean_interference, y: r.spikiness_std, cls: r.classification }; });
+    var rows = Object.keys(stats.regions).map(function (id) { var r = stats.regions[id]; return { name: r.name, label: shortName(r.name), x: r.mean_interference, y: r.spikiness_std, cls: r.classification }; });
     var mm = stats.quadrant_medians.mean_interference, ms = stats.quadrant_medians.spikiness_std;
+    var xmax = Math.max.apply(null, rows.map(function (d) { return d.x; }));
+    var ymax = Math.max.apply(null, rows.map(function (d) { return d.y; }));
     fill(el, P.plot({
       width: W(el), height: 460, marginLeft: 52, marginRight: 20, marginTop: 16, style: STYLE,
-      x: { grid: true, label: "mean interference (archive mean of daily degraded ratio)" },
-      y: { grid: true, label: "spikiness (std of daily degraded ratio)" },
+      x: { grid: true, domain: [0, xmax * 1.08], label: "mean interference (archive mean of daily degraded ratio)" },
+      y: { grid: true, domain: [0, ymax * 1.12], label: "spikiness (std of daily degraded ratio)" },
       marks: [
         P.ruleX([mm], { stroke: C.QUAD, strokeDasharray: "3", strokeOpacity: 0.5 }),
         P.ruleY([ms], { stroke: C.QUAD, strokeDasharray: "3", strokeOpacity: 0.5 }),
         P.dot(rows, { x: "x", y: "y", fill: C.SIGNAL, r: 6, stroke: C.BG,
-          title: function (d) { return d.name + "\nmean " + d.x + "\nspikiness " + d.y + "\n" + d.cls; }, tip: true }),
-        P.text(rows, { x: "x", y: "y", text: "name", dx: 9, dy: -5, fill: C.INK_DIM, fontSize: 9, textAnchor: "start" }),
+          title: function (d) { return d.name + "\nmean " + d.x + "\nspikiness " + d.y + "\n" + d.cls; }, tip: true })
+      ].concat(labelMarks(rows.map(function (d) { return { d: d, label: d.label, nx: d.x / (xmax * 1.08), ny: d.y / (ymax * 1.12) }; }), "x", "y"), [
         P.text(["chronic"], { frameAnchor: "bottom-right", text: function (d) { return d; }, fill: C.INK_FAINT, fontSize: 10, fontStyle: "italic", dx: -6, dy: -6 }),
         P.text(["volatile"], { frameAnchor: "top-right", text: function (d) { return d; }, fill: C.INK_FAINT, fontSize: 10, fontStyle: "italic", dx: -6, dy: 8 }),
         P.text(["episodic"], { frameAnchor: "top-left", text: function (d) { return d; }, fill: C.INK_FAINT, fontSize: 10, fontStyle: "italic", dx: 6, dy: 8 }),
         P.text(["quiet"], { frameAnchor: "bottom-left", text: function (d) { return d; }, fill: C.INK_FAINT, fontSize: 10, fontStyle: "italic", dx: 6, dy: -6 })
-      ]
+      ])
     }));
   }
 
   // ---- coverage vs signal (sensor desert) ----
   function renderSensorDesert() {
     var el = document.querySelector('.plot[data-chart="sensor"]'); if (!el) return;
-    var rows = Object.keys(stats.regions).map(function (id) { var r = stats.regions[id]; return { name: r.name, x: r.mean_aircraft_per_day, y: r.mean_interference }; })
+    var rows = Object.keys(stats.regions).map(function (id) { var r = stats.regions[id]; return { name: r.name, label: shortName(r.name), x: r.mean_aircraft_per_day, y: r.mean_interference }; })
       .filter(function (d) { return d.x; });
+    var ymax = Math.max.apply(null, rows.map(function (d) { return d.y; }));
+    var lg = function (v) { return Math.log(v) / Math.LN10; };
+    var lo = Math.min.apply(null, rows.map(function (d) { return lg(d.x); }));
+    var hi = Math.max.apply(null, rows.map(function (d) { return lg(d.x); }));
     fill(el, P.plot({
       width: W(el), height: 380, marginLeft: 52, marginRight: 20, marginTop: 12, style: STYLE,
       x: { type: "log", grid: true, label: "coverage (mean aircraft/day, log)" },
-      y: { grid: true, label: "mean interference (degraded ratio)" },
+      y: { grid: true, domain: [0, ymax * 1.18], label: "mean interference" },
       marks: [
         P.dot(rows, { x: "x", y: "y", fill: C.WARM, r: 6, stroke: C.BG,
-          title: function (d) { return d.name + "\n" + Math.round(d.x).toLocaleString() + " aircraft/day\nmean interference " + d.y; }, tip: true }),
-        P.text(rows, { x: "x", y: "y", text: "name", dx: 9, dy: -5, fill: C.INK_DIM, fontSize: 9, textAnchor: "start" })
-      ]
+          title: function (d) { return d.name + "\n" + Math.round(d.x).toLocaleString() + " aircraft/day\nmean interference " + d.y; }, tip: true })
+      ].concat(labelMarks(rows.map(function (d) { return { d: d, label: d.label, nx: (lg(d.x) - lo) / (hi - lo), ny: d.y / (ymax * 1.18) }; }), "x", "y"))
     }));
   }
 
@@ -117,12 +170,18 @@
   function renderDistribution() {
     var el = document.querySelector('.plot[data-chart="distribution"]'); if (!el) return;
     var bins = stats.distribution.bins.filter(function (b) { return b.c > 0; });
+    var maxc = Math.max.apply(null, bins.map(function (b) { return b.c; }));
+    // A log y-scale has no valid zero baseline, so bars are drawn from a fixed
+    // floor (0.9, just under a count of 1) up to each bin's count.
     fill(el, P.plot({
       width: W(el), height: 300, marginLeft: 60, marginRight: 16, style: STYLE,
       x: { label: "per-hex degraded ratio (hexes meeting the 5-aircraft floor)" },
-      y: { type: "log", grid: true, label: "hex-days (log)" },
-      marks: [P.rectY(bins, { x1: "x0", x2: "x1", y: "c", fill: C.WARM, fillOpacity: 0.85, inset: 0.5,
-        title: function (d) { return d.x0 + "–" + d.x1 + "\n" + d.c.toLocaleString() + " hex-days"; }, tip: true })]
+      y: { type: "log", domain: [0.9, maxc * 1.4], grid: true, label: "hex-days (log)" },
+      marks: [
+        P.rectY(bins, { x1: "x0", x2: "x1", y1: 0.9, y2: "c", fill: C.WARM, fillOpacity: 0.85, inset: 0.5,
+          title: function (d) { return d.x0 + "–" + d.x1 + "\n" + d.c.toLocaleString() + " hex-days"; }, tip: true }),
+        P.ruleY([0.9])
+      ]
     }));
   }
 
@@ -148,13 +207,13 @@
     var brush = d3.brushX().extent([[xs.range[0], 4], [xs.range[1], 48]])
       .on("end", function (ev) {
         sharedDomain = ev.selection ? [xs.invert(ev.selection[0]), xs.invert(ev.selection[1])] : null;
-        renderPanels();
+        redrawSeries();
         var rb = document.getElementById("brushReset"); if (rb) rb.style.display = sharedDomain ? "" : "none";
       });
     g.call(brush);
     g.selectAll(".selection").attr("fill", C.EVENT).attr("fill-opacity", 0.12).attr("stroke", C.EVENT);
     var rb = document.getElementById("brushReset");
-    if (rb) rb.addEventListener("click", function () { sharedDomain = null; g.call(brush.move, null); renderPanels(); rb.style.display = "none"; });
+    if (rb) rb.addEventListener("click", function () { sharedDomain = null; g.call(brush.move, null); redrawSeries(); rb.style.display = "none"; });
   }
 
   // ---- mechanical text population (provenance, statlines, summary, guardrail) ----
@@ -183,7 +242,7 @@
     set("ndays", stats.archive.n_days); set("nevents", stats.events.n_total); set("ninwindow", stats.events.n_in_window);
   }
 
-  function renderAll() { renderOverview(); renderPanels(); renderRanking(); renderQuadrant(); renderSensorDesert(); renderDistribution(); }
+  function renderAll() { renderOverview(); redrawSeries(); renderRanking(); renderQuadrant(); renderSensorDesert(); renderDistribution(); }
 
   (async function () {
     try {
