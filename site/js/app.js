@@ -24,6 +24,10 @@
       cityLayers: ["place_city_large", "place_city", "place_town"],
       adminLayer: "boundary_state",
       dropLayers: ["place_state"],
+      // country borders are basemap LINE layers, hidden under our hex fills; we
+      // lift them above the fills and give them a readable stroke (per theme).
+      borderLayers: ["boundary_country_z0-4", "boundary_country_z5-"],
+      border: "#8a97a5",
     },
     light: {
       basemap: "https://tiles.openfreemap.org/styles/positron",
@@ -37,6 +41,8 @@
       cityLayers: ["label_city", "label_city_capital", "label_town"],
       adminLayer: "boundary_3",
       dropLayers: ["label_state"],
+      borderLayers: ["boundary_2", "boundary_disputed"],
+      border: "#566472",
     },
   };
   const themeName = () => (window.DR_THEME && DR_THEME.current()) || "dark";
@@ -394,8 +400,25 @@
       layout: { visibility: "none" },
     }, before);
 
+    raiseBorders();
     wireHexInteraction();
     boot().catch((e) => fail(e));
+  }
+
+  // Lift country borders above the hex fills. They are basemap LINE layers, so by
+  // default they sit under our fills and vanish beneath the coverage carpet and
+  // blooms. Move them above the fills (still below labels) and give them a
+  // readable per-theme stroke so geography stays legible in every mode.
+  function raiseBorders() {
+    const sym = firstSymbolId();
+    for (const id of (pal().borderLayers || [])) {
+      if (!map.getLayer(id)) continue;
+      try {
+        map.moveLayer(id, sym);
+        map.setPaintProperty(id, "line-color", pal().border);
+        map.setPaintProperty(id, "line-opacity", 0.75);
+      } catch (e) {}
+    }
   }
 
   // ---------- airspace-context overlay ----------
