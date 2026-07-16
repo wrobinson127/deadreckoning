@@ -5,3 +5,4 @@ PyYAML==6.0.3        # regions.yaml / events.yaml parsing
 
 # Dev/test only (not needed by the deployed site or the nightly Action runtime):
 pytest==8.3.4
+matplotlib==3.10.8   # write-up analysis charts; regenerate via `python -m analysis.analyze`
