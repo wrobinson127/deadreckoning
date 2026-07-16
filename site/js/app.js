@@ -1038,6 +1038,9 @@
     el("playBtn").addEventListener("click", togglePlay);
     el("drClose").addEventListener("click", closeRegion);
     el("introGo").addEventListener("click", hideIntro);
+    el("introClose").addEventListener("click", hideIntro);
+    // backdrop click (the scrim itself, not the card) also dismisses
+    el("intro").addEventListener("click", (e) => { if (e.target === el("intro")) hideIntro(); });
     el("helpBtn").addEventListener("click", showIntro);
     // Collapsible overlay panels: every arrow tab folds its box (or the
     // timeline) away to declutter the map, and unfolds it again.
