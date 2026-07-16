@@ -47,7 +47,7 @@ adsb.lol dump ──► pipeline/ ──► data/ ──► site/ (static, MapLi
   (ODbL, raw,      stream-parse   committed    reads data/ + content/
    deleted after)  aggregate      aggregates   as static fetches
                    baselines      only
-content/ (regions.yaml, events.yaml, geojson) ─┘   board/ tracks project state
+content/ (regions.yaml, events.yaml, geojson) ─┘
 ```
 - `pipeline/`: Python. `config.py` holds **all** tunables. `run_daily.py`
   processes one UTC day → `data/daily/YYYY-MM-DD.json`; `backfill.py` a range;
@@ -57,7 +57,6 @@ content/ (regions.yaml, events.yaml, geojson) ─┘   board/ tracks project sta
 - `site/`: buildless static frontend (MapLibre GL JS, h3-js, D3).
 - `.github/workflows/`: `ci.yml` (tests) and `nightly.yml` (fetch→process→
   deploy; **dormant until the repo is made public + Pages enabled**).
-- `board/`: self-contained kanban for session continuity.
 
 ## Run it
 ```bash
