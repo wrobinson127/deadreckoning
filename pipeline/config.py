@@ -72,6 +72,12 @@ def confidence_tier(n_aircraft: int) -> str:
     return "insufficient"
 
 
+# --- Trend strip (site) ------------------------------------------------------
+# The always-visible bottom trend strip plots one point per UTC day: how many
+# measured cells were "strongly degraded" that day. A cell counts as strong at
+# or above this bad_ratio (a clear bloom, not corridor haze). Feeds data/trend.json.
+TREND_STRONG_RATIO = 0.5
+
 # --- Baselines & anomaly -----------------------------------------------------
 # Rolling window (days) for per-hex baseline mean/std of bad_ratio.
 BASELINE_WINDOW_DAYS = 28

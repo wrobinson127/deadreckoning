@@ -91,7 +91,7 @@
     manifest: null,
     baselines: {},
     stdFloor: 0.02,
-    anomalyClip: 6,
+    anomalyClip: 4,
     floor: 5,
     regionsGeo: null,
     regions: {},        // id -> profile
@@ -100,7 +100,9 @@
     dayData: null,      // current day's byHex map
     mode: "raw",
     quiet: true,    // quiet-coverage carpet on by default
-    hatch: false,   // low-sample hatch off by default
+    hatch: true,    // low-sample hatch ON by default — "too few aircraft to judge"
+                    // must not read as calm (the no-data vs no-interference rule);
+                    // the sensor-desert around sparse hotspots is itself information
     cities: true,   // major-city dots + names on by default
     regional: false,// admin-1 (regional) borders off by default
     airspaceOn: true,   // airspace-context overlay on by default
@@ -187,10 +189,17 @@
     const bl = state.baselines[rec.hex];
     if (!bl) return { k: "val", c: "#1c2430", op: 0.18 }; // measured, no baseline yet
     const z = (rec.bad_ratio - bl.mean) / Math.max(bl.std, state.stdFloor);
-    // 2.7 — the strongest anomalies (>= 70% of the clip) get the same warm glow
-    // as extreme raw hexes, so high-z cells read clearly against the magma ramp.
+    // Opacity is DECOUPLED from z: any above-baseline cell gets a legible fixed
+    // floor (was op = z/clip, which pushed mean anomaly opacity to ~0.09 and made
+    // the layer read as empty). Cells at or below their own baseline are not
+    // anomalies — the point of this view — so they recede to a faint ghost
+    // (chronic zones that match their baseline correctly go quiet here). The
+    // magma ramp still sorts intensity by color; opacity just guarantees any real
+    // anomaly is visible. 2.7 glow on the strongest (>= 70% of the clip).
+    const zc = Math.max(0, Math.min(1, z / state.anomalyClip));
+    const op = z <= 0 ? 0.05 : 0.35 + 0.4 * zc;
     return { k: "val", c: DR_COLOR.anomaly(z, state.anomalyClip),
-             op: opFor(z / state.anomalyClip), z,
+             op, z,
              ex: z >= state.anomalyClip * 0.7 ? 1 : 0 };
   }
 
@@ -254,11 +263,19 @@
       if (r.ok) style = curateStyle(await r.json());
     } catch (e) { /* offline: keep fallback */ }
 
+    // Land framed on the Baltic / Eastern-Europe hotspot — the chronic bloom the
+    // whole instrument is about, and the anchor example the intro teaches. At the
+    // old continental default (center [22,48] z3.1) only ~1,250 of ~23k cells were
+    // perceptible, so the signal read as a faint smudge until a reader manually
+    // zoomed in. (A data-driven fitBounds to the strongest cells was considered,
+    // but strong cells form several clusters — Baltic, Black Sea, Red Sea — so
+    // their envelope is continental again; a deliberate hero framing is the
+    // reliable choice. "Zoom out to all of Europe" is now the reader's move.)
     map = new maplibregl.Map({
       container: "map",
       style,
-      center: [22, 48],
-      zoom: 3.1,
+      center: [26, 55],
+      zoom: 4.3,
       minZoom: 1.5,
       maxZoom: 8,
       attributionControl: false,
@@ -555,6 +572,7 @@
     el("mapDate").textContent = fmtDate(day);
     el("slider").value = idx;
     updateTrackFill();
+    drawTrend();   // move the trend-strip cursor to the current day
     try {
       await loadDay(day);
       renderDay();
@@ -688,8 +706,23 @@
     if (geom.type === "MultiPolygon") return geom.coordinates.map((p) => p[0]);
     return [];
   }
+  // Per-feature bbox, computed once, so an empty-airspace click skips the full
+  // point-in-polygon test for every region whose box doesn't even contain the
+  // point (cheap now at ~10 regions; keeps the click handler O(hits) as the
+  // region set grows).
+  function bboxOf(f) {
+    if (f._bbox) return f._bbox;
+    let minX = 180, minY = 90, maxX = -180, maxY = -90;
+    for (const ring of ringsOf(f.geometry)) for (const [x, y] of ring) {
+      if (x < minX) minX = x; if (x > maxX) maxX = x;
+      if (y < minY) minY = y; if (y > maxY) maxY = y;
+    }
+    return (f._bbox = [minX, minY, maxX, maxY]);
+  }
   function regionAt(lng, lat) {
     for (const f of state.regionsGeo.features) {
+      const b = bboxOf(f);
+      if (lng < b[0] || lng > b[2] || lat < b[1] || lat > b[3]) continue;
       for (const ring of ringsOf(f.geometry)) {
         if (pointInRing(lng, lat, ring)) return f.properties.id;
       }
@@ -714,6 +747,11 @@
     body.innerHTML = (regionDraft && PREVIEW)
       ? `<span class="draft-tag">DRAFT — pending author review</span>`
       : "";
+    // The disclaimer lives WHERE the claims are read, not two clicks away on the
+    // About page: the context below (causes / actors / interpretation) is analyst
+    // reading of public reporting, not something this instrument measured.
+    body.insertAdjacentHTML("beforeend",
+      `<p class="drawer-disclaimer">Analyst interpretation from public reporting, not measurement.</p>`);
 
     // trend sparkline
     let series = [];
@@ -788,6 +826,61 @@
     const last = pts.at(-1);
     svg.append("circle").attr("cx", x(pts.length - 1)).attr("cy", y(last.mean_bad_ratio))
       .attr("r", 2.5).attr("fill", "#35e0d0");
+  }
+
+  // ---------- global trend strip (the always-visible acceleration band) ----------
+  // One point per UTC day across the WHOLE archive: how many cells were strongly
+  // degraded (bad_ratio >= the strong threshold) that day. This gives the time
+  // dimension permanent presence — the arc of interference is visible without
+  // opening a region — while the full scrubber stays folded by default. Honestly
+  // scoped to the days that exist (the coverage label states the span); it grows
+  // as the backfill deepens. Cheap to redraw (88 points), so we just redraw on
+  // each day change rather than sync a separate cursor. Reuses d3.
+  function drawTrend() {
+    const svg = d3.select("#trendSvg");
+    const node = svg.node();
+    if (!node) return;
+    svg.selectAll("*").remove();
+    const series = state.trend || [];
+    const w = node.clientWidth || 600, h = node.clientHeight || 30, pad = 2;
+    if (series.length < 2) return;
+    const x = d3.scaleLinear().domain([0, series.length - 1]).range([pad, w - pad]);
+    const maxY = d3.max(series, (d) => d.strong) || 1;
+    const y = d3.scaleLinear().domain([0, maxY]).range([h - pad, pad]);
+    const cs = getComputedStyle(document.documentElement);
+    const accent = (cs.getPropertyValue("--phosphor") || "#35e0d0").trim();
+    const area = d3.area().x((d, i) => x(i)).y0(h - pad)
+      .y1((d) => y(d.strong)).curve(d3.curveMonotoneX);
+    const line = d3.line().x((d, i) => x(i)).y((d) => y(d.strong)).curve(d3.curveMonotoneX);
+    svg.append("path").datum(series).attr("d", area).attr("fill", accent).attr("fill-opacity", 0.13);
+    svg.append("path").datum(series).attr("d", line).attr("fill", "none")
+      .attr("stroke", accent).attr("stroke-width", 1.3).attr("stroke-opacity", 0.85);
+    const i = Math.max(0, Math.min(series.length - 1, state.idx));
+    const mx = x(i);
+    svg.append("line").attr("x1", mx).attr("x2", mx).attr("y1", 0).attr("y2", h)
+      .attr("stroke", accent).attr("stroke-width", 1).attr("stroke-opacity", 0.9);
+    svg.append("circle").attr("cx", mx).attr("cy", y(series[i].strong))
+      .attr("r", 2.4).attr("fill", accent);
+  }
+
+  // Click anywhere on the strip to jump to that day (the strip is a second, always-
+  // visible way to move through time even while the full scrubber is folded).
+  function wireTrend() {
+    const svg = el("trendSvg");
+    if (!svg) return;
+    svg.addEventListener("click", (e) => {
+      const series = state.trend || [];
+      if (series.length < 2) return;
+      const r = svg.getBoundingClientRect();
+      const frac = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width));
+      if (state.playing) togglePlay();
+      goTo(Math.round(frac * (series.length - 1)));
+    });
+    let rAF = 0;
+    window.addEventListener("resize", () => {
+      cancelAnimationFrame(rAF);
+      rAF = requestAnimationFrame(drawTrend);
+    });
   }
 
   // ---------- scrubber / ticks / events ----------
@@ -992,7 +1085,7 @@
       raw:      { title: "Aircraft with degraded GPS", ramp: "raw",  lo: "0%",     hi: "100%",
                   cap: "Share of aircraft reporting degraded GPS in each cell this day." },
       anomaly:  { title: "Anomaly vs baseline (σ)",    ramp: "anom", lo: "normal", hi: state.anomalyClip + "σ+",
-                  cap: "How far each cell sits above its own 28-day normal; the brightest cells glow." },
+                  cap: "Where interference is new or worsening versus each cell's own 28-day normal. Chronically degraded areas read calm here — they match their baseline." },
       coverage: { title: "Aircraft per cell (log)",    ramp: "cov",  lo: "few",    hi: "dense",
                   cap: "How heavily each area is watched, so you can tell blindness from calm." },
     })[mode] || {};
@@ -1082,7 +1175,7 @@
 
   // ---------- boot ----------
   async function boot() {
-    const [manifest, baselines, regionsGeo, regions, events, airspaceGeo, airspace] =
+    const [manifest, baselines, regionsGeo, regions, events, airspaceGeo, airspace, trend] =
       await Promise.all([
         getJSON("data/manifest.json"),
         getJSON("data/baselines.json").catch(() => ({ hexes: {}, std_floor: 0.02 })),
@@ -1091,11 +1184,13 @@
         getJSON("content/events.json").catch(() => ({ events: [] })),
         getJSON("content/airspace.geojson").catch(() => ({ type: "FeatureCollection", features: [] })),
         getJSON("content/airspace.json").catch(() => ({ zones: [] })),
+        getJSON("data/trend.json").catch(() => ({ series: [] })),
       ]);
     state.manifest = manifest;
+    state.trend = trend.series || [];
     state.baselines = baselines.hexes || {};
     state.stdFloor = baselines.std_floor || 0.02;
-    state.anomalyClip = manifest.anomaly_clip || 6;
+    state.anomalyClip = manifest.anomaly_clip || 4;
     state.floor = manifest.min_aircraft_floor || 5;
     state.regionsGeo = regionsGeo;
     state.regions = Object.fromEntries((regions.regions || []).map((r) => [r.id, r]));
@@ -1114,6 +1209,11 @@
     el("slider").value = n - 1;
     buildTicks();
     buildChips();
+    // trend strip + the honest coverage-span readout (reads the actual archive
+    // span, never hardcoded — it grows as the backfill deepens).
+    el("trendCoverage").textContent =
+      `Coverage: ${manifest.days[0]} → ${manifest.days.at(-1)} · ${n} days`;
+    wireTrend();
 
     // wire controls
     document.querySelectorAll("#modeToggle button").forEach((b) =>
@@ -1132,6 +1232,7 @@
     citiesEl.addEventListener("change", (e) => setCities(e.target.checked));
     regionalEl.addEventListener("change", (e) => setRegional(e.target.checked));
     setQuiet(state.quiet);           // apply initial visibility to the carpet layer
+    setHatch(state.hatch);           // hatch defaults ON — show the sensor-desert
     setCities(state.cities);
     setRegional(state.regional);
     el("slider").addEventListener("input", (e) => {

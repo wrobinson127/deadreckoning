@@ -184,6 +184,17 @@
 
   <div class="scrubber collapsible" id="scrubber">
     <button class="collapse-btn" data-collapse aria-label="collapse timeline"></button>
+    <!-- always-visible trend band: strong-degraded cells per day across the whole
+         archive, so the arc of interference is present even while the full
+         controls stay folded. Click it to jump to a day. -->
+    <div class="trend-strip" id="trendStrip">
+      <div class="trend-head">
+        <span class="trend-label">Degraded hotspot cells per day</span>
+        <span class="trend-coverage" id="trendCoverage"></span>
+      </div>
+      <svg class="trend-svg" id="trendSvg" role="img"
+        aria-label="daily count of strongly-degraded cells across the archive"></svg>
+    </div>
     <div class="scrub-head">
       <span class="scrub-meta" id="scrubMeta"
         title="each cell is an H3 hex (~1,770 km²) that had at least one aircraft this UTC day; high-confidence = 10+ aircraft"></span>

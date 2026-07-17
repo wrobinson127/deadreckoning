@@ -95,6 +95,6 @@
   "min_aircraft_floor": 5,
   "confidence_high_min": 10,
   "bad_ratio_clip": 1.0,
-  "anomaly_clip": 6.0,
+  "anomaly_clip": 4.0,
   "attribution": "adsb.lol (ODbL 1.0)"
 }

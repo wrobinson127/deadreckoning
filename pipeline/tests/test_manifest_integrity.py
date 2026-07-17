@@ -56,3 +56,22 @@ def test_manifest_matches_committed_dailies():
         f"manifest vs disk mismatch — only in manifest: {listed - on_disk}; "
         f"only on disk: {on_disk - listed}"
     )
+
+
+_TREND = repo_path("data", "trend.json")
+
+
+@pytest.mark.skipif(not _manifest_days(), reason="no committed manifest/data")
+def test_trend_matches_manifest_and_is_wellformed():
+    """The trend strip's data must cover exactly the manifest days, with sane
+    monotone counts (measured >= degraded >= strong >= 0). The frontend reads
+    each point's `strong`; a mismatch or missing field blanks the trend band."""
+    assert os.path.exists(_TREND), "data/trend.json missing (build_site_data)"
+    with open(_TREND, encoding="utf-8") as fh:
+        trend = json.load(fh)
+    series = trend.get("series", [])
+    assert [d["date"] for d in series] == _manifest_days(), \
+        "trend series days must match the manifest exactly, in order"
+    for d in series:
+        assert d["measured"] >= d["degraded"] >= d["strong"] >= 0, \
+            f"{d['date']}: counts not monotone (measured>=degraded>=strong>=0)"

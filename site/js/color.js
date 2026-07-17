@@ -20,10 +20,12 @@
     },
     light: {
       extreme: "#cf3323",
-      // warm inferno for LIGHT: pale cream (low) -> deep maroon (high signal),
-      // so a real bloom is dark and legible on the paper ground.
+      // warm inferno for LIGHT: warm tan (low) -> deep maroon (high signal).
+      // Low end is a warm tan (not near-white cream) so it separates from the
+      // cool #e9edf2 paper ground, and the mid/high are darker + more saturated,
+      // so a real bloom reads instead of washing out. Monotonic in lightness (CVD).
       raw: d3.interpolateRgbBasis([
-        "#f5ead3", "#f3c877", "#ec8a2f", "#d8531c", "#a82814", "#6e1108",
+        "#ead9bc", "#eeb85e", "#e07d22", "#c6401a", "#961c0f", "#5c0c06",
       ]),
       // steel for LIGHT: pale blue (low) -> dark navy (high traffic)
       cov: d3.interpolateRgbBasis(["#dbe6f0", "#9fbdd8", "#5f8fbe", "#356199", "#183a63"]),

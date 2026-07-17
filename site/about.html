@@ -32,7 +32,7 @@
     <p>Several tools already show <em>current</em> GPS interference conditions:
     GPSJam, Flightradar24's jamming map, SkAI's spoofing tracker. They answer
     "what is happening right now." None of them keeps <strong>memory</strong>.
-    There has been no scrubbable, multi-year archive that lets you ask: <em>when
+    There has been no scrubbable historical archive that lets you ask: <em>when
     did this region light up? how does today compare to its own normal? what was
     happening in the world that week?</em></p>
     <p>DEAD RECKONING is that memory: per-hex baselines, anomaly scoring, named
@@ -52,6 +52,12 @@
     <p>It is not a jamming-attribution service. The map never asserts who caused
     an interference event. Region profiles summarize what public reporting
     attributes, with sources, and are labeled as analyst interpretation, not measurement.</p>
+
+    <h2>Responsible use</h2>
+    <p>DeadReckoning is built entirely from public flight data. Its cells are
+    roughly forty miles across, far too coarse for any tactical or targeting
+    purpose. It shows the effect of interference on civil navigation. It does not
+    locate emitters or re-derive any non-public information.</p>
 
     <h2>Stack</h2>
     <p>A static site: no servers, no databases, no paid APIs. A Python pipeline
