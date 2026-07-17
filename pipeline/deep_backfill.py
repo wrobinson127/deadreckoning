@@ -179,6 +179,17 @@ def main(argv=None) -> int:
             break
         try:
             s = process_day(day, scratch)
+            if s["hexes"] == 0:
+                # An empty/placeholder release aggregates to zero hexes. Writing it
+                # would add a fake "covered, no interference" day and blur the
+                # no-data vs no-interference line, so drop it and leave the gap.
+                try:
+                    os.remove(dailyio.daily_path(day))
+                except FileNotFoundError:
+                    pass
+                notready += 1
+                print(f"[empty] {day} (0 hexes — bad/placeholder release; left as a gap)")
+                continue
             done += 1
             print(f"[ok]   {day}  hexes={s['hexes']} bytes={s['bytes']}  ({done} this run)", flush=True)
             if args.derive_every and done % args.derive_every == 0:
