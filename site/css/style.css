@@ -372,27 +372,33 @@ header.topbar {
    bare glyph was almost invisible when a box was folded). */
 /* Collapse toggles read as small TABS attached to the panel's top-right corner,
    not floating buttons: flush to the edge, flat, sharing the panel's border. */
-.collapse-btn { position: absolute; top: 0; right: 0; z-index: 5;
-  padding: 2px 9px; display: inline-block; line-height: 1.4;
+/* every collapse toggle is a LABELLED pill tab (arrow + the panel's name),
+   the same language as the "timeline" tag at the bottom. The label comes from
+   each button's data-label attribute so the four corner panels read
+   "layer / legend / regions / readout" just like "timeline". */
+.collapse-btn { position: absolute; top: 0; right: 0; z-index: 6;
+  padding: 3px 11px; display: inline-flex; align-items: baseline; gap: 5px;
   background: var(--bg-panel2); border: 1px solid var(--line-2);
   border-top-color: transparent; border-right-color: transparent;
-  border-radius: 0 var(--radius) 0 8px;
+  border-radius: 0 var(--radius) 0 9px;
   color: var(--ink-dim); cursor: pointer; font-family: var(--mono); font-size: 11px;
+  letter-spacing: .07em; line-height: 1.4;
   transition: color .15s, border-color .15s, background .15s; }
 .collapse-btn:hover { color: var(--phosphor); border-left-color: var(--phosphor);
   border-bottom-color: var(--phosphor); }
-.collapse-btn::before { content: "\25BE"; }               /* ▾ expanded: click to fold */
+.collapse-btn::before { content: "\25BE"; font-size: 10px; }      /* ▾ expanded: click to fold */
+.collapse-btn::after { content: attr(data-label); }
 .collapsible.collapsed .collapse-btn::before { content: "\25B8"; }  /* ▸ folded: click to open */
-.readout-collapse { right: auto; left: 0; border-radius: var(--radius) 0 8px 0;
+.readout-collapse { right: auto; left: 0; border-radius: var(--radius) 0 9px 0;
   border-left-color: transparent; border-right-color: var(--line-2); }
-.collapsible > h3 { padding-right: 28px; }
+.collapsible > h3 { padding-right: 74px; }
 /* folded: the box becomes just the tab — an obvious, findable label chip */
 .collapsible.collapsed { min-width: 0 !important; width: auto !important;
   max-height: none !important; padding: 0 !important; border: none !important;
   background: none !important; backdrop-filter: none !important; }
 .collapsible.collapsed > *:not(.collapse-btn) { display: none !important; }
-.collapsible.collapsed .collapse-btn { position: static; padding: 4px 12px;
-  border: 1px solid var(--line-2); border-radius: var(--radius); background: var(--bg-panel); }
+.collapsible.collapsed .collapse-btn { position: static; padding: 4px 13px;
+  border: 1px solid var(--line-2); border-radius: 7px; background: var(--bg-panel); }
 
 /* the timeline toggle is a centered tab at the bottom-middle of the page (the
    scrubber defaults folded, so this tab is how a reader reveals the timeline). */
@@ -594,7 +600,7 @@ input.slider::-moz-range-thumb { width:14px; height:14px; border-radius:50%;
 .loader::before { content:""; position:absolute; inset:0; z-index:0;
   background:
     linear-gradient(rgba(10,12,15,0.30), rgba(10,12,15,0.55)),
-    url("../assets/og-image.jpg") center / cover no-repeat;
+    url("../assets/loader-poster.jpg") center / cover no-repeat;
 }
 .loader.hide { opacity:0; pointer-events:none; }
 .loader .core { position:relative; z-index:1; text-align:center; }
