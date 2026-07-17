@@ -330,6 +330,11 @@ header.topbar {
   font-size:10px; letter-spacing:.1em; color:var(--warn);
   border:1px solid color-mix(in srgb,var(--warn) 40%, transparent);
   border-radius:2px; padding:2px 7px; }
+/* point-of-use honesty caption: the region context is analyst reading, not
+   measurement — stated where the claims are read, not two clicks away. */
+.drawer-disclaimer { font-family: var(--mono); font-size: 10.5px; letter-spacing: .02em;
+  color: var(--ink-faint); border-left: 2px solid var(--line-2);
+  padding: 1px 0 1px 8px; margin: 0 0 10px; line-height: 1.4; }
 .section-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em;
   text-transform: uppercase; color: var(--ink-faint); margin: 18px 0 6px; }
 .drawer p { margin: 0 0 8px; color: var(--ink-dim); line-height: 1.55; font-size: 13px; }
@@ -418,13 +423,28 @@ header.topbar {
   border-radius: 7px 7px 0 0; padding: 3px 15px; background: var(--bg-panel2); }
 .scrubber .collapse-btn::before { content: "\25BE"; }               /* ▾ open */
 .scrubber .collapse-btn::after { content: " timeline"; letter-spacing: .07em; }
-.scrubber.collapsed { position: absolute; left: 50%; right: auto; bottom: 0; top: auto;
-  transform: translateX(-50%); width: auto; display: block;
-  padding: 0 !important; border: none !important; background: none !important; }
-.scrubber.collapsed .collapse-btn { position: static; transform: none;
-  border: 1px solid var(--line-2); border-bottom: none; border-radius: 7px 7px 0 0;
-  padding: 4px 16px; background: var(--bg-panel); }
+/* Collapsed timeline: the trend strip stays as the always-visible band; only the
+   full controls (meta + play + track) fold away. The scrubber stays in the bottom
+   row (not a floating tab), so the time dimension keeps permanent presence and the
+   "▴ timeline" tab reveals the full scrubber. */
+.scrubber.collapsed { position: static; transform: none; width: auto;
+  /* !important to beat the generic .collapsible.collapsed{padding:0!important};
+     without it the always-visible band sits flush against the screen edge. */
+  padding: 10px 18px 8px !important; border: none !important;
+  background: linear-gradient(0deg, rgba(0,0,0,0.45), transparent) !important; }
+.scrubber.collapsed .scrub-head,
+.scrubber.collapsed .scrub-row { display: none !important; }
+.scrubber.collapsed > .trend-strip { display: block !important; margin-bottom: 0; }
 .scrubber.collapsed .collapse-btn::before { content: "\25B4"; }     /* ▴ closed */
+
+/* ---- always-visible trend band (the acceleration strip) ---- */
+.trend-strip { margin-bottom: 10px; }
+.trend-head { display: flex; justify-content: space-between; align-items: baseline;
+  gap: 12px; font-family: var(--mono); font-size: 10px; margin-bottom: 3px; }
+.trend-label { color: var(--ink-dim); text-transform: uppercase; letter-spacing: .12em; }
+.trend-now { color: var(--phosphor); text-transform: none; letter-spacing: .02em; }
+.trend-coverage { color: var(--ink-faint); letter-spacing: .03em; white-space: nowrap; }
+.trend-svg { display: block; width: 100%; height: 30px; cursor: pointer; }
 
 /* ================= scrubber ================= */
 .scrubber {

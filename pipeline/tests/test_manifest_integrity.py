@@ -56,3 +56,42 @@ def test_manifest_matches_committed_dailies():
         f"manifest vs disk mismatch — only in manifest: {listed - on_disk}; "
         f"only on disk: {on_disk - listed}"
     )
+
+
+_TREND = repo_path("data", "trend.json")
+
+
+@pytest.mark.skipif(not _manifest_days(), reason="no committed manifest/data")
+def test_trend_matches_manifest_and_is_wellformed():
+    """The trend strip's data must cover exactly the manifest days, with sane
+    monotone counts (measured >= degraded >= strong >= 0). The frontend reads
+    each point's `strong`; a mismatch or missing field blanks the trend band."""
+    assert os.path.exists(_TREND), "data/trend.json missing (build_site_data)"
+    with open(_TREND, encoding="utf-8") as fh:
+        trend = json.load(fh)
+    series = trend.get("series", [])
+    assert [d["date"] for d in series] == _manifest_days(), \
+        "trend series days must match the manifest exactly, in order"
+    for d in series:
+        assert d["measured"] >= d["degraded"] >= d["strong"] >= 0, \
+            f"{d['date']}: counts not monotone (measured>=degraded>=strong>=0)"
+
+    # Recompute the newest day straight from its daily artifact and require an
+    # EXACT match — monotonicity alone wouldn't catch a systematic miscount in
+    # build_trend (wrong floor/threshold/field).
+    from pipeline import config as C
+    newest = series[-1]
+    floor, strong_ratio = C.MIN_AIRCRAFT_FLOOR, trend["strong_ratio"]
+    measured = degraded = strong = 0
+    for rec in dailyio.read_daily(dailyio.daily_path(newest["date"])):
+        if rec.get("n_aircraft", 0) < floor:
+            continue
+        measured += 1
+        br = rec.get("bad_ratio", 0) or 0
+        if br > 0:
+            degraded += 1
+        if br >= strong_ratio:
+            strong += 1
+    assert (measured, degraded, strong) == \
+        (newest["measured"], newest["degraded"], newest["strong"]), \
+        f"trend.json {newest['date']} counts disagree with a fresh recompute"

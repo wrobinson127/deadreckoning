@@ -48,13 +48,15 @@
     <article class="essay">
       <h1>How airliners accidentally became jamming sensors</h1>
 
-      <p>Right now, in a handful of places around the world, airline pilots are flying through airspace where GPS no longer works. Their navigation systems can't get a reliable fix, because someone on the ground is jamming the signal. This happens far more often than most people realize, and almost none of it is reported publicly.</p>
+      <p>Right now, in a handful of places around the world, airline pilots are flying through airspace where GPS no longer works. Their navigation systems can't get a reliable fix, because someone on the ground is interfering with the signal. This happens far more often than most people realize, and almost none of it is reported publicly.</p>
 
-      <p>DeadReckoning tracks where it's happening. It maps GPS jamming worldwide, day by day, using a signal that passenger aircraft have been broadcasting the whole time.</p>
+      <p>DeadReckoning tracks where it's happening. It maps GPS interference worldwide, day by day, using a signal that passenger aircraft have been broadcasting the whole time.</p>
 
-      <p>The jamming is not random. It clusters around war zones, contested borders, and military exercises, and it has grown sharply as electronic warfare has spread. When it happens, civilian aircraft lose a basic tool of navigation, ships and drones drift off course, and the interference often spikes in the days around a strike or an escalation. Knowing where GPS is failing, and when, is a way of watching those conflicts from the outside.</p>
+      <p>Strictly, what the aircraft reveal is interference: the signal has become unreliable. Jamming is one cause, drowning out the signal; spoofing, feeding receivers a false position, is another. This map shows where GPS has stopped being trustworthy, without always distinguishing which technique did it.</p>
 
-      <p>Every airliner constantly reports how confident it is in its own GPS position. That number is meant for air traffic control. But when GPS gets jammed, the number drops, and it drops for every aircraft in the area at the same time. Enough planes reporting trouble in the same place, on the same day, is a reliable sign that GPS is being jammed there. Collect those reports over months and you can map interference across the globe without any special access, because the data was public all along.</p>
+      <p>The interference is not random. Independent reporting describes GPS interference as a growing feature of modern conflict, clustering around war zones, contested borders, and military exercises. When it happens, civilian aircraft lose a basic tool of navigation, ships and drones drift off course, and the disruption ripples outward. Knowing where GPS is failing, and when, is a way of watching those conflicts from the outside.</p>
+
+      <p>Every airliner constantly reports how confident it is in its own GPS position. That number is meant for air traffic control. But when GPS is interfered with, the number drops, and it drops for every aircraft in the area at the same time. Enough planes reporting trouble in the same place, on the same day, is a reliable sign that GPS is being interfered with there. Collect those reports over months and you can map interference across the globe without any special access, because the data was public all along.</p>
 
       <p>This piece explains how that works, and, just as importantly, where the map goes dark and why.</p>
 
@@ -66,9 +68,9 @@
 
       <h2>One plane proves nothing</h2>
 
-      <p>A single aircraft reporting low integrity means very little. Its receiver could be faulty, its antenna blocked by the airframe in a turn, or the reading could be a momentary glitch. Equipment fails in ordinary ways all the time. If the map treated one unhappy aircraft as evidence of jamming, it would be wrong constantly.</p>
+      <p>A single aircraft reporting low integrity means very little. Its receiver could be faulty, its antenna blocked by the airframe in a turn, or the reading could be a momentary glitch. Equipment fails in ordinary ways all the time. If the map treated one unhappy aircraft as evidence of interference, it would be wrong constantly.</p>
 
-      <p>The signal only becomes trustworthy when many aircraft agree. Jamming affects a place, not a plane: it degrades every receiver in the affected area at once, regardless of airline, aircraft type, or equipment. So DeadReckoning does not just track individual aircraft, it looks for that shared pattern. It divides the world into cells, roughly forty miles across, and for each one asks the same question: on this day, did most of the distinct aircraft that passed through report degraded integrity here? When the answer is yes across many separate aircraft, ordinary equipment failure stops being a plausible explanation. Interference does.</p>
+      <p>The signal only becomes trustworthy when many aircraft agree. Interference affects a place, not a plane: it degrades every receiver in the affected area at once, regardless of airline, aircraft type, or equipment. So DeadReckoning does not just track individual aircraft, it looks for that shared pattern. It divides the world into cells, roughly forty miles across, and for each one asks the same question: on this day, did most of the distinct aircraft that passed through report degraded integrity here? When the answer is yes across many separate aircraft, ordinary equipment failure stops being a plausible explanation. Interference does.</p>
 
       <p>The map also refuses to guess. A cell needs a minimum number of aircraft passing through before it will show any reading at all. Below that floor, there simply is not enough evidence, and the cell stays blank.</p>
 
@@ -80,7 +82,7 @@
 
       <h2>The sensor-desert paradox</h2>
 
-      <p>That distinction leads to the hardest limit of the whole approach. The instrument depends on commercial aircraft, and commercial aircraft avoid danger. They do not fly over active war zones, closed airspace, or the most heavily contested borders. So the places where jamming is often most intense are frequently the places with the fewest aircraft to detect it.</p>
+      <p>That distinction leads to the hardest limit of the whole approach. The instrument depends on commercial aircraft, and commercial aircraft avoid danger. They do not fly over active war zones, closed airspace, or the most heavily contested borders. So the places where interference is often most intense are frequently the places with the fewest aircraft to detect it.</p>
 
       <p>The result is a paradox at the center of the map. Western Ukraine and the airspace around Kaliningrad, where interference has been <a href="https://www.defensenews.com/global/europe/2025/07/02/researchers-home-in-on-origins-of-russias-baltic-gps-jamming/" target="_blank" rel="noopener">reported for years</a>, are thinly covered, because so few civilian flights travel this airspace. The signal that does get through comes from the edges: the aircraft still transiting nearby, skirting the danger rather than crossing it. DeadReckoning marks these regions and explains why they are sparse, but it cannot pretend to see into airspace that civil aviation has abandoned. The map is sharpest where aircraft are dense and normal life continues, and it is dimmest in exactly the places that matter most. Any honest reading of it has to hold both of those facts at once.</p>
 
@@ -91,7 +93,7 @@
 
       <h2>Why memory matters</h2>
 
-      <p>A few <a href="https://gpsjam.org/" target="_blank" rel="noopener">tools</a> already show current GPS interference. They answer a useful question: where is GPS being jammed right now? DeadReckoning was built to go beyond that, and answer a harder one: how does today compare to what this place is normally like?</p>
+      <p>A few <a href="https://gpsjam.org/" target="_blank" rel="noopener">tools</a> already show current GPS interference. They answer a useful question: where is GPS being interfered with right now? DeadReckoning was built to go beyond that, and answer a harder one: how does today compare to what this place is normally like?</p>
 
       <p>That comparison is the point of keeping an archive. For every cell on the map, DeadReckoning learns a baseline from its own recent history. On the anomaly layer, each new day is measured against that baseline, so a region that is always a little degraded reads as calm against its own normal, while a sudden jump in a place that is usually clean stands out sharply, even when the raw numbers are modest. Interference means something different depending on where it happens, and only a record over time separates a place that is chronically noisy from one that just changed.</p>
 
@@ -117,7 +119,7 @@
 
       <p>DeadReckoning is built entirely from open data, and everything it produces is open in turn. The aggregated data is published under the Open Database License, the same terms as the flight data it comes from. The code is MIT licensed and public. The whole system runs on infrastructure that costs nothing to operate.</p>
 
-      <p>There is far more in the data than one map can show. The archive is still growing backward in time and forward every night, and the questions it can answer sharpen as it deepens: whether interference tends to lead or follow the events near it, how spoofing differs from simple jamming, which regions are quietly getting worse. Those are the next things to build. GPS interference has become a routine feature of modern conflict, and most of it happens with no public record at all. DeadReckoning sets out to change that.</p>
+      <p>There is far more in the data than one map can show. The archive is still growing backward in time and forward every night, and the questions it can answer sharpen as it deepens: whether interference tends to lead or follow the events near it, how spoofing differs from simple jamming, which regions are beginning to shift. Those are the next things to build. GPS interference has become a routine feature of modern conflict, and most of it happens with no public record at all. DeadReckoning sets out to change that.</p>
     </article>
 
     <hr class="specs-divider" />

@@ -31,9 +31,39 @@ def build_manifest() -> dict:
         "min_aircraft_floor": C.MIN_AIRCRAFT_FLOOR,
         "confidence_high_min": C.CONFIDENCE_HIGH_MIN,
         "bad_ratio_clip": 1.0,
-        "anomaly_clip": 6.0,      # z-scores clamped to +/-6 for the color scale
+        # z-scores clamped to +/-4 for the color scale: real per-day p99 anomaly
+        # z sits near ~2.5, so a 4-sigma clip spends the ramp where the data is
+        # (6 wasted the top half and made the anomaly view read as near-empty).
+        "anomaly_clip": 4.0,
         "attribution": "adsb.lol (ODbL 1.0)",
     }
+
+
+def build_trend() -> dict:
+    """Per-day aggregate counts for the site's always-visible trend strip.
+
+    One point per UTC day: measured cells (>= aircraft floor), degraded cells
+    (bad_ratio > 0 among measured), and STRONG cells (bad_ratio >= the strong
+    threshold — a clear bloom). The strip plots the strong count so a reader can
+    see the arc of interference over the whole archive, honestly scoped to the
+    days that actually exist. Cheap to recompute nightly (reads each daily once).
+    """
+    series = []
+    for path in dailyio.daily_paths():
+        day = dailyio.day_of(path)
+        measured = degraded = strong = 0
+        for rec in dailyio.read_daily(path):
+            if rec.get("n_aircraft", 0) < C.MIN_AIRCRAFT_FLOOR:
+                continue
+            measured += 1
+            br = rec.get("bad_ratio", 0) or 0
+            if br > 0:
+                degraded += 1
+            if br >= C.TREND_STRONG_RATIO:
+                strong += 1
+        series.append({"date": day, "measured": measured,
+                       "degraded": degraded, "strong": strong})
+    return {"strong_ratio": C.TREND_STRONG_RATIO, "series": series}
 
 
 def _yaml_to_json(yaml_rel: str, key: str, json_rel: str) -> int:
@@ -54,11 +84,15 @@ def build_all() -> dict:
     manifest = build_manifest()
     with open(repo_path("data", "manifest.json"), "wb") as fh:
         fh.write(orjson.dumps(manifest, option=orjson.OPT_INDENT_2))
+    trend = build_trend()
+    with open(repo_path("data", "trend.json"), "wb") as fh:
+        fh.write(orjson.dumps(trend, option=orjson.OPT_INDENT_2))
     n_regions = _yaml_to_json("regions.yaml", "regions", "regions.json")
     n_events = _yaml_to_json("events.yaml", "events", "events.json")
     n_zones = _yaml_to_json("airspace.yaml", "zones", "airspace.json")
     return {"days": manifest["n_days"], "regions": n_regions,
-            "events": n_events, "airspace": n_zones}
+            "events": n_events, "airspace": n_zones,
+            "trend_days": len(trend["series"])}
 
 
 if __name__ == "__main__":
