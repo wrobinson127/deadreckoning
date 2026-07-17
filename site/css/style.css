@@ -119,14 +119,38 @@ header.topbar {
 }
 /* always-on UTC date, centered IN the top bar (independent of the timeline,
    so it stays visible when the scrubber is fully collapsed). */
+/* 2.8 — the date is the scrubber's anchor, so it carries display weight (20px). */
 .topbar-date {
   position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-  font-family: var(--mono); font-size: 14px; font-weight: 600;
-  letter-spacing: 0.08em; color: var(--ink); white-space: nowrap;
-  background: color-mix(in srgb, var(--bg-panel) 70%, transparent);
-  border: 1px solid var(--line); border-radius: var(--radius);
-  padding: 3px 12px; pointer-events: none;
+  font-family: var(--mono); font-size: 20px; font-weight: 600;
+  letter-spacing: 0.06em; color: var(--ink); white-space: nowrap;
+  background: color-mix(in srgb, var(--bg-panel) 78%, transparent);
+  border: 1px solid var(--line-2); border-radius: var(--radius);
+  padding: 3px 14px; pointer-events: auto; cursor: pointer;
+  transition: border-color .15s;
 }
+.topbar-date:hover { border-color: var(--phosphor); }
+/* jump-to-date calendar popover (anchored under the date) */
+.date-picker { position: fixed; top: 50px; left: 50%; transform: translateX(-50%);
+  z-index: 40; width: 238px; background: var(--bg-panel); border: 1px solid var(--line-2);
+  border-radius: 8px; padding: 10px 12px 11px; box-shadow: 0 10px 30px rgba(0,0,0,0.42);
+  font-family: var(--mono); }
+.dp-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.dp-title { font-size: 12.5px; color: var(--ink); letter-spacing: .04em; }
+.dp-nav { background: var(--bg-panel2); border: 1px solid var(--line-2); color: var(--ink-dim);
+  width: 24px; height: 24px; border-radius: 5px; cursor: pointer; font-size: 15px; line-height: 1; }
+.dp-nav:hover:not(:disabled) { color: var(--phosphor); border-color: var(--phosphor); }
+.dp-nav:disabled { opacity: .3; cursor: default; }
+.dp-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+.dp-dow { font-size: 9px; color: var(--ink-faint); text-align: center; padding: 1px 0 3px; }
+.dp-day { font-size: 11px; text-align: center; padding: 4px 0; border-radius: 4px;
+  color: var(--ink-faint); }
+.dp-day.avail { color: var(--ink); background: var(--bg-panel2); cursor: pointer; }
+.dp-day.avail:hover { background: color-mix(in srgb, var(--phosphor) 18%, var(--bg-panel2));
+  color: var(--phosphor); }
+.dp-day.cur { outline: 1px solid var(--phosphor); outline-offset: -1px; color: var(--phosphor); }
+.dp-day.empty { visibility: hidden; }
+.dp-foot { font-size: 10px; color: var(--ink-faint); margin-top: 9px; text-align: center; }
 .brand {
   font-family: var(--mono);
   font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase;
@@ -221,9 +245,12 @@ header.topbar {
 .right-stack { top: 14px; right: 14px; display: flex; flex-direction: column;
   gap: 10px; align-items: flex-end; max-height: calc(100% - 28px); }
 /* legend ramp */
-.legend { position: relative; width: 190px; }
-.ramp { height: 9px; border-radius: 2px; margin: 6px 0 4px;
-  border: 1px solid var(--line); }
+.legend { position: relative; width: 196px; }
+/* 2.3 — the ramp is the legend's hero object: a taller, inset instrument scale
+   rather than a thin rule. */
+.ramp { height: 15px; border-radius: 3px; margin: 8px 0 5px;
+  border: 1px solid var(--line); box-shadow: inset 0 1px 2px rgba(0,0,0,0.30); }
+.legend-cap { font-size: 11px; line-height: 1.42; color: var(--ink-dim); margin: 3px 0 1px; }
 .ramp.anom { background: linear-gradient(90deg,#000004,#3b0f70,#8c2981,#de4968,#fe9f6d,#fcfdbf); }
 .ramp.raw  { background: linear-gradient(90deg,#150c0a,#4a1710,#8f2214,#cc3d18,#ef6f1c,#f9a838,#fbd66b,#fdf1b8); }
 .ramp.cov  { background: linear-gradient(90deg,#111c28,#25415c,#3a6690,#6098c0,#a6cbe4); }
@@ -243,12 +270,19 @@ header.topbar {
 /* ---- readout (hover) ---- */
 /* top gutter reserves room for the collapse chip (top-left) + × close (top-right)
    so neither overlaps the big percent value below them. */
-.readout { bottom: 14px; left: 14px; min-width: 210px; padding-top: 28px; }
+/* 2.5 — readout reads like an instrument panel: a thin phosphor rail down the
+   left edge, and the value in tabular (fixed-width) figures so digits don't
+   jump as you hover cell to cell. */
+.readout { bottom: 14px; left: 14px; min-width: 210px; padding-top: 28px;
+  border-left: 2px solid var(--phosphor-dim); }
 .readout.pinned { min-width: 292px; }   /* roomier when the flights list is shown */
-.readout .big { font-family: var(--mono); font-size: 26px; font-weight: 600;
-  line-height: 1.1; margin: 0 0 2px; }
+.readout .big { font-family: var(--mono); font-size: 28px; font-weight: 600;
+  line-height: 1.05; margin: 0 0 2px; font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1; }
 .readout .row { display: flex; justify-content: space-between; gap: 12px;
-  font-size: 12px; color: var(--ink-dim); font-family: var(--mono); margin-top: 3px; }
+  font-size: 12px; color: var(--ink-dim); font-family: var(--mono); margin-top: 3px;
+  font-variant-numeric: tabular-nums; }
+.readout.empty { border-left-color: var(--line-2); }
 .readout .conf { text-transform: uppercase; letter-spacing: 0.1em; font-size: 10px; }
 .conf.high { color: var(--phosphor); }
 .conf.medium { color: var(--warn); }
@@ -336,33 +370,61 @@ header.topbar {
 #controlsPanel, .scrubber.collapsible { position: relative; }
 /* The toggle is a clearly-visible bordered chip in BOTH states (the earlier
    bare glyph was almost invisible when a box was folded). */
-.collapse-btn { position: absolute; top: 6px; right: 6px; z-index: 5;
-  width: 22px; height: 22px; padding: 0; display: grid; place-items: center;
-  background: color-mix(in srgb, var(--bg-panel2) 94%, transparent);
-  border: 1px solid var(--line-2); border-radius: var(--radius);
-  color: var(--ink); cursor: pointer; font-family: var(--mono); font-size: 12px;
+/* Collapse toggles read as small TABS attached to the panel's top-right corner,
+   not floating buttons: flush to the edge, flat, sharing the panel's border. */
+/* every collapse toggle is a LABELLED pill tab (arrow + the panel's name),
+   the same language as the "timeline" tag at the bottom. The label comes from
+   each button's data-label attribute so the four corner panels read
+   "layer / legend / regions / readout" just like "timeline". */
+.collapse-btn { position: absolute; top: 0; right: 0; z-index: 6;
+  padding: 3px 11px; display: inline-flex; align-items: baseline; gap: 5px;
+  background: var(--bg-panel2); border: 1px solid var(--line-2);
+  border-top-color: transparent; border-right-color: transparent;
+  border-radius: 0 var(--radius) 0 9px;
+  color: var(--ink-dim); cursor: pointer; font-family: var(--mono); font-size: 11px;
+  letter-spacing: .07em; line-height: 1.4;
   transition: color .15s, border-color .15s, background .15s; }
-.collapse-btn:hover { color: var(--phosphor); border-color: var(--phosphor);
-  background: var(--bg-panel2); }
-.collapse-btn::before { content: "\25BE"; }               /* ▾ expanded: click to fold */
+.collapse-btn:hover { color: var(--phosphor); border-left-color: var(--phosphor);
+  border-bottom-color: var(--phosphor); }
+.collapse-btn::before { content: "\25BE"; font-size: 10px; }      /* ▾ expanded: click to fold */
+.collapse-btn::after { content: attr(data-label); }
 .collapsible.collapsed .collapse-btn::before { content: "\25B8"; }  /* ▸ folded: click to open */
-.readout-collapse { right: auto; left: 6px; }
-.collapsible > h3 { padding-right: 28px; }
-/* folded: the box becomes just the chip — an obvious, sized tab you can find */
+.readout-collapse { right: auto; left: 0; border-radius: var(--radius) 0 9px 0;
+  border-left-color: transparent; border-right-color: var(--line-2); }
+.collapsible > h3 { padding-right: 74px; }
+/* folded: the box becomes just the tab — an obvious, findable label chip */
 .collapsible.collapsed { min-width: 0 !important; width: auto !important;
   max-height: none !important; padding: 0 !important; border: none !important;
   background: none !important; backdrop-filter: none !important; }
 .collapsible.collapsed > *:not(.collapse-btn) { display: none !important; }
-.collapsible.collapsed .collapse-btn { position: static; width: 32px; height: 28px;
-  font-size: 13px; }
-/* the timeline collapses ALL the way to a single corner chip. It goes
-   position:absolute so it leaves the grid flow entirely — otherwise its (empty)
-   grid row stays ~36px tall and shows the page background as a full-width strip.
-   Out of flow, the map row fills the space and only the chip floats in the corner. */
-.scrubber .collapse-btn { top: 8px; right: 16px; }
-.scrubber.collapsed { position: absolute; right: 12px; bottom: 12px; left: auto;
-  width: auto; display: block; padding: 0 !important; }
-.scrubber.collapsed .collapse-btn { position: static; width: 32px; height: 28px; }
+.collapsible.collapsed .collapse-btn { position: static; padding: 4px 13px;
+  border: 1px solid var(--line-2); border-radius: 7px; background: var(--bg-panel); }
+/* ...but a folded chip DOCKS flush to the nearest screen edge — a tab pulled
+   out of the edge, like the timeline tag — not a pill floating in from the
+   corner. Edge side loses its border + squares off; inner side stays rounded. */
+.controls #controlsPanel.collapsed .collapse-btn,
+.readout.collapsed .readout-collapse {
+  margin-left: -14px; border-left-color: transparent;
+  border-top-left-radius: 0; border-bottom-left-radius: 0; }
+#legend.collapsed .collapse-btn,
+#regionBox.collapsed .collapse-btn {
+  margin-right: -14px; border-right-color: transparent;
+  border-top-right-radius: 0; border-bottom-right-radius: 0; }
+
+/* the timeline toggle is a centered tab at the bottom-middle of the page (the
+   scrubber defaults folded, so this tab is how a reader reveals the timeline). */
+.scrubber .collapse-btn { top: -13px; right: auto; left: 50%; transform: translateX(-50%);
+  border: 1px solid var(--line-2); border-bottom-color: transparent;
+  border-radius: 7px 7px 0 0; padding: 3px 15px; background: var(--bg-panel2); }
+.scrubber .collapse-btn::before { content: "\25BE"; }               /* ▾ open */
+.scrubber .collapse-btn::after { content: " timeline"; letter-spacing: .07em; }
+.scrubber.collapsed { position: absolute; left: 50%; right: auto; bottom: 0; top: auto;
+  transform: translateX(-50%); width: auto; display: block;
+  padding: 0 !important; border: none !important; background: none !important; }
+.scrubber.collapsed .collapse-btn { position: static; transform: none;
+  border: 1px solid var(--line-2); border-bottom: none; border-radius: 7px 7px 0 0;
+  padding: 4px 16px; background: var(--bg-panel); }
+.scrubber.collapsed .collapse-btn::before { content: "\25B4"; }     /* ▴ closed */
 
 /* ================= scrubber ================= */
 .scrubber {
@@ -373,13 +435,18 @@ header.topbar {
 .scrub-head { display:flex; align-items:baseline; gap:16px; margin-bottom:8px; }
 .scrub-meta { font-family: var(--mono); font-size: 11px; color: var(--ink-faint); }
 .scrub-row { display: flex; align-items: center; gap: 14px; }
+/* 2.8 — the play control reads as the primary, pressable affordance: phosphor
+   glyph on a tinted well, with a tactile press. */
 .play {
-  width: 34px; height: 34px; flex: none; border-radius: 50%;
-  border: 1px solid var(--line-2); background: var(--bg-panel2); color: var(--ink);
-  cursor: pointer; font-size: 13px; display: grid; place-items: center;
-  transition: border-color .15s, color .15s;
+  width: 36px; height: 36px; flex: none; border-radius: 50%;
+  border: 1px solid var(--phosphor-dim); color: var(--phosphor);
+  background: color-mix(in srgb, var(--phosphor) 9%, var(--bg-panel2));
+  cursor: pointer; font-size: 14px; display: grid; place-items: center;
+  transition: border-color .15s, color .15s, background .15s, transform .08s;
 }
-.play:hover { border-color: var(--phosphor); color: var(--phosphor); }
+.play:hover { border-color: var(--phosphor);
+  background: color-mix(in srgb, var(--phosphor) 16%, var(--bg-panel2)); }
+.play:active { transform: scale(0.93); }
 .track-wrap { position: relative; flex: 1; height: 30px; }
 .track { position:absolute; top:50%; left:0; right:0; height:3px; transform:translateY(-50%);
   background: var(--line-2); border-radius: 2px; }
@@ -390,8 +457,13 @@ header.topbar {
   background: var(--ink-faint); border-radius:1px; }
 .tick.nodata { background: repeating-linear-gradient(0deg,var(--ink-faint) 0 2px,transparent 2px 4px);
   opacity:.5; }
-.tick.event { height:18px; width:2px; background: var(--warn); cursor:pointer; }
-.tick.event:hover { background:#fff; }
+/* 2.8 — annotated-event ticks carry a small amber cap so they read as events,
+   not day marks. */
+.tick.event { height:20px; width:3px; background: var(--warn); border-radius:1px; cursor:pointer; }
+.tick.event::before { content:""; position:absolute; left:50%; top:-4px;
+  transform:translateX(-50%); width:7px; height:7px; border-radius:50%;
+  background: var(--warn); box-shadow: 0 0 0 1.5px var(--bg); }
+.tick.event:hover, .tick.event:hover::before { background: var(--phosphor); }
 input.slider { position:absolute; top:0; left:0; width:100%; height:100%;
   -webkit-appearance:none; appearance:none; background:transparent; margin:0; cursor:pointer; }
 input.slider::-webkit-slider-thumb { -webkit-appearance:none; width:14px; height:14px;
@@ -539,7 +611,7 @@ input.slider::-moz-range-thumb { width:14px; height:14px; border-radius:50%;
 .loader::before { content:""; position:absolute; inset:0; z-index:0;
   background:
     linear-gradient(rgba(10,12,15,0.30), rgba(10,12,15,0.55)),
-    url("../assets/og-image.jpg") center / cover no-repeat;
+    url("../assets/loader-poster.jpg") center / cover no-repeat;
 }
 .loader.hide { opacity:0; pointer-events:none; }
 .loader .core { position:relative; z-index:1; text-align:center; }

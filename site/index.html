@@ -47,11 +47,22 @@
     </nav>
   </header>
 
+  <!-- jump-to-date calendar (click the date) -->
+  <div class="date-picker" id="datePicker" hidden role="dialog" aria-label="jump to a date">
+    <div class="dp-head">
+      <button class="dp-nav" id="dpPrev" aria-label="previous month">‹</button>
+      <span class="dp-title" id="dpTitle"></span>
+      <button class="dp-nav" id="dpNext" aria-label="next month">›</button>
+    </div>
+    <div class="dp-grid" id="dpGrid"></div>
+    <div class="dp-foot" id="dpFoot"></div>
+  </div>
+
   <div id="map">
     <!-- overlays -->
     <div class="map-overlay controls">
       <div class="panel collapsible" id="controlsPanel">
-        <button class="collapse-btn" data-collapse aria-label="collapse layer panel"></button>
+        <button class="collapse-btn" data-collapse data-label="layer" aria-label="collapse layer panel"></button>
         <h3>Layer</h3>
         <div class="seg" id="modeToggle" role="group" aria-label="color mode">
           <button data-mode="raw" aria-pressed="true">Degraded %</button>
@@ -74,10 +85,11 @@
 
     <div class="map-overlay right-stack">
       <div class="legend panel collapsible" id="legend">
-        <button class="collapse-btn" data-collapse aria-label="collapse legend"></button>
+        <button class="collapse-btn" data-collapse data-label="legend" aria-label="collapse legend"></button>
         <h3 id="legendTitle">Aircraft with degraded GPS</h3>
         <div class="ramp raw" id="legendRamp"></div>
         <div class="ramp-labels"><span id="legLo">0%</span><span id="legHi">100%</span></div>
+        <p class="legend-cap" id="legendCap"></p>
         <div class="swatch-row"><span class="swatch quiet"></span>
           <span>watched &amp; quiet: aircraft seen, GPS healthy</span></div>
         <div class="swatch-row"><span class="swatch insufficient"></span>
@@ -87,14 +99,14 @@
       </div>
 
       <div class="region-box panel collapsible" id="regionBox">
-        <button class="collapse-btn" data-collapse aria-label="collapse regions"></button>
+        <button class="collapse-btn" data-collapse data-label="regions" aria-label="collapse regions"></button>
         <h3>Watch regions</h3>
         <div class="region-list" id="regionChips"></div>
       </div>
     </div>
 
     <div class="map-overlay readout panel empty collapsible" id="readout">
-      <button class="collapse-btn readout-collapse" data-collapse aria-label="collapse readout"></button>
+      <button class="collapse-btn readout-collapse" data-collapse data-label="readout" aria-label="collapse readout"></button>
       <button class="ro-close" id="roClose" aria-label="unpin" hidden>×</button>
       <div class="big" id="roVal">—</div>
       <div class="row"><span id="roAircraft">hover a cell</span>
