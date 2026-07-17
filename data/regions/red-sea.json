@@ -129,6 +129,13 @@
       "total_aircraft": 0
     },
     {
+      "date": "2026-05-07",
+      "n_hexes": 0,
+      "mean_bad_ratio": null,
+      "max_bad_ratio": null,
+      "total_aircraft": 0
+    },
+    {
       "date": "2026-05-08",
       "n_hexes": 0,
       "mean_bad_ratio": null,
