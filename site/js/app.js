@@ -899,15 +899,88 @@
     el("trackFill").style.width = pct + "%";
   }
 
+  const PLAY_DWELL_MS = 620;   // on-screen dwell per day AFTER it renders (consistent cadence)
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
   function togglePlay() {
     state.playing = !state.playing;
     el("playBtn").textContent = state.playing ? "❚❚" : "▶";
-    if (state.playing) {
-      state.playTimer = setInterval(() => {
-        if (state.idx >= state.manifest.days.length - 1) { goTo(0); }
-        else goTo(state.idx + 1);
-      }, 650);
-    } else clearInterval(state.playTimer);
+    if (state.playing) playLoop();   // self-terminates when state.playing flips off
+  }
+
+  // Advance one day at a time, AWAITING each day's load+render before dwelling a
+  // fixed time — so the cadence is consistent regardless of per-day load latency.
+  // The old fixed setInterval fired new frames before the async goTo finished,
+  // which made playback jerky/inconsistent. Prefetch the following day to stay smooth.
+  async function playLoop() {
+    const days = state.manifest.days;
+    while (state.playing) {
+      const next = state.idx >= days.length - 1 ? 0 : state.idx + 1;
+      await goTo(next);
+      if (!state.playing) break;
+      const after = next >= days.length - 1 ? 0 : next + 1;
+      loadDay(days[after]).catch(() => {});   // warm the next day's cache
+      await sleep(PLAY_DWELL_MS);
+    }
+  }
+
+  // ---------- jump-to-date calendar ----------
+  // Click the top date to open a month calendar; days present in the archive are
+  // clickable (goTo). Gaps and dates outside the archive are shown but inert, so a
+  // reader can see exactly which days exist. UTC throughout (the archive is UTC).
+  let calMonth = null;   // Date at UTC midnight of the 1st of the displayed month
+  const MON = ["January", "February", "March", "April", "May", "June", "July",
+    "August", "September", "October", "November", "December"];
+
+  function dayLookup() {
+    if (!state._dayIdx) state._dayIdx = new Map(state.manifest.days.map((d, i) => [d, i]));
+    return state._dayIdx;
+  }
+  function ym(y, m) { return `${y}-${String(m + 1).padStart(2, "0")}`; }
+  function iso(y, m, d) { return `${ym(y, m)}-${String(d).padStart(2, "0")}`; }
+
+  function toggleCalendar() {
+    const dp = el("datePicker");
+    if (!dp.hidden) return closeCalendar();
+    calMonth = new Date(state.manifest.days[state.idx] + "T00:00:00Z");
+    calMonth.setUTCDate(1);
+    renderCalendar();
+    dp.hidden = false;
+    setTimeout(() => document.addEventListener("mousedown", onDocDownCal), 0);
+  }
+  function closeCalendar() {
+    el("datePicker").hidden = true;
+    document.removeEventListener("mousedown", onDocDownCal);
+  }
+  function onDocDownCal(e) {
+    if (!el("datePicker").contains(e.target) && e.target !== el("mapDate")) closeCalendar();
+  }
+  function shiftMonth(delta) { calMonth.setUTCMonth(calMonth.getUTCMonth() + delta); renderCalendar(); }
+
+  function renderCalendar() {
+    const idx = dayLookup();
+    const days = state.manifest.days, first = days[0], last = days.at(-1);
+    const y = calMonth.getUTCFullYear(), m = calMonth.getUTCMonth();
+    const cur = days[state.idx];
+    el("dpTitle").textContent = `${MON[m]} ${y}`;
+    const firstDow = new Date(Date.UTC(y, m, 1)).getUTCDay();
+    const dim = new Date(Date.UTC(y, m + 1, 0)).getUTCDate();
+    let html = ["S", "M", "T", "W", "T", "F", "S"].map((d) => `<div class="dp-dow">${d}</div>`).join("");
+    for (let i = 0; i < firstDow; i++) html += `<div class="dp-day empty"></div>`;
+    for (let d = 1; d <= dim; d++) {
+      const s = iso(y, m, d), avail = idx.has(s);
+      html += `<div class="dp-day${avail ? " avail" : ""}${s === cur ? " cur" : ""}"`
+        + `${avail ? ` data-day="${s}"` : ""}>${d}</div>`;
+    }
+    const grid = el("dpGrid"); grid.innerHTML = html;
+    grid.querySelectorAll(".dp-day.avail").forEach((c) =>
+      c.addEventListener("click", () => {
+        if (state.playing) togglePlay();
+        goTo(idx.get(c.dataset.day)); closeCalendar();
+      }));
+    el("dpPrev").disabled = ym(y, m) <= first.slice(0, 7);
+    el("dpNext").disabled = ym(y, m) >= last.slice(0, 7);
+    el("dpFoot").textContent = `${days.length} days · ${first} to ${last}`;
   }
 
   // ---------- mode / coverage ----------
@@ -1066,6 +1139,9 @@
       goTo(+e.target.value);
     });
     el("playBtn").addEventListener("click", togglePlay);
+    el("mapDate").addEventListener("click", toggleCalendar);
+    el("dpPrev").addEventListener("click", () => shiftMonth(-1));
+    el("dpNext").addEventListener("click", () => shiftMonth(1));
     el("drClose").addEventListener("click", closeRegion);
     el("introGo").addEventListener("click", hideIntro);
     el("introClose").addEventListener("click", hideIntro);
@@ -1079,6 +1155,9 @@
         const box = btn.closest(".collapsible");
         if (box) box.classList.toggle("collapsed");
       }));
+    // The timeline starts folded for everyone — the map is the hero; the "timeline"
+    // tab at bottom-center reveals the scrubber when the reader wants to move in time.
+    el("scrubber").classList.add("collapsed");
     // On phones, start the legend + watch-regions folded so they never cover
     // the map (the color key stays reachable via its tab — the mobile contract).
     if (window.matchMedia && window.matchMedia("(max-width: 760px)").matches) {
@@ -1087,6 +1166,7 @@
     }
     document.addEventListener("keydown", (e) => {
       if (!el("intro").hidden) { if (e.key === "Escape") hideIntro(); return; }
+      if (!el("datePicker").hidden && e.key === "Escape") { closeCalendar(); return; }
       if (e.key === "ArrowLeft") goTo(state.idx - 1);
       else if (e.key === "ArrowRight") goTo(state.idx + 1);
       else if (e.key === " ") { e.preventDefault(); togglePlay(); }

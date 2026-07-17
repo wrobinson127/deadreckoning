@@ -47,6 +47,17 @@
     </nav>
   </header>
 
+  <!-- jump-to-date calendar (click the date) -->
+  <div class="date-picker" id="datePicker" hidden role="dialog" aria-label="jump to a date">
+    <div class="dp-head">
+      <button class="dp-nav" id="dpPrev" aria-label="previous month">‹</button>
+      <span class="dp-title" id="dpTitle"></span>
+      <button class="dp-nav" id="dpNext" aria-label="next month">›</button>
+    </div>
+    <div class="dp-grid" id="dpGrid"></div>
+    <div class="dp-foot" id="dpFoot"></div>
+  </div>
+
   <div id="map">
     <!-- overlays -->
     <div class="map-overlay controls">
