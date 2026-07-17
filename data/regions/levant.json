@@ -3,6 +3,41 @@
   "display_name": "Levant (Israel / Lebanon)",
   "series": [
     {
+      "date": "2026-02-21",
+      "n_hexes": 15,
+      "mean_bad_ratio": 0.114,
+      "max_bad_ratio": 0.6667,
+      "total_aircraft": 962
+    },
+    {
+      "date": "2026-02-22",
+      "n_hexes": 13,
+      "mean_bad_ratio": 0.0327,
+      "max_bad_ratio": 0.2,
+      "total_aircraft": 1018
+    },
+    {
+      "date": "2026-02-23",
+      "n_hexes": 13,
+      "mean_bad_ratio": 0.0066,
+      "max_bad_ratio": 0.0392,
+      "total_aircraft": 956
+    },
+    {
+      "date": "2026-02-24",
+      "n_hexes": 13,
+      "mean_bad_ratio": 0.0033,
+      "max_bad_ratio": 0.0167,
+      "total_aircraft": 931
+    },
+    {
+      "date": "2026-02-25",
+      "n_hexes": 15,
+      "mean_bad_ratio": 0.0121,
+      "max_bad_ratio": 0.1667,
+      "total_aircraft": 982
+    },
+    {
       "date": "2026-04-17",
       "n_hexes": 5,
       "mean_bad_ratio": 0.444,
@@ -372,6 +407,13 @@
       "mean_bad_ratio": 0.2127,
       "max_bad_ratio": 0.6667,
       "total_aircraft": 1026
+    },
+    {
+      "date": "2026-06-11",
+      "n_hexes": 0,
+      "mean_bad_ratio": null,
+      "max_bad_ratio": null,
+      "total_aircraft": 0
     },
     {
       "date": "2026-06-12",

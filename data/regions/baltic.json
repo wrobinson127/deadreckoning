@@ -3,6 +3,41 @@
   "display_name": "Baltic Sea",
   "series": [
     {
+      "date": "2026-02-21",
+      "n_hexes": 221,
+      "mean_bad_ratio": 0.2598,
+      "max_bad_ratio": 1.0,
+      "total_aircraft": 10406
+    },
+    {
+      "date": "2026-02-22",
+      "n_hexes": 216,
+      "mean_bad_ratio": 0.2564,
+      "max_bad_ratio": 1.0,
+      "total_aircraft": 9765
+    },
+    {
+      "date": "2026-02-23",
+      "n_hexes": 217,
+      "mean_bad_ratio": 0.2729,
+      "max_bad_ratio": 1.0,
+      "total_aircraft": 9491
+    },
+    {
+      "date": "2026-02-24",
+      "n_hexes": 217,
+      "mean_bad_ratio": 0.2797,
+      "max_bad_ratio": 1.0,
+      "total_aircraft": 8207
+    },
+    {
+      "date": "2026-02-25",
+      "n_hexes": 218,
+      "mean_bad_ratio": 0.2731,
+      "max_bad_ratio": 1.0,
+      "total_aircraft": 9130
+    },
+    {
       "date": "2026-04-17",
       "n_hexes": 224,
       "mean_bad_ratio": 0.1942,
@@ -372,6 +407,13 @@
       "mean_bad_ratio": 0.1926,
       "max_bad_ratio": 1.0,
       "total_aircraft": 14007
+    },
+    {
+      "date": "2026-06-11",
+      "n_hexes": 201,
+      "mean_bad_ratio": 0.1154,
+      "max_bad_ratio": 1.0,
+      "total_aircraft": 11400
     },
     {
       "date": "2026-06-12",

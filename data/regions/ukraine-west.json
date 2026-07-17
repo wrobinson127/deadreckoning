@@ -3,6 +3,41 @@
   "display_name": "Western Ukraine / Border Airspace",
   "series": [
     {
+      "date": "2026-02-21",
+      "n_hexes": 8,
+      "mean_bad_ratio": 0.1435,
+      "max_bad_ratio": 0.3077,
+      "total_aircraft": 583
+    },
+    {
+      "date": "2026-02-22",
+      "n_hexes": 10,
+      "mean_bad_ratio": 0.205,
+      "max_bad_ratio": 0.5,
+      "total_aircraft": 584
+    },
+    {
+      "date": "2026-02-23",
+      "n_hexes": 10,
+      "mean_bad_ratio": 0.1835,
+      "max_bad_ratio": 0.4,
+      "total_aircraft": 562
+    },
+    {
+      "date": "2026-02-24",
+      "n_hexes": 8,
+      "mean_bad_ratio": 0.1743,
+      "max_bad_ratio": 0.5714,
+      "total_aircraft": 562
+    },
+    {
+      "date": "2026-02-25",
+      "n_hexes": 9,
+      "mean_bad_ratio": 0.2219,
+      "max_bad_ratio": 0.3529,
+      "total_aircraft": 490
+    },
+    {
       "date": "2026-04-17",
       "n_hexes": 11,
       "mean_bad_ratio": 0.2181,
@@ -372,6 +407,13 @@
       "mean_bad_ratio": 0.118,
       "max_bad_ratio": 0.25,
       "total_aircraft": 794
+    },
+    {
+      "date": "2026-06-11",
+      "n_hexes": 11,
+      "mean_bad_ratio": 0.0732,
+      "max_bad_ratio": 0.2,
+      "total_aircraft": 532
     },
     {
       "date": "2026-06-12",
