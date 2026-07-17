@@ -3,7 +3,7 @@ event windows -> backward), stays inside [floor, yesterday], excludes days alrea
 present, and never repeats a day."""
 from datetime import date
 
-from pipeline.deep_backfill import build_plan
+from pipeline.deep_backfill import build_plan, _parse_window, _within_window
 
 
 def _present(a, b):
@@ -48,3 +48,18 @@ def test_plan_order_and_bounds():
 def test_empty_archive_starts_at_floor():
     plan = build_plan(set(), "2023-06-10", date(2023, 6, 15), [], pad=7)
     assert plan[0] == "2023-06-10" and plan[-1] == "2023-06-15"
+
+
+def test_run_window_parse_and_membership():
+    assert _parse_window("3-10") == (3, 10)
+    assert _parse_window("") is None and _parse_window(None) is None
+    # normal window [start, end): start inclusive, end exclusive
+    w = _parse_window("3-10")
+    assert all(_within_window(w, h) for h in (3, 4, 7, 9))
+    assert not any(_within_window(w, h) for h in (0, 2, 10, 11, 23))
+    # window that wraps past midnight
+    ww = _parse_window("23-8")
+    assert all(_within_window(ww, h) for h in (23, 0, 3, 7))
+    assert not any(_within_window(ww, h) for h in (8, 9, 12, 22))
+    # no window / degenerate window == always on
+    assert _within_window(None, 15) and _within_window((5, 5), 15)
