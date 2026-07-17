@@ -187,8 +187,11 @@
     const bl = state.baselines[rec.hex];
     if (!bl) return { k: "val", c: "#1c2430", op: 0.18 }; // measured, no baseline yet
     const z = (rec.bad_ratio - bl.mean) / Math.max(bl.std, state.stdFloor);
+    // 2.7 — the strongest anomalies (>= 70% of the clip) get the same warm glow
+    // as extreme raw hexes, so high-z cells read clearly against the magma ramp.
     return { k: "val", c: DR_COLOR.anomaly(z, state.anomalyClip),
-             op: opFor(z / state.anomalyClip), z };
+             op: opFor(z / state.anomalyClip), z,
+             ex: z >= state.anomalyClip * 0.7 ? 1 : 0 };
   }
 
   function anomalyZ(rec) {
@@ -913,14 +916,18 @@
     document.querySelectorAll("#modeToggle button").forEach((b) =>
       b.setAttribute("aria-pressed", String(b.dataset.mode === mode)));
     const L = ({
-      raw:      { title: "Aircraft with degraded GPS", ramp: "raw",  lo: "0%",     hi: "100%" },
-      anomaly:  { title: "Anomaly vs baseline (σ)",    ramp: "anom", lo: "normal", hi: state.anomalyClip + "σ+" },
-      coverage: { title: "Aircraft per cell (log)",    ramp: "cov",  lo: "few",    hi: "dense" },
+      raw:      { title: "Aircraft with degraded GPS", ramp: "raw",  lo: "0%",     hi: "100%",
+                  cap: "Share of aircraft reporting degraded GPS in each cell this day." },
+      anomaly:  { title: "Anomaly vs baseline (σ)",    ramp: "anom", lo: "normal", hi: state.anomalyClip + "σ+",
+                  cap: "How far each cell sits above its own 28-day normal; the brightest cells glow." },
+      coverage: { title: "Aircraft per cell (log)",    ramp: "cov",  lo: "few",    hi: "dense",
+                  cap: "How heavily each area is watched, so you can tell blindness from calm." },
     })[mode] || {};
     el("legendTitle").textContent = L.title || "";
     el("legendRamp").className = "ramp " + (L.ramp || "raw");
     el("legLo").textContent = L.lo || "";
     el("legHi").textContent = L.hi || "";
+    el("legendCap").textContent = L.cap || "";
     // The quiet carpet is context for the signal views; in Coverage mode the
     // density ramp already shows "how heavily watched", so hide it to avoid tinting.
     const showCarpet = state.quiet && mode !== "coverage";
