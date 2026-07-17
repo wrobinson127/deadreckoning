@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<script>/* set theme before paint (no flash). Dark is default; light follows OS pref. */
-(function(){try{var t=localStorage.getItem('dr_theme');if(t!=='light'&&t!=='dark')t=(window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark';document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','dark');}})();</script>
+<script>/* set theme before paint (no flash). Dark is the default; a stored choice wins. */
+(function(){try{var t=localStorage.getItem('dr_theme');if(t!=='light'&&t!=='dark')t='dark';document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','dark');}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 <title>DEAD RECKONING: a GPS interference archive</title>
 <meta name="description" content="A longitudinal archive of GPS/GNSS interference, indicated by degraded aircraft navigation integrity (ADS-B NIC). Scrub multi-day history, per-hex baselines, named watch regions." />
