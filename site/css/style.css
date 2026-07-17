@@ -399,6 +399,17 @@ header.topbar {
 .collapsible.collapsed > *:not(.collapse-btn) { display: none !important; }
 .collapsible.collapsed .collapse-btn { position: static; padding: 4px 13px;
   border: 1px solid var(--line-2); border-radius: 7px; background: var(--bg-panel); }
+/* ...but a folded chip DOCKS flush to the nearest screen edge — a tab pulled
+   out of the edge, like the timeline tag — not a pill floating in from the
+   corner. Edge side loses its border + squares off; inner side stays rounded. */
+.controls #controlsPanel.collapsed .collapse-btn,
+.readout.collapsed .readout-collapse {
+  margin-left: -14px; border-left-color: transparent;
+  border-top-left-radius: 0; border-bottom-left-radius: 0; }
+#legend.collapsed .collapse-btn,
+#regionBox.collapsed .collapse-btn {
+  margin-right: -14px; border-right-color: transparent;
+  border-top-right-radius: 0; border-bottom-right-radius: 0; }
 
 /* the timeline toggle is a centered tab at the bottom-middle of the page (the
    scrubber defaults folded, so this tab is how a reader reveals the timeline). */
