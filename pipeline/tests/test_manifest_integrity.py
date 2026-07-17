@@ -75,3 +75,23 @@ def test_trend_matches_manifest_and_is_wellformed():
     for d in series:
         assert d["measured"] >= d["degraded"] >= d["strong"] >= 0, \
             f"{d['date']}: counts not monotone (measured>=degraded>=strong>=0)"
+
+    # Recompute the newest day straight from its daily artifact and require an
+    # EXACT match — monotonicity alone wouldn't catch a systematic miscount in
+    # build_trend (wrong floor/threshold/field).
+    from pipeline import config as C
+    newest = series[-1]
+    floor, strong_ratio = C.MIN_AIRCRAFT_FLOOR, trend["strong_ratio"]
+    measured = degraded = strong = 0
+    for rec in dailyio.read_daily(dailyio.daily_path(newest["date"])):
+        if rec.get("n_aircraft", 0) < floor:
+            continue
+        measured += 1
+        br = rec.get("bad_ratio", 0) or 0
+        if br > 0:
+            degraded += 1
+        if br >= strong_ratio:
+            strong += 1
+    assert (measured, degraded, strong) == \
+        (newest["measured"], newest["degraded"], newest["strong"]), \
+        f"trend.json {newest['date']} counts disagree with a fresh recompute"

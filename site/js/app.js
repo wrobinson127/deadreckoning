@@ -410,7 +410,8 @@
         "line-opacity": ["case", ["==", ["feature-state", "ex"], 1], 0.65, 0],
       },
     }, before);
-    // Low-sample hatch — distinct "too few aircraft to judge" state. Default off.
+    // Low-sample hatch — distinct "too few aircraft to judge" state. Default ON
+    // (the sensor-desert must not read as calm; toggled off via "Low-sample cells").
     map.addLayer({
       id: "hex-insuf", type: "fill", source: "hexes",
       paint: {
@@ -747,11 +748,6 @@
     body.innerHTML = (regionDraft && PREVIEW)
       ? `<span class="draft-tag">DRAFT — pending author review</span>`
       : "";
-    // The disclaimer lives WHERE the claims are read, not two clicks away on the
-    // About page: the context below (causes / actors / interpretation) is analyst
-    // reading of public reporting, not something this instrument measured.
-    body.insertAdjacentHTML("beforeend",
-      `<p class="drawer-disclaimer">Analyst interpretation from public reporting, not measurement.</p>`);
 
     // trend sparkline
     let series = [];
@@ -765,6 +761,13 @@
     const ctx = prof.context || {};
     const sec = (label, txt) => txt
       ? `<div class="section-label">${label}</div><p>${escapeHtml(txt)}</p>` : "";
+    // The disclaimer sits directly above the interpretive prose it governs (the
+    // causes / actors / interpretation below) — NOT above the region's own
+    // measured trend sparkline, which is measurement. Point-of-use honesty.
+    if (ctx.typical_causes || ctx.known_actors || ctx.interpretation_notes) {
+      body.insertAdjacentHTML("beforeend",
+        `<p class="drawer-disclaimer">Analyst interpretation from public reporting, not measurement.</p>`);
+    }
     body.insertAdjacentHTML("beforeend",
       sec("Typical causes", ctx.typical_causes) +
       sec("Known actors (reported)", ctx.known_actors) +
@@ -861,6 +864,10 @@
       .attr("stroke", accent).attr("stroke-width", 1).attr("stroke-opacity", 0.9);
     svg.append("circle").attr("cx", mx).attr("cy", y(series[i].strong))
       .attr("r", 2.4).attr("fill", accent);
+    // put a NUMBER on the strip so it reads as magnitude, not just shape: the
+    // scrubbed day's strong-cell count, plus the archive peak for scale.
+    const now = el("trendNow");
+    if (now) now.textContent = `${series[i].strong.toLocaleString()} this day · peak ${maxY.toLocaleString()}`;
   }
 
   // Click anywhere on the strip to jump to that day (the strip is a second, always-
@@ -1085,7 +1092,7 @@
       raw:      { title: "Aircraft with degraded GPS", ramp: "raw",  lo: "0%",     hi: "100%",
                   cap: "Share of aircraft reporting degraded GPS in each cell this day." },
       anomaly:  { title: "Anomaly vs baseline (σ)",    ramp: "anom", lo: "normal", hi: state.anomalyClip + "σ+",
-                  cap: "Where interference is new or worsening versus each cell's own 28-day normal. Chronically degraded areas read calm here — they match their baseline." },
+                  cap: "Where interference is new or worsening versus each cell's own 28-day normal. Areas that match their long-run normal recede, even if chronically degraded." },
       coverage: { title: "Aircraft per cell (log)",    ramp: "cov",  lo: "few",    hi: "dense",
                   cap: "How heavily each area is watched, so you can tell blindness from calm." },
     })[mode] || {};

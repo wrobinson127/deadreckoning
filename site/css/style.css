@@ -428,7 +428,10 @@ header.topbar {
    row (not a floating tab), so the time dimension keeps permanent presence and the
    "▴ timeline" tab reveals the full scrubber. */
 .scrubber.collapsed { position: static; transform: none; width: auto;
-  padding: 10px 18px 8px; }
+  /* !important to beat the generic .collapsible.collapsed{padding:0!important};
+     without it the always-visible band sits flush against the screen edge. */
+  padding: 10px 18px 8px !important; border: none !important;
+  background: linear-gradient(0deg, rgba(0,0,0,0.45), transparent) !important; }
 .scrubber.collapsed .scrub-head,
 .scrubber.collapsed .scrub-row { display: none !important; }
 .scrubber.collapsed > .trend-strip { display: block !important; margin-bottom: 0; }
@@ -439,6 +442,7 @@ header.topbar {
 .trend-head { display: flex; justify-content: space-between; align-items: baseline;
   gap: 12px; font-family: var(--mono); font-size: 10px; margin-bottom: 3px; }
 .trend-label { color: var(--ink-dim); text-transform: uppercase; letter-spacing: .12em; }
+.trend-now { color: var(--phosphor); text-transform: none; letter-spacing: .02em; }
 .trend-coverage { color: var(--ink-faint); letter-spacing: .03em; white-space: nowrap; }
 .trend-svg { display: block; width: 100%; height: 30px; cursor: pointer; }
 
