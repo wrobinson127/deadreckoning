@@ -42,6 +42,7 @@ import glob
 import os
 import shutil
 import sys
+import time
 from datetime import date as date_cls, datetime, timedelta, timezone
 
 from . import baselines, build_site_data, config as C, dailyio, download, regions
@@ -126,6 +127,45 @@ def build_plan(present: set[str], floor: str, yesterday: date_cls,
     return plan
 
 
+def _parse_window(spec: str):
+    """'3-10' -> (3, 10). Local wall-clock hours, [start, end). Returns None for
+    an empty/None spec (run 24/7)."""
+    if not spec:
+        return None
+    try:
+        a, b = spec.split("-")
+        start, end = int(a), int(b)
+        if not (0 <= start <= 24 and 0 <= end <= 24):
+            raise ValueError
+    except Exception:
+        raise SystemExit(f"bad --run-window {spec!r}; expected 'START-END' hours, e.g. 3-10")
+    return (start, end)
+
+
+def _within_window(window, hour: int) -> bool:
+    if window is None:
+        return True
+    start, end = window
+    if start == end:
+        return True
+    if start < end:
+        return start <= hour < end
+    return hour >= start or hour < end   # wraps past midnight (e.g. 23-8)
+
+
+def _wait_for_window(window):
+    """Block until the local clock is inside the run window; announce once."""
+    announced = False
+    while not _within_window(window, datetime.now().hour):
+        if not announced:
+            print(f"[sleep] outside run window {window[0]:02d}:00-{window[1]:02d}:00 local "
+                  f"(now {datetime.now():%H:%M}); pausing until the window opens…", flush=True)
+            announced = True
+        time.sleep(300)   # re-check every 5 min
+    if announced:
+        print(f"[wake] inside run window {window[0]:02d}:00-{window[1]:02d}:00; resuming.", flush=True)
+
+
 def _derive(reason: str):
     print(f"  [derive] recomputing baselines + regions + site data ({reason}) ...", flush=True)
     baselines.write_baselines()
@@ -143,7 +183,11 @@ def main(argv=None) -> int:
     ap.add_argument("--min-free-gb", type=float, default=C.MIN_FREE_DISK_GB,
                     help="pause before a day if free disk on the scratch volume is below this")
     ap.add_argument("--dry-run", action="store_true", help="print the plan and exit; no downloads")
+    ap.add_argument("--run-window", default=None,
+                    help="only fetch inside this LOCAL-time window, e.g. 3-10 (3am-10am); "
+                         "one persistent process sleeps outside it. Omit to run 24/7.")
     args = ap.parse_args(argv)
+    window = _parse_window(args.run_window)
 
     present = _present_days()
     yesterday = _utc_yesterday()
@@ -166,11 +210,19 @@ def main(argv=None) -> int:
         print(f"[WARN] scratch {scratch} looks OneDrive-synced; set DR_SCRATCH off OneDrive "
               f"for bulk runs to avoid sync thrash.", file=sys.stderr)
 
+    if window:
+        print(f"run window: {window[0]:02d}:00-{window[1]:02d}:00 local "
+              f"(fetching pauses outside it)")
+
     done = notready = failed = 0
     for day in plan:
         if args.max_days is not None and done >= args.max_days:
             print(f"[stop] reached --max-days {args.max_days}")
             break
+        # Time-of-day gate: pause between days until we're back inside the window.
+        # (A day already downloading when the window closes finishes; the gate is
+        # checked between days, so overshoot is a few minutes, not a hard cut.)
+        _wait_for_window(window)
         free_gb = shutil.disk_usage(scratch).free / 1e9
         if free_gb < args.min_free_gb:
             print(f"[PAUSE] free disk {free_gb:.1f} GB < {args.min_free_gb} GB floor on {scratch}; "
