@@ -25,12 +25,11 @@
   figure.chart figcaption { font-size: 12.5px; color: var(--ink-dim); margin-top: 8px; line-height: 1.5; }
   figure.chart figcaption .dated { display: block; color: var(--ink-faint); font-family: var(--mono);
     font-size: 11px; margin-top: 4px; }
-  /* The data-viz charts use the dark instrument palette, so they always sit on a
-     solid dark readout panel (a framed figure), legible regardless of page theme. */
-  figure.chart.viz { background: #0b0e13; border: 1px solid #262d38; border-radius: var(--radius);
+  /* The data-viz charts sit on a solid readout panel (a framed figure) that
+     follows the page theme; the chart marks/text recolor per theme in JS. */
+  figure.chart.viz { background: var(--bg-panel); border: 1px solid var(--line); border-radius: var(--radius);
     padding: 14px 16px 10px; }
-  figure.chart.viz figcaption { color: #8b96a3; margin-top: 6px; }
-  figure.chart.viz figcaption .dated { color: #5a6473; }
+  figure.chart.viz figcaption { margin-top: 6px; }
   table.glance { width: 100%; }
   table.glance th.num, table.glance td.num { text-align: right; font-variant-numeric: tabular-nums; }
   /* Callouts read as solid boxes, not a left-accent bar. */

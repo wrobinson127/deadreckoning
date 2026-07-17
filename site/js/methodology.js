@@ -6,10 +6,21 @@
 (function () {
   "use strict";
   var P = window.Plot;
-  var C = { BG:"#0a0c0f", INK:"#e6ebf0", INK_DIM:"#8b96a3", INK_FAINT:"#5a6473",
-    LINE:"#2a323c", SIGNAL:"#35e0d0", BAND:"#3a6690", EVENT:"#ffcf5c",
-    WARM:"#e0673a", QUAD:"#6d4fb0" };
-  var STYLE = { background:"transparent", color:C.INK_DIM, fontSize:"11px", overflow:"visible" };
+  // Theme-aware palette: the charts follow the page theme (dark by default, light
+  // on toggle). Text/leader colors come from the site's CSS tokens so they track
+  // the theme; the warm mark color is set per theme for contrast on each ground.
+  function palette() {
+    var cs = getComputedStyle(document.documentElement);
+    var v = function (n, d) { var x = cs.getPropertyValue(n).trim(); return x || d; };
+    var dark = document.documentElement.getAttribute("data-theme") !== "light";
+    return {
+      INK_DIM: v("--ink-dim", "#8b96a3"),
+      INK_FAINT: v("--ink-faint", "#5a6473"),
+      PANEL: v("--bg-panel", dark ? "#10141a" : "#ffffff"),
+      WARM: dark ? "#e0673a" : "#c2531c"      // burnt orange, readable on the light panel
+    };
+  }
+  function chartStyle(pal) { return { background: "transparent", color: pal.INK_DIM, fontSize: "11px", overflow: "visible" }; }
   var W = function (el) { return Math.max(240, Math.min(820, el.clientWidth || 760)); };
 
   // Short labels for on-chart text (the full name always stays in the hover tip).
@@ -24,7 +35,7 @@
 
   // Per-point scatter labels with a greedy vertical declutter in approximate pixel
   // space; labels pulled clear of their dot get a faint leader line back to it.
-  function labelMarks(items, xf, yf, plotW, plotH, ymaxDom) {
+  function labelMarks(items, xf, yf, plotW, plotH, ymaxDom, pal) {
     var placed = [], texts = [], links = [];
     items
       .map(function (it) { return { it: it, px: it.nx * plotW, py: (1 - it.ny) * plotH }; })
@@ -36,13 +47,13 @@
         placed.push({ px: o.px, ly: ly });
         texts.push(P.text([o.it.d], {
           x: xf, y: yf, text: function () { return o.it.label; },
-          dx: right ? -9 : 9, dy: ly - o.py, fill: C.INK_DIM, fontSize: 9,
+          dx: right ? -9 : 9, dy: ly - o.py, fill: pal.INK_DIM, fontSize: 9,
           textAnchor: right ? "end" : "start"
         }));
         if (o.py - ly > 13) {
           var ldy = (1 - ly / plotH) * ymaxDom;
           links.push(P.link([o.it.d], { x1: xf, y1: yf, x2: xf, y2: function () { return ldy; },
-            stroke: C.INK_FAINT, strokeWidth: 0.6, strokeOpacity: 0.6 }));
+            stroke: pal.INK_FAINT, strokeWidth: 0.6, strokeOpacity: 0.6 }));
         }
       });
     return links.concat(texts);
@@ -60,14 +71,15 @@
     var lo = Math.min.apply(null, rows.map(function (d) { return lg(d.x); }));
     var hi = Math.max.apply(null, rows.map(function (d) { return lg(d.x); }));
     var w = W(el), mL = 52, mR = 20, mT = 12, mB = 34, yd = ymax * 1.18;
+    var pal = palette();
     fill(el, P.plot({
-      width: w, height: 380, marginLeft: mL, marginRight: mR, marginTop: mT, marginBottom: mB, style: STYLE,
+      width: w, height: 380, marginLeft: mL, marginRight: mR, marginTop: mT, marginBottom: mB, style: chartStyle(pal),
       x: { type: "log", grid: true, label: "coverage (mean aircraft/day, log)" },
       y: { grid: true, domain: [0, yd], label: "mean interference" },
       marks: [
-        P.dot(rows, { x: "x", y: "y", fill: C.WARM, r: 6, stroke: C.BG,
+        P.dot(rows, { x: "x", y: "y", fill: pal.WARM, r: 6, stroke: pal.PANEL,
           title: function (d) { return d.name + "\n" + Math.round(d.x).toLocaleString() + " aircraft/day\nmean interference " + d.y; }, tip: true })
-      ].concat(labelMarks(rows.map(function (d) { return { d: d, label: d.label, nx: (lg(d.x) - lo) / (hi - lo), ny: d.y / yd }; }), "x", "y", w - mL - mR, 380 - mT - mB, yd))
+      ].concat(labelMarks(rows.map(function (d) { return { d: d, label: d.label, nx: (lg(d.x) - lo) / (hi - lo), ny: d.y / yd }; }), "x", "y", w - mL - mR, 380 - mT - mB, yd, pal))
     }));
   }
 
@@ -76,12 +88,13 @@
     var el = document.querySelector('.plot[data-chart="distribution"]'); if (!el) return;
     var bins = stats.distribution.bins.filter(function (b) { return b.c > 0; });
     var maxc = Math.max.apply(null, bins.map(function (b) { return b.c; }));
+    var pal = palette();
     fill(el, P.plot({
-      width: W(el), height: 300, marginLeft: 60, marginRight: 16, style: STYLE,
+      width: W(el), height: 300, marginLeft: 60, marginRight: 16, style: chartStyle(pal),
       x: { label: "per-hex degraded ratio (hexes meeting the 5-aircraft floor)" },
       y: { type: "log", domain: [0.9, maxc * 1.4], grid: true, label: "hex-days (log)" },
       marks: [
-        P.rectY(bins, { x1: "x0", x2: "x1", y1: 0.9, y2: "c", fill: C.WARM, fillOpacity: 0.85, inset: 0.5,
+        P.rectY(bins, { x1: "x0", x2: "x1", y1: 0.9, y2: "c", fill: pal.WARM, fillOpacity: 0.85, inset: 0.5,
           title: function (d) { return d.x0 + "–" + d.x1 + "\n" + d.c.toLocaleString() + " hex-days"; }, tip: true }),
         P.ruleY([0.9])
       ]
@@ -119,6 +132,8 @@
       if (window.Plot) {
         renderPlots();
         var t; window.addEventListener("resize", function () { clearTimeout(t); t = setTimeout(renderPlots, 200); });
+        // re-render the charts when the theme toggles (the glance table follows CSS)
+        new MutationObserver(function () { renderPlots(); }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
       } else {
         Array.prototype.forEach.call(document.querySelectorAll(".plot"), function (e) { e.textContent = "(charts need Observable Plot; check your connection)"; });
       }
