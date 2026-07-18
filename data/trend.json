@@ -2,6 +2,108 @@
   "strong_ratio": 0.5,
   "series": [
     {
+      "date": "2026-02-21",
+      "measured": 22558,
+      "degraded": 6937,
+      "strong": 201
+    },
+    {
+      "date": "2026-02-22",
+      "measured": 22647,
+      "degraded": 7093,
+      "strong": 193
+    },
+    {
+      "date": "2026-02-23",
+      "measured": 22320,
+      "degraded": 6792,
+      "strong": 229
+    },
+    {
+      "date": "2026-02-24",
+      "measured": 22349,
+      "degraded": 7071,
+      "strong": 210
+    },
+    {
+      "date": "2026-02-25",
+      "measured": 22447,
+      "degraded": 7085,
+      "strong": 202
+    },
+    {
+      "date": "2026-02-26",
+      "measured": 22649,
+      "degraded": 6954,
+      "strong": 157
+    },
+    {
+      "date": "2026-02-27",
+      "measured": 22393,
+      "degraded": 7450,
+      "strong": 164
+    },
+    {
+      "date": "2026-02-28",
+      "measured": 22215,
+      "degraded": 7240,
+      "strong": 154
+    },
+    {
+      "date": "2026-03-01",
+      "measured": 21941,
+      "degraded": 6974,
+      "strong": 171
+    },
+    {
+      "date": "2026-03-02",
+      "measured": 21649,
+      "degraded": 7106,
+      "strong": 186
+    },
+    {
+      "date": "2026-03-03",
+      "measured": 21526,
+      "degraded": 7329,
+      "strong": 231
+    },
+    {
+      "date": "2026-03-04",
+      "measured": 21737,
+      "degraded": 7413,
+      "strong": 207
+    },
+    {
+      "date": "2026-03-05",
+      "measured": 21763,
+      "degraded": 7091,
+      "strong": 232
+    },
+    {
+      "date": "2026-03-06",
+      "measured": 21751,
+      "degraded": 7494,
+      "strong": 287
+    },
+    {
+      "date": "2026-03-07",
+      "measured": 21471,
+      "degraded": 7406,
+      "strong": 314
+    },
+    {
+      "date": "2026-03-08",
+      "measured": 21710,
+      "degraded": 7542,
+      "strong": 390
+    },
+    {
+      "date": "2026-03-09",
+      "measured": 21672,
+      "degraded": 7834,
+      "strong": 447
+    },
+    {
       "date": "2026-04-17",
       "measured": 21984,
       "degraded": 7282,
@@ -318,6 +420,12 @@
       "measured": 21699,
       "degraded": 7483,
       "strong": 270
+    },
+    {
+      "date": "2026-06-11",
+      "measured": 9978,
+      "degraded": 2841,
+      "strong": 59
     },
     {
       "date": "2026-06-12",
