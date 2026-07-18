@@ -164,6 +164,66 @@
       "strong": 262
     },
     {
+      "date": "2026-03-20",
+      "measured": 21948,
+      "degraded": 7722,
+      "strong": 242
+    },
+    {
+      "date": "2026-03-21",
+      "measured": 21939,
+      "degraded": 7998,
+      "strong": 292
+    },
+    {
+      "date": "2026-03-22",
+      "measured": 21966,
+      "degraded": 7748,
+      "strong": 355
+    },
+    {
+      "date": "2026-03-23",
+      "measured": 21946,
+      "degraded": 7738,
+      "strong": 276
+    },
+    {
+      "date": "2026-03-24",
+      "measured": 19465,
+      "degraded": 6801,
+      "strong": 192
+    },
+    {
+      "date": "2026-03-25",
+      "measured": 21634,
+      "degraded": 7546,
+      "strong": 179
+    },
+    {
+      "date": "2026-03-26",
+      "measured": 21873,
+      "degraded": 7883,
+      "strong": 202
+    },
+    {
+      "date": "2026-03-27",
+      "measured": 21846,
+      "degraded": 7721,
+      "strong": 183
+    },
+    {
+      "date": "2026-03-28",
+      "measured": 21836,
+      "degraded": 7805,
+      "strong": 268
+    },
+    {
+      "date": "2026-03-29",
+      "measured": 21710,
+      "degraded": 7585,
+      "strong": 232
+    },
+    {
       "date": "2026-04-17",
       "measured": 21984,
       "degraded": 7282,
