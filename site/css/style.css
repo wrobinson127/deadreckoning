@@ -431,21 +431,19 @@ header.topbar {
   border-radius: 7px 7px 0 0; padding: 3px 15px; background: var(--bg-panel2); }
 .scrubber .collapse-btn::before { content: "\25BE"; }               /* ▾ open */
 .scrubber .collapse-btn::after { content: " timeline"; letter-spacing: .07em; }
-/* Collapsed timeline: the trend strip stays as the always-visible band; only the
-   full controls (meta + play + track) fold away. The scrubber stays in the bottom
-   row (not a floating tab), so the time dimension keeps permanent presence and the
-   "▴ timeline" tab reveals the full scrubber. */
-.scrubber.collapsed { position: static; transform: none; width: auto;
-  /* !important to beat the generic .collapsible.collapsed{padding:0!important};
-     without it the always-visible band sits flush against the screen edge. */
-  padding: 10px 18px 8px !important; border: none !important;
-  background: linear-gradient(0deg, rgba(0,0,0,0.45), transparent) !important; }
-.scrubber.collapsed .scrub-head,
-.scrubber.collapsed .scrub-row { display: none !important; }
-.scrubber.collapsed > .trend-strip { display: block !important; margin-bottom: 0; }
+/* Collapsed: the WHOLE bottom (trend chart + play/track) folds to a single
+   centered "▴ timeline" tab. Expanding reveals the trend chart and the controls
+   together. (The generic .collapsible.collapsed rule hides every child but the
+   tab, so the trend strip folds away too.) */
+.scrubber.collapsed { position: absolute; left: 50%; right: auto; bottom: 0; top: auto;
+  transform: translateX(-50%); width: auto; display: block;
+  padding: 0 !important; border: none !important; background: none !important; }
+.scrubber.collapsed .collapse-btn { position: static; transform: none;
+  border: 1px solid var(--line-2); border-bottom: none; border-radius: 7px 7px 0 0;
+  padding: 4px 16px; background: var(--bg-panel); }
 .scrubber.collapsed .collapse-btn::before { content: "\25B4"; }     /* ▴ closed */
 
-/* ---- always-visible trend band (the acceleration strip) ---- */
+/* ---- trend strip (the acceleration chart), shown when the timeline is open ---- */
 .trend-strip { margin-bottom: 10px; }
 .trend-head { display: flex; justify-content: space-between; align-items: baseline;
   gap: 12px; font-family: var(--mono); font-size: 10px; margin-bottom: 3px; }
