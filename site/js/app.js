@@ -661,6 +661,7 @@
   function showReadout(rec, pinned) {
     const ro = el("readout");
     ro.classList.remove("empty");
+    ro.classList.remove("collapsed");   // pop open if it was folded (mobile default)
     const z = anomalyZ(rec);
     if (state.mode === "anomaly") {
       el("roVal").textContent = z == null ? "—" : (z >= 0 ? "+" : "") + z.toFixed(1) + "σ";
@@ -1283,17 +1284,23 @@
     document.querySelectorAll("[data-collapse]").forEach((btn) =>
       btn.addEventListener("click", () => {
         const box = btn.closest(".collapsible");
-        if (box) box.classList.toggle("collapsed");
+        if (!box) return;
+        box.classList.toggle("collapsed");
+        // the trend svg has zero width while the scrubber is folded, so redraw it
+        // once the timeline is expanded and the strip has a measurable width.
+        if (box.id === "scrubber" && !box.classList.contains("collapsed")) drawTrend();
       }));
     // The timeline starts folded for everyone — the map is the hero; the "timeline"
     // tab at bottom-center reveals the scrubber when the reader wants to move in time.
     el("scrubber").classList.add("collapsed");
-    // On phones, start the layer + legend + watch-regions panels folded so they
-    // never cover the map (each stays reachable via its tab — the mobile contract).
+    // On phones, start the layer + legend + watch-regions + readout panels folded
+    // so they never cover the map (each stays reachable via its tab — the mobile
+    // contract). The readout pops open automatically when a cell is tapped.
     if (window.matchMedia && window.matchMedia("(max-width: 760px)").matches) {
       el("controlsPanel").classList.add("collapsed");
       el("legend").classList.add("collapsed");
       el("regionBox").classList.add("collapsed");
+      el("readout").classList.add("collapsed");
     }
     document.addEventListener("keydown", (e) => {
       if (!el("intro").hidden) { if (e.key === "Escape") hideIntro(); return; }
