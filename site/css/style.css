@@ -159,6 +159,14 @@ header.topbar {
 .brand .dot { color: var(--phosphor); }
 .tagline { color: var(--ink-faint); font-size: 12px; letter-spacing: 0.02em; }
 .topbar .spacer { flex: 1; }
+.topbar nav { position: relative; }
+/* desktop: the links wrapper is transparent to layout (children flow in the nav
+   flex exactly as before); the hamburger is hidden until mobile. */
+.nav-links { display: contents; }
+.nav-toggle { display: none; background: var(--bg-panel2); border: 1px solid var(--line-2);
+  color: var(--ink-dim); width: 32px; height: 28px; border-radius: var(--radius);
+  font-size: 15px; line-height: 1; cursor: pointer; align-items: center; justify-content: center; }
+.nav-toggle:hover { color: var(--phosphor); border-color: var(--phosphor); }
 .topbar nav a { color: var(--ink-dim); font-size: 12px; margin-left: 16px;
   text-transform: uppercase; letter-spacing: 0.12em; }
 .topbar nav a:hover { color: var(--phosphor); text-decoration: none; }
@@ -680,15 +688,37 @@ footer.site-footer .footer-note { flex-basis:100%; color:var(--ink-faint);
 /* ================= responsive ================= */
 @media (max-width: 760px) {
   .controls { max-width: 44vw; }
-  /* Legend + watch-regions stay accessible on phones but start folded to their
-     arrow tabs (JS) so they never cover the map. */
+  /* Layer + legend + watch-regions stay accessible on phones but start folded to
+     their arrow tabs (JS) so they never cover the map. */
   .right-stack { top: 10px; right: 8px; max-width: 60vw; }
   .legend, .region-box { width: auto; max-width: 60vw; }
   .region-box { max-height: 30vh; }
   .drawer { width: 100%; }
   .readout { min-width: 150px; }
   .readout.pinned { min-width: 62vw; }
-  .topbar-date { font-size: 12px; padding: 2px 9px; }
+  /* Top bar: the tagline is redundant on a phone; drop it, shrink the brand, and
+     take the date OUT of absolute-center so it can't collide with the nav — it
+     sits inline after the brand instead. Tighten the nav so the links fit. */
+  .tagline { display: none; }
+  .topbar { gap: 8px; padding: 8px 11px; }
+  .brand { font-size: 12px; letter-spacing: 0.1em; }
+  .topbar-date { position: static; transform: none; left: auto; top: auto;
+    font-size: 13px; padding: 2px 8px; }
+  /* nav collapses to a hamburger: the bar shows only brand + date + ☰, and the
+     links (Map / Methodology / About + theme + help) drop down as a menu on tap. */
+  .nav-toggle { display: inline-flex; }
+  .nav-links { display: none; }
+  .nav-links.open { display: flex; flex-direction: column; align-items: stretch;
+    position: absolute; top: calc(100% + 6px); right: 0; min-width: 172px;
+    background: var(--bg-panel); border: 1px solid var(--line-2); border-radius: 8px;
+    padding: 6px; gap: 2px; z-index: 40; box-shadow: 0 10px 28px rgba(0,0,0,0.45); }
+  .nav-links.open a { margin: 0; padding: 9px 11px; font-size: 13px; letter-spacing: 0.06em;
+    border-radius: var(--radius); }
+  .nav-links.open a:hover { background: var(--bg-panel2); }
+  .nav-links.open .nav-help { align-self: flex-start; margin: 4px 4px 0; }
+  /* Trend strip: stack the label over the coverage so neither clips at narrow widths. */
+  .trend-head { flex-direction: column; align-items: flex-start; gap: 1px; }
+  .trend-coverage { white-space: normal; }
 }
 @media (prefers-reduced-motion: reduce) {
   * { animation-duration: .01ms !important; transition-duration: .01ms !important; }
