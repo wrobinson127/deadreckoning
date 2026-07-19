@@ -27,6 +27,12 @@
   figure.chart.viz figcaption { margin-top: 6px; }
   table.glance { width: 100%; }
   table.glance th.num, table.glance td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  /* Wide tables (the glance table, the NIC/rc ladder) scroll horizontally on
+     narrow screens instead of clipping their right-hand columns; on desktop they
+     fit and don't scroll. */
+  .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .table-scroll table { width: auto; min-width: 100%; margin: 0; }
+  .table-scroll td, .table-scroll th { white-space: nowrap; }
   /* Callouts read as solid boxes, not a left-accent bar. */
   .doc .callout { border: 1px solid var(--line-2); border-left: 1px solid var(--line-2);
     background: var(--bg-panel); border-radius: var(--radius); }
@@ -100,7 +106,7 @@
       <p>A record over time also prevents a basic error of reading. Consider two cells showing the same heavy interference. Over a military test range in the American Southwest, it is almost certainly a scheduled exercise, published in advance and routine. Over a contested border, it is something else. The reading is identical; the meaning is not. The map keeps them straight by attaching the context that is publicly known to each region and its events, so the same signal is never presented as the same story.</p>
 
       <figure class="chart">
-        <table class="glance" id="glanceTable"></table>
+        <div class="table-scroll"><table class="glance" id="glanceTable"></table></div>
         <figcaption>Every currently tracked region: mean and peak daily degraded ratio, its current classification, and the count of annotated events. Classifications are the current read for this window, not permanent labels. <span class="dated" data-dated></span></figcaption>
       </figure>
 
@@ -142,10 +148,12 @@
       <code>0</code> ("integrity unknown"). Many aircraft in one area reporting low
       NIC <em>at the same time</em> is the fingerprint of interference in that
       airspace. Our sample day shows the containment ladder cleanly:</p>
+      <div class="table-scroll">
       <table>
         <tr><th>NIC</th><th>11</th><th>10</th><th>9</th><th>8</th><th>7</th><th>6</th><th>5</th><th>4</th><th>3</th></tr>
         <tr><td>median rc (m)</td><td>8</td><td>25</td><td>75</td><td>186</td><td>371</td><td>926</td><td>1852</td><td>3704</td><td>7408</td></tr>
       </table>
+      </div>
 
       <h3>The inference rule</h3>
       <p>Interference is inferred from <strong>multiple proximate aircraft</strong>,
@@ -265,12 +273,14 @@
       <p>Two checks keep this honest:</p>
       <p><strong>Internal (quantified).</strong> On the reference day, known chronic
       zones light up as expected while a deliberate control stays dark:</p>
+      <div class="table-scroll">
       <table>
         <tr><th>Zone</th><th>cells ≥5 aircraft</th><th>max degraded ratio</th></tr>
         <tr><td>Kaliningrad / Baltic</td><td>121</td><td>1.00</td></tr>
         <tr><td>Eastern Med / Cyprus</td><td>181</td><td>0.67</td></tr>
         <tr><td>Central US (quiet control)</td><td>212</td><td>0.10</td></tr>
       </table>
+      </div>
       <p>Signal and background separate cleanly; the method isn't lighting up
       everywhere aircraft fly.</p>
       <p><strong>External (independent reference).</strong> The persistent hotspots
