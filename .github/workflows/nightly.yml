@@ -24,15 +24,22 @@ permissions:
   pages: write        # deploy Pages
   id-token: write     # Pages OIDC
 
+# A new run PREEMPTS an in-progress one (was cancel-in-progress: false, which let
+# a stuck/queued run hold the group so every new manual deploy queued behind it
+# and got bounced). For a deploy the latest run should always win, so cancel the
+# older one instead of blocking on it.
 concurrency:
   group: nightly
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build:
     # Gate: skip entirely unless explicitly enabled. Manual dispatch always runs.
     if: ${{ github.event_name == 'workflow_dispatch' || vars.NIGHTLY_ENABLED == 'true' }}
     runs-on: ubuntu-latest
+    # A hung data fetch shouldn't tie up the runner for the 6h default; the build
+    # normally takes a few minutes. Fail fast so the next run can proceed.
+    timeout-minutes: 30
     outputs:
       changed: ${{ steps.commit.outputs.changed }}
     steps:

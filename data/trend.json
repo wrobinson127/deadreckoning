@@ -44,6 +44,30 @@
       "strong": 197
     },
     {
+      "date": "2025-07-15",
+      "measured": 21478,
+      "degraded": 7807,
+      "strong": 196
+    },
+    {
+      "date": "2025-07-16",
+      "measured": 21360,
+      "degraded": 7732,
+      "strong": 204
+    },
+    {
+      "date": "2025-07-17",
+      "measured": 21399,
+      "degraded": 8101,
+      "strong": 260
+    },
+    {
+      "date": "2025-07-18",
+      "measured": 21757,
+      "degraded": 8095,
+      "strong": 208
+    },
+    {
       "date": "2025-08-25",
       "measured": 21945,
       "degraded": 7923,
@@ -996,6 +1020,18 @@
       "measured": 23274,
       "degraded": 8467,
       "strong": 291
+    },
+    {
+      "date": "2026-07-17",
+      "measured": 23337,
+      "degraded": 8968,
+      "strong": 293
+    },
+    {
+      "date": "2026-07-18",
+      "measured": 23224,
+      "degraded": 8835,
+      "strong": 302
     }
   ]
 }

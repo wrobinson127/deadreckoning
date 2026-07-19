@@ -6,10 +6,29 @@
 (function () {
   "use strict";
   var P = window.Plot, d3 = window.d3;
-  var C = { BG:"#0a0c0f", INK:"#e6ebf0", INK_DIM:"#8b96a3", INK_FAINT:"#5a6473",
-    LINE:"#2a323c", SIGNAL:"#35e0d0", BAND:"#3a6690", EVENT:"#ffcf5c",
-    WARM:"#e0673a", QUAD:"#6d4fb0" };
-  var STYLE = { background:"transparent", color:C.INK_DIM, fontSize:"11px", overflow:"visible" };
+  // Theme-aware palette: the charts follow the page theme (dark default, light on
+  // toggle). Text/line/signal come from the site CSS tokens; the accent hues are
+  // set per theme for contrast on each ground. C is mutated in place so the render
+  // functions (which read C at call time) pick up the current theme on re-render.
+  var C = {};
+  var STYLE = { background:"transparent", color:"#8b96a3", fontSize:"11px", overflow:"visible" };
+  function syncPalette() {
+    var cs = getComputedStyle(document.documentElement);
+    var v = function (n, d) { var x = cs.getPropertyValue(n).trim(); return x || d; };
+    var dark = document.documentElement.getAttribute("data-theme") !== "light";
+    C.INK = v("--ink", "#e6ebf0");
+    C.INK_DIM = v("--ink-dim", "#8b96a3");
+    C.INK_FAINT = v("--ink-faint", "#5a6473");
+    C.LINE = v("--line", "#2a323c");
+    C.BG = v("--bg-panel", dark ? "#10141a" : "#ffffff");   // dot stroke / card ground
+    C.SIGNAL = v("--phosphor", dark ? "#35e0d0" : "#0c8478");
+    C.WARM = dark ? "#e0673a" : "#c2531c";                   // burnt orange
+    C.BAND = dark ? "#3a6690" : "#5a86b3";                   // baseline band steel
+    C.EVENT = dark ? "#ffcf5c" : "#b5820e";                  // event amber
+    C.QUAD = dark ? "#6d4fb0" : "#5d43a0";                   // quadrant violet
+    STYLE.color = C.INK_DIM;
+  }
+  syncPalette();
   var pd = function (s) { return new Date(s + "T00:00:00Z"); };
   var W = function (el) { return Math.max(240, Math.min(820, el.clientWidth || 760)); };
 
@@ -268,6 +287,9 @@
       populateText();
       renderAll();
       var t; window.addEventListener("resize", function () { clearTimeout(t); t = setTimeout(renderAll, 200); });
+      // recolor the charts when the theme toggles
+      new MutationObserver(function () { syncPalette(); renderAll(); })
+        .observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
     } catch (e) { console.error("writeup charts failed", e); }
   })();
 })();
