@@ -74,7 +74,7 @@
     var pal = palette();
     fill(el, P.plot({
       width: w, height: 380, marginLeft: mL, marginRight: mR, marginTop: mT, marginBottom: mB, style: chartStyle(pal),
-      x: { type: "log", grid: true, label: "coverage (mean aircraft/day, log)" },
+      x: { type: "log", grid: true, label: "coverage (aircraft/day, log)" },
       y: { grid: true, domain: [0, yd], label: "mean interference" },
       marks: [
         P.dot(rows, { x: "x", y: "y", fill: pal.WARM, r: 6, stroke: pal.PANEL,
@@ -91,7 +91,7 @@
     var pal = palette();
     fill(el, P.plot({
       width: W(el), height: 300, marginLeft: 60, marginRight: 16, style: chartStyle(pal),
-      x: { label: "per-hex degraded ratio (hexes meeting the 5-aircraft floor)" },
+      x: { label: "per-hex degraded ratio" },   // full detail is in the figcaption; a longer axis label clips on narrow widths
       y: { type: "log", domain: [0.9, maxc * 1.4], grid: true, label: "hex-days (log)" },
       marks: [
         P.rectY(bins, { x1: "x0", x2: "x1", y1: 0.9, y2: "c", fill: pal.WARM, fillOpacity: 0.85, inset: 0.5,
