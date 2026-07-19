@@ -176,7 +176,9 @@ header.topbar {
 
 /* ---- map ---- */
 #map { position: relative; width: 100%; height: 100%; background: var(--bg); }
-.maplibregl-ctrl-bottom-right { z-index: 2; }
+/* above the bottom chrome (scrubber/trend band, z-index 5) so the expanded
+   attribution + zoom controls aren't covered by it on mobile. */
+.maplibregl-ctrl-bottom-right { z-index: 6; }
 /* Dark-mode the MapLibre controls (zoom +/- and attribution) to match the
    instrument, and keep attribution collapsed to the "i" by default. */
 .maplibregl-ctrl-group {
