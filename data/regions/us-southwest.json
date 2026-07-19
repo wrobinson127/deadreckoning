@@ -3,6 +3,20 @@
   "display_name": "US Southwest Test Ranges",
   "series": [
     {
+      "date": "2025-08-25",
+      "n_hexes": 20,
+      "mean_bad_ratio": 0.0099,
+      "max_bad_ratio": 0.1429,
+      "total_aircraft": 1424
+    },
+    {
+      "date": "2025-08-26",
+      "n_hexes": 20,
+      "mean_bad_ratio": 0.0002,
+      "max_bad_ratio": 0.0049,
+      "total_aircraft": 998
+    },
+    {
       "date": "2026-02-21",
       "n_hexes": 19,
       "mean_bad_ratio": 0.0053,
@@ -330,6 +344,62 @@
       "mean_bad_ratio": 0.0107,
       "max_bad_ratio": 0.1111,
       "total_aircraft": 866
+    },
+    {
+      "date": "2026-04-09",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0144,
+      "max_bad_ratio": 0.1429,
+      "total_aircraft": 958
+    },
+    {
+      "date": "2026-04-10",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0087,
+      "max_bad_ratio": 0.1111,
+      "total_aircraft": 1073
+    },
+    {
+      "date": "2026-04-11",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.001,
+      "max_bad_ratio": 0.0095,
+      "total_aircraft": 1601
+    },
+    {
+      "date": "2026-04-12",
+      "n_hexes": 20,
+      "mean_bad_ratio": 0.0079,
+      "max_bad_ratio": 0.125,
+      "total_aircraft": 1386
+    },
+    {
+      "date": "2026-04-13",
+      "n_hexes": 21,
+      "mean_bad_ratio": 0.0023,
+      "max_bad_ratio": 0.0317,
+      "total_aircraft": 1194
+    },
+    {
+      "date": "2026-04-14",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0242,
+      "max_bad_ratio": 0.4,
+      "total_aircraft": 1140
+    },
+    {
+      "date": "2026-04-15",
+      "n_hexes": 18,
+      "mean_bad_ratio": 0.0082,
+      "max_bad_ratio": 0.0769,
+      "total_aircraft": 1150
+    },
+    {
+      "date": "2026-04-16",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0222,
+      "max_bad_ratio": 0.1667,
+      "total_aircraft": 1195
     },
     {
       "date": "2026-04-17",

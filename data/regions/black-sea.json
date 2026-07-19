@@ -3,6 +3,20 @@
   "display_name": "Black Sea",
   "series": [
     {
+      "date": "2025-08-25",
+      "n_hexes": 50,
+      "mean_bad_ratio": 0.4629,
+      "max_bad_ratio": 1.0,
+      "total_aircraft": 6849
+    },
+    {
+      "date": "2025-08-26",
+      "n_hexes": 49,
+      "mean_bad_ratio": 0.3735,
+      "max_bad_ratio": 1.0,
+      "total_aircraft": 6409
+    },
+    {
       "date": "2026-02-21",
       "n_hexes": 51,
       "mean_bad_ratio": 0.4993,
@@ -330,6 +344,62 @@
       "mean_bad_ratio": 0.4478,
       "max_bad_ratio": 1.0,
       "total_aircraft": 4787
+    },
+    {
+      "date": "2026-04-09",
+      "n_hexes": 45,
+      "mean_bad_ratio": 0.3971,
+      "max_bad_ratio": 1.0,
+      "total_aircraft": 5204
+    },
+    {
+      "date": "2026-04-10",
+      "n_hexes": 48,
+      "mean_bad_ratio": 0.453,
+      "max_bad_ratio": 1.0,
+      "total_aircraft": 5306
+    },
+    {
+      "date": "2026-04-11",
+      "n_hexes": 50,
+      "mean_bad_ratio": 0.4277,
+      "max_bad_ratio": 1.0,
+      "total_aircraft": 5772
+    },
+    {
+      "date": "2026-04-12",
+      "n_hexes": 47,
+      "mean_bad_ratio": 0.4124,
+      "max_bad_ratio": 1.0,
+      "total_aircraft": 5261
+    },
+    {
+      "date": "2026-04-13",
+      "n_hexes": 46,
+      "mean_bad_ratio": 0.4295,
+      "max_bad_ratio": 1.0,
+      "total_aircraft": 4565
+    },
+    {
+      "date": "2026-04-14",
+      "n_hexes": 41,
+      "mean_bad_ratio": 0.3799,
+      "max_bad_ratio": 1.0,
+      "total_aircraft": 4555
+    },
+    {
+      "date": "2026-04-15",
+      "n_hexes": 43,
+      "mean_bad_ratio": 0.4851,
+      "max_bad_ratio": 1.0,
+      "total_aircraft": 4104
+    },
+    {
+      "date": "2026-04-16",
+      "n_hexes": 49,
+      "mean_bad_ratio": 0.5231,
+      "max_bad_ratio": 1.0,
+      "total_aircraft": 4191
     },
     {
       "date": "2026-04-17",

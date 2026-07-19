@@ -3,6 +3,20 @@
   "display_name": "Korean Peninsula",
   "series": [
     {
+      "date": "2025-08-25",
+      "n_hexes": 40,
+      "mean_bad_ratio": 0.0015,
+      "max_bad_ratio": 0.0143,
+      "total_aircraft": 6169
+    },
+    {
+      "date": "2025-08-26",
+      "n_hexes": 31,
+      "mean_bad_ratio": 0.0078,
+      "max_bad_ratio": 0.0588,
+      "total_aircraft": 5659
+    },
+    {
       "date": "2026-02-21",
       "n_hexes": 28,
       "mean_bad_ratio": 0.0095,
@@ -330,6 +344,62 @@
       "mean_bad_ratio": 0.0022,
       "max_bad_ratio": 0.012,
       "total_aircraft": 5569
+    },
+    {
+      "date": "2026-04-09",
+      "n_hexes": 28,
+      "mean_bad_ratio": 0.0022,
+      "max_bad_ratio": 0.0135,
+      "total_aircraft": 4884
+    },
+    {
+      "date": "2026-04-10",
+      "n_hexes": 31,
+      "mean_bad_ratio": 0.0051,
+      "max_bad_ratio": 0.0217,
+      "total_aircraft": 5523
+    },
+    {
+      "date": "2026-04-11",
+      "n_hexes": 29,
+      "mean_bad_ratio": 0.0085,
+      "max_bad_ratio": 0.05,
+      "total_aircraft": 5474
+    },
+    {
+      "date": "2026-04-12",
+      "n_hexes": 30,
+      "mean_bad_ratio": 0.0082,
+      "max_bad_ratio": 0.0556,
+      "total_aircraft": 5452
+    },
+    {
+      "date": "2026-04-13",
+      "n_hexes": 28,
+      "mean_bad_ratio": 0.0074,
+      "max_bad_ratio": 0.0442,
+      "total_aircraft": 5327
+    },
+    {
+      "date": "2026-04-14",
+      "n_hexes": 28,
+      "mean_bad_ratio": 0.0068,
+      "max_bad_ratio": 0.0714,
+      "total_aircraft": 5179
+    },
+    {
+      "date": "2026-04-15",
+      "n_hexes": 27,
+      "mean_bad_ratio": 0.0045,
+      "max_bad_ratio": 0.0275,
+      "total_aircraft": 5160
+    },
+    {
+      "date": "2026-04-16",
+      "n_hexes": 30,
+      "mean_bad_ratio": 0.0038,
+      "max_bad_ratio": 0.0294,
+      "total_aircraft": 4781
     },
     {
       "date": "2026-04-17",

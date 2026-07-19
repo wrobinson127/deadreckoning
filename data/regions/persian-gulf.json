@@ -3,6 +3,20 @@
   "display_name": "Persian Gulf / Strait of Hormuz",
   "series": [
     {
+      "date": "2025-08-25",
+      "n_hexes": 81,
+      "mean_bad_ratio": 0.0267,
+      "max_bad_ratio": 0.125,
+      "total_aircraft": 14694
+    },
+    {
+      "date": "2025-08-26",
+      "n_hexes": 98,
+      "mean_bad_ratio": 0.0281,
+      "max_bad_ratio": 0.4286,
+      "total_aircraft": 16969
+    },
+    {
       "date": "2026-02-21",
       "n_hexes": 104,
       "mean_bad_ratio": 0.0589,
@@ -330,6 +344,62 @@
       "mean_bad_ratio": 0.6506,
       "max_bad_ratio": 0.9524,
       "total_aircraft": 1144
+    },
+    {
+      "date": "2026-04-09",
+      "n_hexes": 27,
+      "mean_bad_ratio": 0.6098,
+      "max_bad_ratio": 1.0,
+      "total_aircraft": 2275
+    },
+    {
+      "date": "2026-04-10",
+      "n_hexes": 20,
+      "mean_bad_ratio": 0.615,
+      "max_bad_ratio": 1.0,
+      "total_aircraft": 1469
+    },
+    {
+      "date": "2026-04-11",
+      "n_hexes": 16,
+      "mean_bad_ratio": 0.7863,
+      "max_bad_ratio": 1.0,
+      "total_aircraft": 659
+    },
+    {
+      "date": "2026-04-12",
+      "n_hexes": 20,
+      "mean_bad_ratio": 0.2894,
+      "max_bad_ratio": 0.8,
+      "total_aircraft": 2913
+    },
+    {
+      "date": "2026-04-13",
+      "n_hexes": 21,
+      "mean_bad_ratio": 0.271,
+      "max_bad_ratio": 0.875,
+      "total_aircraft": 2805
+    },
+    {
+      "date": "2026-04-14",
+      "n_hexes": 21,
+      "mean_bad_ratio": 0.1617,
+      "max_bad_ratio": 0.7586,
+      "total_aircraft": 3225
+    },
+    {
+      "date": "2026-04-15",
+      "n_hexes": 24,
+      "mean_bad_ratio": 0.154,
+      "max_bad_ratio": 0.871,
+      "total_aircraft": 3338
+    },
+    {
+      "date": "2026-04-16",
+      "n_hexes": 23,
+      "mean_bad_ratio": 0.2404,
+      "max_bad_ratio": 0.7143,
+      "total_aircraft": 3440
     },
     {
       "date": "2026-04-17",
