@@ -3,6 +3,55 @@
   "display_name": "Baltic Sea",
   "series": [
     {
+      "date": "2025-07-08",
+      "n_hexes": 225,
+      "mean_bad_ratio": 0.1298,
+      "max_bad_ratio": 1.0,
+      "total_aircraft": 14463
+    },
+    {
+      "date": "2025-07-09",
+      "n_hexes": 223,
+      "mean_bad_ratio": 0.1354,
+      "max_bad_ratio": 1.0,
+      "total_aircraft": 14277
+    },
+    {
+      "date": "2025-07-10",
+      "n_hexes": 215,
+      "mean_bad_ratio": 0.1942,
+      "max_bad_ratio": 0.8333,
+      "total_aircraft": 13662
+    },
+    {
+      "date": "2025-07-11",
+      "n_hexes": 222,
+      "mean_bad_ratio": 0.182,
+      "max_bad_ratio": 1.0,
+      "total_aircraft": 13639
+    },
+    {
+      "date": "2025-07-12",
+      "n_hexes": 219,
+      "mean_bad_ratio": 0.2023,
+      "max_bad_ratio": 1.0,
+      "total_aircraft": 12481
+    },
+    {
+      "date": "2025-07-13",
+      "n_hexes": 218,
+      "mean_bad_ratio": 0.1834,
+      "max_bad_ratio": 0.9286,
+      "total_aircraft": 12932
+    },
+    {
+      "date": "2025-07-14",
+      "n_hexes": 222,
+      "mean_bad_ratio": 0.2146,
+      "max_bad_ratio": 0.9,
+      "total_aircraft": 12959
+    },
+    {
       "date": "2025-08-25",
       "n_hexes": 222,
       "mean_bad_ratio": 0.2837,
@@ -85,6 +134,27 @@
       "mean_bad_ratio": 0.1827,
       "max_bad_ratio": 0.84,
       "total_aircraft": 14479
+    },
+    {
+      "date": "2025-09-06",
+      "n_hexes": 224,
+      "mean_bad_ratio": 0.1911,
+      "max_bad_ratio": 0.9333,
+      "total_aircraft": 13923
+    },
+    {
+      "date": "2025-09-07",
+      "n_hexes": 221,
+      "mean_bad_ratio": 0.1589,
+      "max_bad_ratio": 0.8571,
+      "total_aircraft": 14416
+    },
+    {
+      "date": "2025-09-08",
+      "n_hexes": 224,
+      "mean_bad_ratio": 0.1747,
+      "max_bad_ratio": 0.8889,
+      "total_aircraft": 14220
     },
     {
       "date": "2026-02-21",

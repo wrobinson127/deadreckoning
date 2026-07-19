@@ -3,6 +3,55 @@
   "display_name": "Western Ukraine / Border Airspace",
   "series": [
     {
+      "date": "2025-07-08",
+      "n_hexes": 10,
+      "mean_bad_ratio": 0.3087,
+      "max_bad_ratio": 0.8333,
+      "total_aircraft": 612
+    },
+    {
+      "date": "2025-07-09",
+      "n_hexes": 8,
+      "mean_bad_ratio": 0.2989,
+      "max_bad_ratio": 0.75,
+      "total_aircraft": 587
+    },
+    {
+      "date": "2025-07-10",
+      "n_hexes": 8,
+      "mean_bad_ratio": 0.2219,
+      "max_bad_ratio": 0.3333,
+      "total_aircraft": 634
+    },
+    {
+      "date": "2025-07-11",
+      "n_hexes": 10,
+      "mean_bad_ratio": 0.2506,
+      "max_bad_ratio": 0.5,
+      "total_aircraft": 756
+    },
+    {
+      "date": "2025-07-12",
+      "n_hexes": 8,
+      "mean_bad_ratio": 0.1151,
+      "max_bad_ratio": 0.226,
+      "total_aircraft": 730
+    },
+    {
+      "date": "2025-07-13",
+      "n_hexes": 9,
+      "mean_bad_ratio": 0.1891,
+      "max_bad_ratio": 0.6,
+      "total_aircraft": 711
+    },
+    {
+      "date": "2025-07-14",
+      "n_hexes": 8,
+      "mean_bad_ratio": 0.1417,
+      "max_bad_ratio": 0.3636,
+      "total_aircraft": 662
+    },
+    {
       "date": "2025-08-25",
       "n_hexes": 9,
       "mean_bad_ratio": 0.2263,
@@ -85,6 +134,27 @@
       "mean_bad_ratio": 0.1659,
       "max_bad_ratio": 0.3333,
       "total_aircraft": 800
+    },
+    {
+      "date": "2025-09-06",
+      "n_hexes": 9,
+      "mean_bad_ratio": 0.3225,
+      "max_bad_ratio": 0.7333,
+      "total_aircraft": 796
+    },
+    {
+      "date": "2025-09-07",
+      "n_hexes": 10,
+      "mean_bad_ratio": 0.2846,
+      "max_bad_ratio": 0.7143,
+      "total_aircraft": 827
+    },
+    {
+      "date": "2025-09-08",
+      "n_hexes": 8,
+      "mean_bad_ratio": 0.2234,
+      "max_bad_ratio": 0.5385,
+      "total_aircraft": 758
     },
     {
       "date": "2026-02-21",
