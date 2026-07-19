@@ -612,13 +612,18 @@
         const zf = live.length ? map.queryRenderedFeatures(box, { layers: live }) : [];
         if (zf.length) { clearPin(); showZoneCard(zf[0].properties.id, e.point); return; }
       }
-      // A degraded hex carries its top affected-aircraft list — pin it in the
-      // readout (regions stay reachable via the chips).
+      // Tapping a cell shows its readout — essential on touch, where there is no
+      // hover. A degraded hex carries its top affected-aircraft list, so it pins;
+      // any other valued cell just shows its value + aircraft count.
       const hf = map.getLayer("hex-fill")
         ? map.queryRenderedFeatures(e.point, { layers: ["hex-fill"] }) : [];
       if (hf.length) {
         const rec = state.dayData && state.dayData.get(hf[0].id);
-        if (rec && Array.isArray(rec.flights)) { pinFlights(rec); return; }
+        if (rec) {
+          if (Array.isArray(rec.flights)) pinFlights(rec);
+          else showReadout(rec);
+          return;
+        }
       }
       // otherwise region hit-test on click (point in region polygon)
       const rid = regionAt(e.lngLat.lng, e.lngLat.lat);
@@ -641,7 +646,7 @@
     el("readout").classList.add("empty");
     el("readout").classList.remove("pinned");
     el("roVal").textContent = "—";
-    el("roAircraft").textContent = "hover a cell";
+    el("roAircraft").textContent = "tap a cell";
     el("roConf").textContent = "";
     el("roConf").className = "conf";
   }
@@ -1256,6 +1261,23 @@
     // backdrop click (the scrim itself, not the card) also dismisses
     el("intro").addEventListener("click", (e) => { if (e.target === el("intro")) hideIntro(); });
     el("helpBtn").addEventListener("click", showIntro);
+    // Mobile nav: the hamburger toggles the links dropdown; tapping a link or
+    // outside closes it. (Hidden on desktop, where the links flow inline.)
+    const navToggle = el("navToggle"), navLinks = el("navLinks");
+    if (navToggle && navLinks) {
+      navToggle.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const open = navLinks.classList.toggle("open");
+        navToggle.setAttribute("aria-expanded", String(open));
+      });
+      navLinks.querySelectorAll("a").forEach((a) =>
+        a.addEventListener("click", () => navLinks.classList.remove("open")));
+      document.addEventListener("click", (e) => {
+        if (navLinks.classList.contains("open") &&
+            !navLinks.contains(e.target) && e.target !== navToggle)
+          navLinks.classList.remove("open");
+      });
+    }
     // Collapsible overlay panels: every arrow tab folds its box (or the
     // timeline) away to declutter the map, and unfolds it again.
     document.querySelectorAll("[data-collapse]").forEach((btn) =>
@@ -1266,9 +1288,10 @@
     // The timeline starts folded for everyone — the map is the hero; the "timeline"
     // tab at bottom-center reveals the scrubber when the reader wants to move in time.
     el("scrubber").classList.add("collapsed");
-    // On phones, start the legend + watch-regions folded so they never cover
-    // the map (the color key stays reachable via its tab — the mobile contract).
+    // On phones, start the layer + legend + watch-regions panels folded so they
+    // never cover the map (each stays reachable via its tab — the mobile contract).
     if (window.matchMedia && window.matchMedia("(max-width: 760px)").matches) {
+      el("controlsPanel").classList.add("collapsed");
       el("legend").classList.add("collapsed");
       el("regionBox").classList.add("collapsed");
     }

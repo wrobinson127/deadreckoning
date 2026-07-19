@@ -39,11 +39,14 @@
     <span class="spacer"></span>
     <a class="byline" href="https://walker-robinson.com" target="_blank" rel="noopener">Built by Walker Robinson</a>
     <nav>
-      <a href="index.html">Map</a>
-      <a href="methodology.html">Methodology</a>
-      <a href="about.html">About</a>
-      <button class="nav-help" data-theme-toggle aria-label="toggle light or dark theme">☾</button>
-      <button class="nav-help" id="helpBtn" title="What is this?" aria-label="help">?</button>
+      <div class="nav-links" id="navLinks">
+        <a href="index.html">Map</a>
+        <a href="methodology.html">Methodology</a>
+        <a href="about.html">About</a>
+        <button class="nav-help" data-theme-toggle aria-label="toggle light or dark theme">☾</button>
+        <button class="nav-help" id="helpBtn" title="What is this?" aria-label="help">?</button>
+      </div>
+      <button class="nav-toggle" id="navToggle" aria-label="menu" aria-expanded="false">☰</button>
     </nav>
   </header>
 
@@ -109,7 +112,7 @@
       <button class="collapse-btn readout-collapse" data-collapse data-label="readout" aria-label="collapse readout"></button>
       <button class="ro-close" id="roClose" aria-label="unpin" hidden>×</button>
       <div class="big" id="roVal">—</div>
-      <div class="row"><span id="roAircraft">hover a cell</span>
+      <div class="row"><span id="roAircraft">tap a cell</span>
         <span class="conf" id="roConf"></span></div>
       <div class="ro-flights" id="roFlights" hidden></div>
     </div>
