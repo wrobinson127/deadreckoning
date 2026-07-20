@@ -103,13 +103,23 @@ def _download_file(url: str, out: str) -> None:
     if token:
         req.add_header("Authorization", f"Bearer {token}")
     tmp = out + ".part"
-    with urllib.request.urlopen(req, timeout=600) as resp, open(tmp, "wb") as fh:
-        while True:
-            chunk = resp.read(1 << 20)
-            if not chunk:
-                break
-            fh.write(chunk)
-    os.replace(tmp, out)
+    try:
+        with urllib.request.urlopen(req, timeout=600) as resp, open(tmp, "wb") as fh:
+            while True:
+                chunk = resp.read(1 << 20)
+                if not chunk:
+                    break
+                fh.write(chunk)
+        os.replace(tmp, out)
+    except BaseException:
+        # A failed/interrupted download must not leave a partial .part orphaned
+        # (it would waste scratch and never be resumed — the size-match skip keys
+        # off the final name, not .part). Clean it up; re-run to retry.
+        try:
+            os.remove(tmp)
+        except OSError:
+            pass
+        raise
 
 
 def cleanup(paths: Sequence[str]) -> None:
