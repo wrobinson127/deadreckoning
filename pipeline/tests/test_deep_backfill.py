@@ -3,6 +3,7 @@ event windows -> backward), stays inside [floor, yesterday], excludes days alrea
 present, and never repeats a day."""
 from datetime import date
 
+import pipeline.deep_backfill as db
 from pipeline.deep_backfill import build_plan, _parse_window, _within_window
 
 
@@ -63,3 +64,32 @@ def test_run_window_parse_and_membership():
     assert not any(_within_window(ww, h) for h in (8, 9, 12, 22))
     # no window / degenerate window == always on
     assert _within_window(None, 15) and _within_window((5, 5), 15)
+
+
+def test_startup_reconcile_derives_when_manifest_stale(monkeypatch):
+    # A prior crash left more dailies on disk than the manifest lists -> rebuild.
+    monkeypatch.setattr(db, "_present_days", lambda: {"a", "b", "c"})
+    monkeypatch.setattr(db, "_manifest_day_count", lambda: 2)
+    calls = []
+    monkeypatch.setattr(db, "_derive", lambda reason: calls.append(reason))
+    db._reconcile_derived_if_stale()
+    assert len(calls) == 1
+
+
+def test_startup_reconcile_noop_when_in_sync(monkeypatch):
+    monkeypatch.setattr(db, "_present_days", lambda: {"a", "b"})
+    monkeypatch.setattr(db, "_manifest_day_count", lambda: 2)
+    calls = []
+    monkeypatch.setattr(db, "_derive", lambda reason: calls.append(reason))
+    db._reconcile_derived_if_stale()
+    assert calls == []
+
+
+def test_startup_reconcile_noop_on_empty_archive(monkeypatch):
+    # Fresh checkout, nothing on disk yet -> nothing to reconcile.
+    monkeypatch.setattr(db, "_present_days", lambda: set())
+    monkeypatch.setattr(db, "_manifest_day_count", lambda: -1)
+    calls = []
+    monkeypatch.setattr(db, "_derive", lambda reason: calls.append(reason))
+    db._reconcile_derived_if_stale()
+    assert calls == []

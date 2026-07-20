@@ -99,6 +99,11 @@ def main(argv=None) -> int:
             break
         try:
             summary = process_day(day, scratch, keep_raw=args.keep_raw)
+            if not summary.get("written"):
+                # 0-hex placeholder release — left as a gap, like a not-ready day.
+                notready.append(day)
+                print(f"[empty] {day} (0 hexes — placeholder release; left as a gap)")
+                continue
             done.append(day)
             print(f"[ok]   {day}  hexes={summary['hexes']} bytes={summary['bytes']}")
         except download.ReleaseNotAvailable:

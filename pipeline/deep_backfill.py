@@ -173,6 +173,29 @@ def _derive(reason: str):
     build_site_data.build_all()
 
 
+def _manifest_day_count() -> int:
+    """Days currently listed in the committed manifest (-1 if absent/unreadable)."""
+    import json
+    p = repo_path("data", "manifest.json")
+    if not os.path.exists(p):
+        return -1
+    try:
+        with open(p, encoding="utf-8") as fh:
+            return len(json.load(fh).get("days", []))
+    except Exception:
+        return -1
+
+
+def _reconcile_derived_if_stale():
+    """Heal a prior crash: if the manifest lists fewer days than exist on disk
+    (a run died after landing days but before its derive), rebuild the derived
+    aggregates once at startup so the manifest-matches-daily-set invariant holds
+    before we land more days (and before any commit step reads it)."""
+    present = len(_present_days())
+    if present and present != _manifest_day_count():
+        _derive("startup reconcile — manifest out of sync with on-disk dailies")
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="Ordered, resumable deep backfill (local).")
     ap.add_argument("--floor", default=DEFAULT_FLOOR, help="earliest day to attempt (YYYY-MM-DD)")
@@ -200,6 +223,7 @@ def main(argv=None) -> int:
         print(f"  last 4:  {plan[-4:]}")
     if args.dry_run:
         return 0
+    _reconcile_derived_if_stale()   # heal a prior crash before landing more days
     if not plan:
         print("nothing to do — archive already covers the plan.")
         return 0
@@ -231,10 +255,11 @@ def main(argv=None) -> int:
             break
         try:
             s = process_day(day, scratch)
-            if s["hexes"] == 0:
-                # An empty/placeholder release aggregates to zero hexes. Writing it
-                # would add a fake "covered, no interference" day and blur the
-                # no-data vs no-interference line, so drop it and leave the gap.
+            if not s.get("written"):
+                # A 0-hex placeholder release: process_day does not write it (so
+                # we never add a fake "covered, no interference" day). Defensively
+                # remove any stale file a prior partial run may have left, and
+                # leave the day as a gap.
                 try:
                     os.remove(dailyio.daily_path(day))
                 except FileNotFoundError:

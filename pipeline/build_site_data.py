@@ -16,7 +16,7 @@ import orjson
 import yaml
 
 from . import config as C, dailyio
-from .paths import repo_path
+from .paths import atomic_write_bytes, repo_path
 
 
 def build_manifest() -> dict:
@@ -74,19 +74,19 @@ def _yaml_to_json(yaml_rel: str, key: str, json_rel: str) -> int:
         data = yaml.safe_load(fh)
     items = data.get(key, data) if isinstance(data, dict) else data
     payload = {"draft": bool(isinstance(data, dict) and data.get("draft")), key: items}
-    with open(repo_path("content", json_rel), "wb") as fh:
-        fh.write(orjson.dumps(payload, option=orjson.OPT_INDENT_2))
+    atomic_write_bytes(repo_path("content", json_rel),
+                       orjson.dumps(payload, option=orjson.OPT_INDENT_2))
     return len(items) if items else 0
 
 
 def build_all() -> dict:
     os.makedirs(repo_path("data"), exist_ok=True)
     manifest = build_manifest()
-    with open(repo_path("data", "manifest.json"), "wb") as fh:
-        fh.write(orjson.dumps(manifest, option=orjson.OPT_INDENT_2))
+    atomic_write_bytes(repo_path("data", "manifest.json"),
+                       orjson.dumps(manifest, option=orjson.OPT_INDENT_2))
     trend = build_trend()
-    with open(repo_path("data", "trend.json"), "wb") as fh:
-        fh.write(orjson.dumps(trend, option=orjson.OPT_INDENT_2))
+    atomic_write_bytes(repo_path("data", "trend.json"),
+                       orjson.dumps(trend, option=orjson.OPT_INDENT_2))
     n_regions = _yaml_to_json("regions.yaml", "regions", "regions.json")
     n_events = _yaml_to_json("events.yaml", "events", "events.json")
     n_zones = _yaml_to_json("airspace.yaml", "zones", "airspace.json")

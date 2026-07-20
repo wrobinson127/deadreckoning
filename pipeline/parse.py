@@ -133,7 +133,11 @@ def _points_from_trace(data: dict, member_name: str) -> Iterator[Point]:
         if not detail:
             continue
         nic = detail.get("nic")
-        if nic is None:
+        # NIC must be numeric — a corrupt trace with a string/other nic would
+        # otherwise raise in aggregate's `pt.nic <= NIC_DEGRADED_MAX` and, since
+        # that comparison is outside the per-member guard, sink the whole day.
+        # Drop the bad record instead. (bool is an int subclass; exclude it.)
+        if not isinstance(nic, (int, float)) or isinstance(nic, bool):
             continue
         yield Point(
             icao=icao,
