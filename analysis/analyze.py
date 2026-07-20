@@ -5,8 +5,8 @@ Reproducible analysis scaffold for the DeadReckoning write-up.
 
 Reads ONLY committed aggregates (region series, events, daily .gz) via the
 pipeline's own readers, computes descriptive statistics, and emits:
-  - analysis/figures/*.svg   (dark instrument aesthetic, CVD-aware)
-  - analysis/stats.json      (every number the write-up references)
+  - site/assets/analysis/*.svg       (dark instrument aesthetic, CVD-aware)
+  - site/assets/analysis/stats.json  (every number the write-up references)
 
 This module builds charts and numbers ONLY. It contains no interpretation and
 authors no claims; the write-up page carries mechanical captions plus marked
