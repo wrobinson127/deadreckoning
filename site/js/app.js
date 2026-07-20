@@ -109,6 +109,7 @@
     airspaceGeo: null,  // FeatureCollection of zone outlines
     airspace: {},       // id -> zone metadata (label/type/since/note/sources)
     idx: 0,
+    navToken: 0,        // increments per goTo() so a slow load can't render a stale day
     playing: false,
     playTimer: null,
     geomIndex: new Set(),
@@ -175,20 +176,25 @@
   }
 
   function styleFor(rec) {
-    if (rec.n_aircraft < state.floor) return { k: "insuf", c: null, op: null };
+    // Guard against a partial/malformed record: a missing field must not write
+    // NaN into feature-state (MapLibre's coalesce only catches null, not NaN, so
+    // a NaN opacity renders as an invisible/undefined cell rather than a value).
+    const na = Number(rec.n_aircraft) || 0;
+    const br = Number(rec.bad_ratio) || 0;
+    if (na < state.floor) return { k: "insuf", c: null, op: null };
     if (state.mode === "coverage") {
-      const t = covNorm(rec.n_aircraft);
+      const t = covNorm(na);
       return { k: "val", c: DR_COLOR.coverage(t), op: 0.32 + 0.45 * t };
     }
     if (state.mode === "raw") {
-      const t = Math.pow(rec.bad_ratio, RAW_GAMMA);   // nonlinear: mid-range pops
+      const t = Math.pow(br, RAW_GAMMA);   // nonlinear: mid-range pops
       return { k: "val", c: DR_COLOR.raw(t), op: opFor(t),
-               ex: rec.bad_ratio >= EXTREME_RATIO ? 1 : 0 };
+               ex: br >= EXTREME_RATIO ? 1 : 0 };
     }
     // anomaly
     const bl = state.baselines[rec.hex];
     if (!bl) return { k: "val", c: "#1c2430", op: 0.18 }; // measured, no baseline yet
-    const z = (rec.bad_ratio - bl.mean) / Math.max(bl.std, state.stdFloor);
+    const z = (br - bl.mean) / Math.max(bl.std, state.stdFloor);
     // Opacity is DECOUPLED from z: any above-baseline cell gets a legible fixed
     // floor (was op = z/clip, which pushed mean anomaly opacity to ~0.09 and made
     // the layer read as empty). Cells at or below their own baseline are not
@@ -206,7 +212,8 @@
   function anomalyZ(rec) {
     const bl = state.baselines[rec.hex];
     if (!bl) return null;
-    return (rec.bad_ratio - bl.mean) / Math.max(bl.std, state.stdFloor);
+    const br = Number(rec.bad_ratio) || 0;
+    return (br - bl.mean) / Math.max(bl.std, state.stdFloor);
   }
 
   // ---------- map ----------
@@ -250,7 +257,38 @@
     return style;
   }
 
+  // Is a usable WebGL context available? (maplibregl.supported() was removed in
+  // MapLibre v3, so probe directly.) A blocked/blacklisted GPU is common on
+  // locked-down machines; we must fail honestly rather than spin forever.
+  function webglOK() {
+    try {
+      const c = document.createElement("canvas");
+      return !!(window.WebGLRenderingContext &&
+        (c.getContext("webgl") || c.getContext("experimental-webgl")));
+    } catch (e) { return false; }
+  }
+
   async function initMap() {
+    // Boot guards: the whole instrument is a WebGL map fed by CDN libraries and
+    // inflates a gzipped archive client-side. If any prerequisite is missing,
+    // stop with an accurate message — never leave the loader spinning (and never
+    // misattribute a browser-capability failure to a data gap downstream).
+    if (typeof maplibregl === "undefined" || typeof h3 === "undefined" ||
+        typeof d3 === "undefined") {
+      fail(new Error("map libraries unavailable"),
+           "couldn't load the map libraries — check your connection and refresh");
+      return;
+    }
+    if (!webglOK()) {
+      fail(new Error("WebGL unavailable"),
+           "this browser can't display the map — WebGL is unavailable or disabled");
+      return;
+    }
+    if (typeof DecompressionStream === "undefined") {
+      fail(new Error("DecompressionStream unavailable"),
+           "this browser is too old to inflate the archive — please update it");
+      return;
+    }
     // Fetch + curate the style ourselves so the label surgery applies from the
     // first paint. If the CDN is unreachable, fall back to the minimal bg.
     DR_COLOR.setTheme(themeName());   // data ramps follow the boot theme
@@ -271,16 +309,23 @@
     // but strong cells form several clusters — Baltic, Black Sea, Red Sea — so
     // their envelope is continental again; a deliberate hero framing is the
     // reliable choice. "Zoom out to all of Europe" is now the reader's move.)
-    map = new maplibregl.Map({
-      container: "map",
-      style,
-      center: [26, 55],
-      zoom: 4.3,
-      minZoom: 1.5,
-      maxZoom: 8,
-      attributionControl: false,
-      dragRotate: false,
-    });
+    try {
+      map = new maplibregl.Map({
+        container: "map",
+        style,
+        center: [26, 55],
+        zoom: 4.3,
+        minZoom: 1.5,
+        maxZoom: 8,
+        attributionControl: false,
+        dragRotate: false,
+      });
+    } catch (e) {
+      // WebGL probed OK but context creation still failed (driver quirk, GPU
+      // reset). Fail honestly instead of throwing into the void.
+      fail(e, "this browser couldn't initialise the map (WebGL failed to start)");
+      return;
+    }
     // Localhost-only debug handle (no-op on the deployed origin) for scripted
     // verification / screenshotting.
     if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
@@ -568,6 +613,10 @@
   async function goTo(idx) {
     idx = Math.max(0, Math.min(state.manifest.days.length - 1, idx));
     state.idx = idx;
+    // Re-entrancy token: holding an arrow key or scrubbing fires overlapping
+    // loads; without this, a slow earlier fetch resolving late could paint a
+    // stale day over a newer one. Only the most recent navigation may render.
+    const token = ++state.navToken;
     clearPin();   // a pinned cell's affected-aircraft list is day-specific
     const day = state.manifest.days[idx];
     el("mapDate").textContent = fmtDate(day);
@@ -576,14 +625,17 @@
     drawTrend();   // move the trend-strip cursor to the current day
     try {
       await loadDay(day);
+      if (token !== state.navToken) return;   // superseded by a newer navigation
       renderDay();
     } catch (e) {
+      if (token !== state.navToken) return;   // stale failure from a superseded load
       // A listed day that won't load/parse is a real gap, not "awaiting nightly"
       // (the manifest only ever lists already-processed days). Make it legible and
       // persistent — which day failed — instead of a fleeting toast.
       console.error(`day ${day} failed to load:`, e);
       el("scrubMeta").textContent = `no data for ${day} — see console`;
       toast(`no data for ${day}`);
+      return;
     }
     updateEventPins(day);   // spatial markers for events within ±1 day of this date
   }
@@ -618,7 +670,15 @@
         ? map.queryRenderedFeatures(e.point, { layers: ["hex-fill"] }) : [];
       if (hf.length) {
         const rec = state.dayData && state.dayData.get(hf[0].id);
-        if (rec && Array.isArray(rec.flights)) { pinFlights(rec); return; }
+        if (rec) {
+          // A degraded cell with an affected-aircraft list pins the full readout;
+          // any other measured cell still shows its value on tap. Touch devices
+          // have no hover, so tap is the only way to read a cell — without this,
+          // most cells were silent on mobile. (Regions stay reachable via chips.)
+          if (Array.isArray(rec.flights)) pinFlights(rec);
+          else showReadout(rec);
+          return;
+        }
       }
       // otherwise region hit-test on click (point in region polygon)
       const rid = regionAt(e.lngLat.lng, e.lngLat.lat);
@@ -657,12 +717,13 @@
     const ro = el("readout");
     ro.classList.remove("empty");
     const z = anomalyZ(rec);
+    const br = Number(rec.bad_ratio) || 0, na = Number(rec.n_aircraft) || 0;
     if (state.mode === "anomaly") {
       el("roVal").textContent = z == null ? "—" : (z >= 0 ? "+" : "") + z.toFixed(1) + "σ";
     } else {
-      el("roVal").textContent = (rec.bad_ratio * 100).toFixed(0) + "%";
+      el("roVal").textContent = (br * 100).toFixed(0) + "%";
     }
-    el("roAircraft").textContent = `${rec.n_aircraft} aircraft · ${(rec.bad_ratio * 100).toFixed(0)}% degraded`;
+    el("roAircraft").textContent = `${na} aircraft · ${(br * 100).toFixed(0)}% degraded`;
     const c = el("roConf");
     c.textContent = rec.confidence;
     c.className = "conf " + rec.confidence;
@@ -1162,9 +1223,10 @@
     const t = el("toast"); t.textContent = msg; t.classList.add("show");
     setTimeout(() => t.classList.remove("show"), 2200);
   }
-  function fail(e) {
+  function fail(e, msg) {
     console.error(e);
-    el("loader").querySelector(".msg").textContent = "signal lost — see console";
+    const l = el("loader"), m = l && l.querySelector(".msg");
+    if (m) m.textContent = msg || "signal lost — see console";
   }
 
   // ---------- intro / orientation ----------
@@ -1287,7 +1349,9 @@
     maybeShowIntro();
   }
 
-  // kick off
-  if (document.readyState !== "loading") initMap();
-  else document.addEventListener("DOMContentLoaded", initMap);
+  // kick off (route any async throw to an honest loader message)
+  const kick = () => initMap().catch((e) =>
+    fail(e, "couldn't start the map — see console and refresh"));
+  if (document.readyState !== "loading") kick();
+  else document.addEventListener("DOMContentLoaded", kick);
 })();
