@@ -52,8 +52,9 @@ adsb.lol dump ──► pipeline/ ──► data/ ──► site/ (static, MapLi
 content/ (regions.yaml, events.yaml, geojson) ─┘
 ```
 - `pipeline/`: Python. `config.py` holds **all** tunables. `run_daily.py`
-  processes one UTC day → `data/daily/YYYY-MM-DD.json`; `backfill.py` a range;
-  `baselines.py` recomputes `data/baselines.json` + per-region series.
+  processes one UTC day → `data/daily/YYYY-MM-DD.json.gz`; `backfill.py` a range;
+  `baselines.py` recomputes `data/baselines.json`, `regions.py` the per-region
+  series, `build_site_data.py` the manifest + content JSON.
 - `data/`: committed **aggregates only**. Never raw traces (see `.gitignore`).
 - `content/`: named regions + curated events (sourced analyst layer).
 - `site/`: buildless static frontend (MapLibre GL JS, h3-js, D3).
@@ -65,7 +66,9 @@ content/ (regions.yaml, events.yaml, geojson) ─┘
 pip install -r requirements.txt
 python -m pipeline.run_daily 2026-07-13          # process one UTC day
 python -m pipeline.backfill 2026-06-30 2026-07-13 # process a date range
-python -m pipeline.baselines                       # recompute baselines + regions
+python -m pipeline.baselines                       # recompute data/baselines.json
+python -m pipeline.regions                          # recompute per-region series
+python -m pipeline.build_site_data                  # manifest + content JSON
 python -m pytest pipeline/tests -q                 # run tests
 python -m http.server -d site 8000                 # serve the site locally
 ```

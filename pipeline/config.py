@@ -126,6 +126,14 @@ RELEASE_STAGING_TEMPLATE = "v{date}-planes-readsb-staging-0"
 # space on the scratch volume drops below this floor, rather than filling the disk.
 MIN_FREE_DISK_GB = 15
 
+# --- Deep-backfill driver ----------------------------------------------------
+# Knobs for the ordered, resumable deep backfill (pipeline/deep_backfill.py).
+# Kept here so the single tunables file holds them (they were module constants).
+BACKFILL_EVENT_PAD_DAYS = 7           # +/- days backfilled around each annotated event
+BACKFILL_FLOOR_DATE = "2023-01-01"    # earliest day the deep backfill attempts
+BACKFILL_DERIVE_EVERY = 10            # recompute derived aggregates every N landed days
+BACKFILL_WINDOW_POLL_SECONDS = 300    # re-check cadence while paused outside the run window
+
 # --- Output ------------------------------------------------------------------
 # Daily aggregates are stored gzip-compressed (~13x smaller). This is a hard
 # size gate for bulk backfill: 3 years uncompressed ~ 3.7 GB vs ~260 MB gzipped,

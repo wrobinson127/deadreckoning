@@ -49,8 +49,9 @@ from . import baselines, build_site_data, config as C, dailyio, download, region
 from .paths import repo_path
 from .run_daily import default_scratch, process_day
 
-EVENT_PAD_DAYS = 7            # +/- window backfilled around each annotated event
-DEFAULT_FLOOR = "2023-01-01"  # earliest day to attempt; unavailable days skip cleanly
+# Sourced from config (the single tunables file); aliased here for local use.
+EVENT_PAD_DAYS = C.BACKFILL_EVENT_PAD_DAYS    # +/- window backfilled around each event
+DEFAULT_FLOOR = C.BACKFILL_FLOOR_DATE         # earliest day to attempt; missing days skip
 
 
 def _present_days() -> set[str]:
@@ -161,7 +162,7 @@ def _wait_for_window(window):
             print(f"[sleep] outside run window {window[0]:02d}:00-{window[1]:02d}:00 local "
                   f"(now {datetime.now():%H:%M}); pausing until the window opens…", flush=True)
             announced = True
-        time.sleep(300)   # re-check every 5 min
+        time.sleep(C.BACKFILL_WINDOW_POLL_SECONDS)   # re-check cadence while paused
     if announced:
         print(f"[wake] inside run window {window[0]:02d}:00-{window[1]:02d}:00; resuming.", flush=True)
 
@@ -200,7 +201,8 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="Ordered, resumable deep backfill (local).")
     ap.add_argument("--floor", default=DEFAULT_FLOOR, help="earliest day to attempt (YYYY-MM-DD)")
     ap.add_argument("--pad", type=int, default=EVENT_PAD_DAYS, help="+/- days around each event")
-    ap.add_argument("--derive-every", type=int, default=10, help="recompute derived every N landed days")
+    ap.add_argument("--derive-every", type=int, default=C.BACKFILL_DERIVE_EVERY,
+                    help="recompute derived every N landed days")
     ap.add_argument("--max-days", type=int, default=None, help="stop after N newly-processed days")
     ap.add_argument("--scratch", default=None, help="raw-parts dir; MUST be off OneDrive for bulk")
     ap.add_argument("--min-free-gb", type=float, default=C.MIN_FREE_DISK_GB,
