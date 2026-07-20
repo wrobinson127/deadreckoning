@@ -3,6 +3,118 @@
   "display_name": "Persian Gulf / Strait of Hormuz",
   "series": [
     {
+      "date": "2025-05-03",
+      "n_hexes": 114,
+      "mean_bad_ratio": 0.0157,
+      "max_bad_ratio": 0.1429,
+      "total_aircraft": 12641
+    },
+    {
+      "date": "2025-05-04",
+      "n_hexes": 112,
+      "mean_bad_ratio": 0.0153,
+      "max_bad_ratio": 0.1765,
+      "total_aircraft": 12786
+    },
+    {
+      "date": "2025-05-05",
+      "n_hexes": 117,
+      "mean_bad_ratio": 0.0177,
+      "max_bad_ratio": 0.1667,
+      "total_aircraft": 12380
+    },
+    {
+      "date": "2025-05-06",
+      "n_hexes": 112,
+      "mean_bad_ratio": 0.0179,
+      "max_bad_ratio": 0.3333,
+      "total_aircraft": 8761
+    },
+    {
+      "date": "2025-05-07",
+      "n_hexes": 115,
+      "mean_bad_ratio": 0.0061,
+      "max_bad_ratio": 0.0952,
+      "total_aircraft": 10754
+    },
+    {
+      "date": "2025-05-08",
+      "n_hexes": 123,
+      "mean_bad_ratio": 0.0157,
+      "max_bad_ratio": 0.1538,
+      "total_aircraft": 15134
+    },
+    {
+      "date": "2025-06-11",
+      "n_hexes": 52,
+      "mean_bad_ratio": 0.0081,
+      "max_bad_ratio": 0.0833,
+      "total_aircraft": 2737
+    },
+    {
+      "date": "2025-06-12",
+      "n_hexes": 59,
+      "mean_bad_ratio": 0.009,
+      "max_bad_ratio": 0.0333,
+      "total_aircraft": 11173
+    },
+    {
+      "date": "2025-06-13",
+      "n_hexes": 50,
+      "mean_bad_ratio": 0.0071,
+      "max_bad_ratio": 0.0526,
+      "total_aircraft": 10881
+    },
+    {
+      "date": "2025-06-14",
+      "n_hexes": 46,
+      "mean_bad_ratio": 0.051,
+      "max_bad_ratio": 0.3333,
+      "total_aircraft": 10065
+    },
+    {
+      "date": "2025-06-15",
+      "n_hexes": 46,
+      "mean_bad_ratio": 0.0346,
+      "max_bad_ratio": 0.4167,
+      "total_aircraft": 10618
+    },
+    {
+      "date": "2025-06-16",
+      "n_hexes": 50,
+      "mean_bad_ratio": 0.1044,
+      "max_bad_ratio": 0.28,
+      "total_aircraft": 9612
+    },
+    {
+      "date": "2025-06-17",
+      "n_hexes": 52,
+      "mean_bad_ratio": 0.0854,
+      "max_bad_ratio": 0.7143,
+      "total_aircraft": 10001
+    },
+    {
+      "date": "2025-06-18",
+      "n_hexes": 50,
+      "mean_bad_ratio": 0.174,
+      "max_bad_ratio": 0.5714,
+      "total_aircraft": 8847
+    },
+    {
+      "date": "2025-06-19",
+      "n_hexes": 46,
+      "mean_bad_ratio": 0.1397,
+      "max_bad_ratio": 0.5882,
+      "total_aircraft": 8506
+    },
+    {
+      "date": "2025-06-20",
+      "n_hexes": 47,
+      "mean_bad_ratio": 0.1419,
+      "max_bad_ratio": 0.5,
+      "total_aircraft": 8569
+    },
+    {
       "date": "2025-07-08",
       "n_hexes": 87,
       "mean_bad_ratio": 0.0608,
@@ -78,6 +190,34 @@
       "mean_bad_ratio": 0.0478,
       "max_bad_ratio": 0.5,
       "total_aircraft": 17998
+    },
+    {
+      "date": "2025-07-19",
+      "n_hexes": 99,
+      "mean_bad_ratio": 0.0518,
+      "max_bad_ratio": 0.4,
+      "total_aircraft": 17788
+    },
+    {
+      "date": "2025-07-20",
+      "n_hexes": 99,
+      "mean_bad_ratio": 0.032,
+      "max_bad_ratio": 0.2222,
+      "total_aircraft": 17522
+    },
+    {
+      "date": "2025-07-21",
+      "n_hexes": 92,
+      "mean_bad_ratio": 0.0395,
+      "max_bad_ratio": 0.2326,
+      "total_aircraft": 17272
+    },
+    {
+      "date": "2025-07-22",
+      "n_hexes": 98,
+      "mean_bad_ratio": 0.047,
+      "max_bad_ratio": 0.2727,
+      "total_aircraft": 17327
     },
     {
       "date": "2025-08-25",

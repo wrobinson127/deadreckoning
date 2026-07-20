@@ -2,6 +2,102 @@
   "strong_ratio": 0.5,
   "series": [
     {
+      "date": "2025-05-03",
+      "measured": 19432,
+      "degraded": 6580,
+      "strong": 205
+    },
+    {
+      "date": "2025-05-04",
+      "measured": 19509,
+      "degraded": 6778,
+      "strong": 183
+    },
+    {
+      "date": "2025-05-05",
+      "measured": 19491,
+      "degraded": 6710,
+      "strong": 176
+    },
+    {
+      "date": "2025-05-06",
+      "measured": 19211,
+      "degraded": 6848,
+      "strong": 165
+    },
+    {
+      "date": "2025-05-07",
+      "measured": 19157,
+      "degraded": 6902,
+      "strong": 192
+    },
+    {
+      "date": "2025-05-08",
+      "measured": 19397,
+      "degraded": 7173,
+      "strong": 174
+    },
+    {
+      "date": "2025-06-11",
+      "measured": 13829,
+      "degraded": 3310,
+      "strong": 109
+    },
+    {
+      "date": "2025-06-12",
+      "measured": 20471,
+      "degraded": 7821,
+      "strong": 278
+    },
+    {
+      "date": "2025-06-13",
+      "measured": 20327,
+      "degraded": 7683,
+      "strong": 301
+    },
+    {
+      "date": "2025-06-14",
+      "measured": 20405,
+      "degraded": 7224,
+      "strong": 313
+    },
+    {
+      "date": "2025-06-15",
+      "measured": 20559,
+      "degraded": 7305,
+      "strong": 312
+    },
+    {
+      "date": "2025-06-16",
+      "measured": 20769,
+      "degraded": 7565,
+      "strong": 273
+    },
+    {
+      "date": "2025-06-17",
+      "measured": 20597,
+      "degraded": 7507,
+      "strong": 195
+    },
+    {
+      "date": "2025-06-18",
+      "measured": 20737,
+      "degraded": 8217,
+      "strong": 247
+    },
+    {
+      "date": "2025-06-19",
+      "measured": 20861,
+      "degraded": 8050,
+      "strong": 300
+    },
+    {
+      "date": "2025-06-20",
+      "measured": 20600,
+      "degraded": 8175,
+      "strong": 256
+    },
+    {
       "date": "2025-07-08",
       "measured": 21366,
       "degraded": 7819,
@@ -66,6 +162,30 @@
       "measured": 21757,
       "degraded": 8095,
       "strong": 208
+    },
+    {
+      "date": "2025-07-19",
+      "measured": 21278,
+      "degraded": 7822,
+      "strong": 204
+    },
+    {
+      "date": "2025-07-20",
+      "measured": 21268,
+      "degraded": 7876,
+      "strong": 189
+    },
+    {
+      "date": "2025-07-21",
+      "measured": 21168,
+      "degraded": 7817,
+      "strong": 191
+    },
+    {
+      "date": "2025-07-22",
+      "measured": 21300,
+      "degraded": 7922,
+      "strong": 189
     },
     {
       "date": "2025-08-25",
