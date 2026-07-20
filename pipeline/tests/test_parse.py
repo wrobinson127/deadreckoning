@@ -44,3 +44,18 @@ def test_missing_icao_falls_back_to_filename(tmp_path):
     pts = list(parse.stream_points(parts))
     assert len(pts) == 1
     assert pts[0].icao == "cccc03"
+
+
+def test_non_numeric_nic_is_dropped(tmp_path):
+    # A corrupt trace with a string/bool nic must be dropped at parse (else the
+    # aggregate comparison pt.nic <= NIC_DEGRADED_MAX raises and sinks the day).
+    # A float nic is legitimate and kept.
+    tr = make_trace("dddd04", [
+        (0, 55.0, 21.0, 35000, detail("8")),                                  # string -> dropped
+        (10, 55.0, 21.0, 35000, {"type": "adsb_icao", "nic": True, "version": 2}),  # bool -> dropped
+        (20, 55.0, 21.0, 35000, detail(6.0)),                                 # float -> kept
+    ])
+    parts = write_split_tar(str(tmp_path), {"dddd04": tr}, parts=1)
+    pts = list(parse.stream_points(parts))
+    assert len(pts) == 1
+    assert pts[0].nic == 6.0

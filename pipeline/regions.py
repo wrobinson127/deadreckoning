@@ -17,7 +17,7 @@ import h3
 import orjson
 
 from . import config as C, dailyio
-from .paths import repo_path
+from .paths import atomic_write_bytes, repo_path
 
 REGIONS_GEOJSON = repo_path("content", "regions.geojson")
 
@@ -123,8 +123,7 @@ def build_region_series() -> list[str]:
             "series": s,
         }
         out = os.path.join(outdir, f"{rid}.json")
-        with open(out, "wb") as fh:
-            fh.write(orjson.dumps(payload, option=orjson.OPT_INDENT_2))
+        atomic_write_bytes(out, orjson.dumps(payload, option=orjson.OPT_INDENT_2))
         out_paths.append(out)
     return out_paths
 

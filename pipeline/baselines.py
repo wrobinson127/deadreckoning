@@ -22,12 +22,11 @@ Output: data/baselines.json
 from __future__ import annotations
 
 import math
-import os
 
 import orjson
 
 from . import config as C, dailyio
-from .paths import repo_path
+from .paths import atomic_write_bytes, repo_path
 
 
 def compute_baselines(dailies: "list[tuple[str, list[dict]]] | None" = None) -> dict:
@@ -65,9 +64,7 @@ def compute_baselines(dailies: "list[tuple[str, list[dict]]] | None" = None) -> 
 def write_baselines() -> str:
     data = compute_baselines()
     out = repo_path(C.BASELINES_JSON)
-    os.makedirs(os.path.dirname(out), exist_ok=True)
-    with open(out, "wb") as fh:
-        fh.write(orjson.dumps(data, option=orjson.OPT_INDENT_2))
+    atomic_write_bytes(out, orjson.dumps(data, option=orjson.OPT_INDENT_2))
     return out
 
 

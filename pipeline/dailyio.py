@@ -17,12 +17,13 @@ from __future__ import annotations
 
 import glob
 import gzip
+import io
 import os
 
 import orjson
 
 from . import config as C
-from .paths import repo_path
+from .paths import atomic_write_bytes, repo_path
 
 _SUFFIX = ".json.gz"
 
@@ -43,16 +44,18 @@ def day_of(path: str) -> str:
 
 
 def write_daily(day: str, records) -> str:
-    """Serialize ``records`` to the day's ``.json.gz`` artifact, deterministically."""
+    """Serialize ``records`` to the day's ``.json.gz`` artifact, deterministically.
+
+    Gzip into an in-memory buffer (GzipFile, not gzip.open, so mtime=0 and no
+    embedded filename — the bytes stay a pure function of the input), then write
+    the buffer atomically so a crash mid-write can't leave a truncated .gz.
+    """
     out = daily_path(day)
-    os.makedirs(os.path.dirname(out), exist_ok=True)
     raw = orjson.dumps(records)
-    with open(out, "wb") as fh:
-        # GzipFile (not gzip.open) so we can pin mtime=0 and drop the filename
-        # field, making the compressed bytes a pure function of the input.
-        with gzip.GzipFile(fileobj=fh, mode="wb",
-                           compresslevel=C.GZIP_LEVEL, mtime=0) as gz:
-            gz.write(raw)
+    buf = io.BytesIO()
+    with gzip.GzipFile(fileobj=buf, mode="wb", compresslevel=C.GZIP_LEVEL, mtime=0) as gz:
+        gz.write(raw)
+    atomic_write_bytes(out, buf.getvalue())
     return out
 
 
