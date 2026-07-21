@@ -59,11 +59,6 @@ html[data-theme="light"] .swatch.insufficient {
   background-color:#dfe4ea;
   background-image: repeating-linear-gradient(45deg, rgba(40,52,68,.5) 0 1px, transparent 1px 4px);
 }
-html[data-theme="light"] .loader::before {
-  background:
-    linear-gradient(rgba(233,237,242,0.30), rgba(233,237,242,0.55)),
-    url("../assets/og-image-light.jpg") center / cover no-repeat;
-}
 /* on light, the MapLibre control icons are already dark — do NOT invert them
    (the dark-theme invert made them near-invisible on the white control). */
 html[data-theme="light"] .maplibregl-ctrl-icon,
@@ -631,16 +626,13 @@ input.slider::-moz-range-thumb { width:14px; height:14px; border-radius:50%;
   .intro-actions{margin:0 -20px 0; padding:14px 20px 18px} }
 
 /* ================= loading / states ================= */
-.loader { position:absolute; inset:0; z-index:20; display:grid; place-items:center;
+/* Full-viewport solid loading screen: fixed (not absolute) so it covers the whole
+   app grid — top bar AND the bottom timeline row — rather than only the map cell,
+   which used to leave the scrubber's bar showing at the bottom. Solid theme ground
+   (near-black on dark, near-white on light) under the acquiring-signal sweep; no
+   map poster. z-index above every panel/menu (max elsewhere is 40). */
+.loader { position:fixed; inset:0; z-index:50; display:grid; place-items:center;
   background:var(--bg); transition:opacity .4s; overflow:hidden; }
-/* Signature frame behind the loader: the acquiring-signal sweep runs over the
-   poster (the Degraded% Baltic bloom), not over black. Same asset is the OG
-   card. Falls back gracefully to the dark ground if the poster is absent. */
-.loader::before { content:""; position:absolute; inset:0; z-index:0;
-  background:
-    linear-gradient(rgba(10,12,15,0.30), rgba(10,12,15,0.55)),
-    url("../assets/loader-poster.jpg") center / cover no-repeat;
-}
 .loader.hide { opacity:0; pointer-events:none; }
 .loader .core { position:relative; z-index:1; text-align:center; }
 .loader .sweep { width:54px; height:54px; margin:0 auto 16px; border-radius:50%;
