@@ -40,6 +40,11 @@
       cityDot: "#5a6470",
       cityLayers: ["label_city", "label_city_capital", "label_town"],
       adminLayer: "boundary_3",
+      // positron's boundary_3 is minzoom 8 + near-white (hsl 0,0%,70%): invisible
+      // at continental zoom on the light ground. Give the admin-1 (sub-region)
+      // line a readable slate stroke so it shows when "Regional borders" is on
+      // (dark's boundary_state already reads without help).
+      adminColor: "#7a8794", adminOpacity: 0.9,
       dropLayers: ["label_state"],
       borderLayers: ["boundary_2", "boundary_disputed"],
       border: "#566472",
@@ -240,6 +245,16 @@
       if (l.id === pal().adminLayer) {
         l.layout = l.layout || {};
         l.layout.visibility = "none";
+        // Make it legible WHEN toggled on: pull the minzoom down to a continental
+        // view (positron's boundary_3 is minzoom 8 — hidden at the default zoom),
+        // and apply a readable per-theme stroke. Only ever LOWER minzoom, so dark's
+        // all-zoom boundary_state is left exactly as-is.
+        if (typeof l.minzoom === "number" && l.minzoom > 3) l.minzoom = 3;
+        if (pal().adminColor) {
+          l.paint = l.paint || {};
+          l.paint["line-color"] = pal().adminColor;
+          l.paint["line-opacity"] = pal().adminOpacity ?? 0.9;
+        }
         continue;
       }
       if (l.type !== "symbol") continue;
