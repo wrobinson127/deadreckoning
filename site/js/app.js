@@ -575,6 +575,14 @@
       state.geomIndex.add(r.hex);
       // h3-js v4: cellToBoundary(h, true) -> [lng,lat] pairs (GeoJSON order)
       const ring = h3.cellToBoundary(r.hex, true);
+      // Antimeridian unwrap: a hex straddling ±180° comes back with vertices on
+      // both sides (~+179 and ~−179). Left as-is, MapLibre draws the polygon the
+      // long way round — a globe-spanning streak (the South Pacific low-sample
+      // cells). If the longitude span exceeds 180°, shift the western vertices
+      // +360° so the ring stays contiguous (MapLibre re-wraps it for display).
+      let lo = Infinity, hi = -Infinity;
+      for (const p of ring) { if (p[0] < lo) lo = p[0]; if (p[0] > hi) hi = p[0]; }
+      if (hi - lo > 180) { for (const p of ring) if (p[0] < 0) p[0] += 360; }
       ring.push(ring[0]);
       state.geomFC.features.push({
         type: "Feature", id: r.hex, properties: { h: r.hex },
