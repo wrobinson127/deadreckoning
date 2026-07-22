@@ -61,7 +61,7 @@
     {
       "date": "2025-06-13",
       "n_hexes": 16,
-      "mean_bad_ratio": 0.0682,
+      "mean_bad_ratio": 0.0681,
       "max_bad_ratio": 0.2273,
       "total_aircraft": 1283
     },
@@ -229,7 +229,7 @@
     {
       "date": "2025-07-24",
       "n_hexes": 14,
-      "mean_bad_ratio": 0.0635,
+      "mean_bad_ratio": 0.0636,
       "max_bad_ratio": 0.1667,
       "total_aircraft": 1224
     },
@@ -1737,6 +1737,13 @@
       "mean_bad_ratio": 0.0,
       "max_bad_ratio": 0.0,
       "total_aircraft": 62
+    },
+    {
+      "date": "2026-07-21",
+      "n_hexes": 1,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 12
     }
   ]
 }
