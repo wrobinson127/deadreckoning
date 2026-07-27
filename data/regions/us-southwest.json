@@ -626,6 +626,13 @@
       "total_aircraft": 584
     },
     {
+      "date": "2025-09-19",
+      "n_hexes": 10,
+      "mean_bad_ratio": 0.0206,
+      "max_bad_ratio": 0.0769,
+      "total_aircraft": 605
+    },
+    {
       "date": "2025-09-20",
       "n_hexes": 18,
       "mean_bad_ratio": 0.0029,
@@ -701,6 +708,1000 @@
       "mean_bad_ratio": 0.0,
       "max_bad_ratio": 0.0,
       "total_aircraft": 728
+    },
+    {
+      "date": "2025-10-01",
+      "n_hexes": 13,
+      "mean_bad_ratio": 0.0147,
+      "max_bad_ratio": 0.125,
+      "total_aircraft": 607
+    },
+    {
+      "date": "2025-10-02",
+      "n_hexes": 15,
+      "mean_bad_ratio": 0.0014,
+      "max_bad_ratio": 0.0208,
+      "total_aircraft": 704
+    },
+    {
+      "date": "2025-10-03",
+      "n_hexes": 15,
+      "mean_bad_ratio": 0.0009,
+      "max_bad_ratio": 0.0137,
+      "total_aircraft": 939
+    },
+    {
+      "date": "2025-10-04",
+      "n_hexes": 16,
+      "mean_bad_ratio": 0.009,
+      "max_bad_ratio": 0.037,
+      "total_aircraft": 945
+    },
+    {
+      "date": "2025-10-05",
+      "n_hexes": 18,
+      "mean_bad_ratio": 0.0006,
+      "max_bad_ratio": 0.0115,
+      "total_aircraft": 1178
+    },
+    {
+      "date": "2025-10-06",
+      "n_hexes": 18,
+      "mean_bad_ratio": 0.0157,
+      "max_bad_ratio": 0.2,
+      "total_aircraft": 937
+    },
+    {
+      "date": "2025-10-07",
+      "n_hexes": 18,
+      "mean_bad_ratio": 0.0023,
+      "max_bad_ratio": 0.0408,
+      "total_aircraft": 978
+    },
+    {
+      "date": "2025-10-08",
+      "n_hexes": 15,
+      "mean_bad_ratio": 0.0055,
+      "max_bad_ratio": 0.0323,
+      "total_aircraft": 903
+    },
+    {
+      "date": "2025-10-09",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0009,
+      "max_bad_ratio": 0.0172,
+      "total_aircraft": 1049
+    },
+    {
+      "date": "2025-10-10",
+      "n_hexes": 20,
+      "mean_bad_ratio": 0.0012,
+      "max_bad_ratio": 0.0206,
+      "total_aircraft": 1299
+    },
+    {
+      "date": "2025-10-11",
+      "n_hexes": 21,
+      "mean_bad_ratio": 0.0022,
+      "max_bad_ratio": 0.0455,
+      "total_aircraft": 1152
+    },
+    {
+      "date": "2025-10-12",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0007,
+      "max_bad_ratio": 0.0132,
+      "total_aircraft": 1276
+    },
+    {
+      "date": "2025-10-13",
+      "n_hexes": 18,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 1362
+    },
+    {
+      "date": "2025-10-14",
+      "n_hexes": 18,
+      "mean_bad_ratio": 0.0009,
+      "max_bad_ratio": 0.0156,
+      "total_aircraft": 1442
+    },
+    {
+      "date": "2025-10-15",
+      "n_hexes": 15,
+      "mean_bad_ratio": 0.0002,
+      "max_bad_ratio": 0.0033,
+      "total_aircraft": 660
+    },
+    {
+      "date": "2025-10-16",
+      "n_hexes": 12,
+      "mean_bad_ratio": 0.0037,
+      "max_bad_ratio": 0.0444,
+      "total_aircraft": 731
+    },
+    {
+      "date": "2025-10-17",
+      "n_hexes": 17,
+      "mean_bad_ratio": 0.0277,
+      "max_bad_ratio": 0.1429,
+      "total_aircraft": 805
+    },
+    {
+      "date": "2025-10-18",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0012,
+      "max_bad_ratio": 0.0123,
+      "total_aircraft": 1097
+    },
+    {
+      "date": "2025-10-19",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0025,
+      "max_bad_ratio": 0.0233,
+      "total_aircraft": 1252
+    },
+    {
+      "date": "2025-10-20",
+      "n_hexes": 21,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 1022
+    },
+    {
+      "date": "2025-10-21",
+      "n_hexes": 21,
+      "mean_bad_ratio": 0.0486,
+      "max_bad_ratio": 0.25,
+      "total_aircraft": 701
+    },
+    {
+      "date": "2025-10-22",
+      "n_hexes": 18,
+      "mean_bad_ratio": 0.0458,
+      "max_bad_ratio": 0.2,
+      "total_aircraft": 694
+    },
+    {
+      "date": "2025-10-23",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0037,
+      "max_bad_ratio": 0.05,
+      "total_aircraft": 751
+    },
+    {
+      "date": "2025-10-24",
+      "n_hexes": 24,
+      "mean_bad_ratio": 0.0037,
+      "max_bad_ratio": 0.0625,
+      "total_aircraft": 1048
+    },
+    {
+      "date": "2025-10-25",
+      "n_hexes": 18,
+      "mean_bad_ratio": 0.0025,
+      "max_bad_ratio": 0.0247,
+      "total_aircraft": 964
+    },
+    {
+      "date": "2025-10-26",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0023,
+      "max_bad_ratio": 0.0267,
+      "total_aircraft": 1288
+    },
+    {
+      "date": "2025-10-27",
+      "n_hexes": 20,
+      "mean_bad_ratio": 0.0138,
+      "max_bad_ratio": 0.2,
+      "total_aircraft": 1035
+    },
+    {
+      "date": "2025-10-28",
+      "n_hexes": 15,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 945
+    },
+    {
+      "date": "2025-10-29",
+      "n_hexes": 16,
+      "mean_bad_ratio": 0.0016,
+      "max_bad_ratio": 0.0204,
+      "total_aircraft": 962
+    },
+    {
+      "date": "2025-10-30",
+      "n_hexes": 16,
+      "mean_bad_ratio": 0.0065,
+      "max_bad_ratio": 0.0588,
+      "total_aircraft": 802
+    },
+    {
+      "date": "2025-10-31",
+      "n_hexes": 18,
+      "mean_bad_ratio": 0.0012,
+      "max_bad_ratio": 0.022,
+      "total_aircraft": 1054
+    },
+    {
+      "date": "2025-11-01",
+      "n_hexes": 18,
+      "mean_bad_ratio": 0.0042,
+      "max_bad_ratio": 0.0349,
+      "total_aircraft": 1025
+    },
+    {
+      "date": "2025-11-02",
+      "n_hexes": 16,
+      "mean_bad_ratio": 0.0007,
+      "max_bad_ratio": 0.011,
+      "total_aircraft": 1360
+    },
+    {
+      "date": "2025-11-03",
+      "n_hexes": 16,
+      "mean_bad_ratio": 0.0008,
+      "max_bad_ratio": 0.0127,
+      "total_aircraft": 1265
+    },
+    {
+      "date": "2025-11-04",
+      "n_hexes": 13,
+      "mean_bad_ratio": 0.0418,
+      "max_bad_ratio": 0.4,
+      "total_aircraft": 808
+    },
+    {
+      "date": "2025-11-05",
+      "n_hexes": 11,
+      "mean_bad_ratio": 0.0123,
+      "max_bad_ratio": 0.06,
+      "total_aircraft": 717
+    },
+    {
+      "date": "2025-11-06",
+      "n_hexes": 13,
+      "mean_bad_ratio": 0.0048,
+      "max_bad_ratio": 0.0625,
+      "total_aircraft": 715
+    },
+    {
+      "date": "2025-11-07",
+      "n_hexes": 18,
+      "mean_bad_ratio": 0.0062,
+      "max_bad_ratio": 0.025,
+      "total_aircraft": 1063
+    },
+    {
+      "date": "2025-11-08",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0017,
+      "max_bad_ratio": 0.0238,
+      "total_aircraft": 1259
+    },
+    {
+      "date": "2025-11-09",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0043,
+      "max_bad_ratio": 0.0714,
+      "total_aircraft": 1307
+    },
+    {
+      "date": "2025-11-10",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 1020
+    },
+    {
+      "date": "2025-11-11",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0042,
+      "max_bad_ratio": 0.0476,
+      "total_aircraft": 1113
+    },
+    {
+      "date": "2025-11-12",
+      "n_hexes": 17,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 957
+    },
+    {
+      "date": "2025-11-13",
+      "n_hexes": 18,
+      "mean_bad_ratio": 0.0009,
+      "max_bad_ratio": 0.0164,
+      "total_aircraft": 883
+    },
+    {
+      "date": "2025-11-14",
+      "n_hexes": 16,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 1013
+    },
+    {
+      "date": "2025-11-15",
+      "n_hexes": 18,
+      "mean_bad_ratio": 0.0048,
+      "max_bad_ratio": 0.0652,
+      "total_aircraft": 1297
+    },
+    {
+      "date": "2025-11-16",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0006,
+      "max_bad_ratio": 0.0114,
+      "total_aircraft": 1377
+    },
+    {
+      "date": "2025-11-17",
+      "n_hexes": 20,
+      "mean_bad_ratio": 0.0042,
+      "max_bad_ratio": 0.0484,
+      "total_aircraft": 994
+    },
+    {
+      "date": "2025-11-18",
+      "n_hexes": 16,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 856
+    },
+    {
+      "date": "2025-11-19",
+      "n_hexes": 18,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 871
+    },
+    {
+      "date": "2025-11-20",
+      "n_hexes": 20,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 821
+    },
+    {
+      "date": "2025-11-21",
+      "n_hexes": 18,
+      "mean_bad_ratio": 0.001,
+      "max_bad_ratio": 0.0172,
+      "total_aircraft": 1112
+    },
+    {
+      "date": "2025-11-22",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0019,
+      "max_bad_ratio": 0.037,
+      "total_aircraft": 1569
+    },
+    {
+      "date": "2025-11-23",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 1652
+    },
+    {
+      "date": "2025-11-24",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 1190
+    },
+    {
+      "date": "2025-11-25",
+      "n_hexes": 17,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 895
+    },
+    {
+      "date": "2025-11-26",
+      "n_hexes": 18,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 1083
+    },
+    {
+      "date": "2025-11-27",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0033,
+      "max_bad_ratio": 0.0625,
+      "total_aircraft": 1243
+    },
+    {
+      "date": "2025-11-28",
+      "n_hexes": 20,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 1007
+    },
+    {
+      "date": "2025-11-29",
+      "n_hexes": 20,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 1497
+    },
+    {
+      "date": "2025-11-30",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 1448
+    },
+    {
+      "date": "2025-12-01",
+      "n_hexes": 20,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 1205
+    },
+    {
+      "date": "2025-12-02",
+      "n_hexes": 18,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 697
+    },
+    {
+      "date": "2025-12-03",
+      "n_hexes": 18,
+      "mean_bad_ratio": 0.0104,
+      "max_bad_ratio": 0.1111,
+      "total_aircraft": 605
+    },
+    {
+      "date": "2025-12-04",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 876
+    },
+    {
+      "date": "2025-12-05",
+      "n_hexes": 21,
+      "mean_bad_ratio": 0.0018,
+      "max_bad_ratio": 0.023,
+      "total_aircraft": 1182
+    },
+    {
+      "date": "2025-12-06",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0023,
+      "max_bad_ratio": 0.0435,
+      "total_aircraft": 1230
+    },
+    {
+      "date": "2025-12-07",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0027,
+      "max_bad_ratio": 0.0385,
+      "total_aircraft": 1458
+    },
+    {
+      "date": "2025-12-08",
+      "n_hexes": 21,
+      "mean_bad_ratio": 0.0015,
+      "max_bad_ratio": 0.0323,
+      "total_aircraft": 1214
+    },
+    {
+      "date": "2025-12-09",
+      "n_hexes": 17,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 812
+    },
+    {
+      "date": "2025-12-10",
+      "n_hexes": 20,
+      "mean_bad_ratio": 0.0009,
+      "max_bad_ratio": 0.0182,
+      "total_aircraft": 945
+    },
+    {
+      "date": "2025-12-11",
+      "n_hexes": 20,
+      "mean_bad_ratio": 0.0239,
+      "max_bad_ratio": 0.2857,
+      "total_aircraft": 942
+    },
+    {
+      "date": "2025-12-12",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.002,
+      "max_bad_ratio": 0.0263,
+      "total_aircraft": 1203
+    },
+    {
+      "date": "2025-12-13",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0023,
+      "max_bad_ratio": 0.0185,
+      "total_aircraft": 1467
+    },
+    {
+      "date": "2025-12-14",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0007,
+      "max_bad_ratio": 0.0105,
+      "total_aircraft": 1529
+    },
+    {
+      "date": "2025-12-15",
+      "n_hexes": 21,
+      "mean_bad_ratio": 0.0006,
+      "max_bad_ratio": 0.0133,
+      "total_aircraft": 1124
+    },
+    {
+      "date": "2025-12-16",
+      "n_hexes": 17,
+      "mean_bad_ratio": 0.0029,
+      "max_bad_ratio": 0.05,
+      "total_aircraft": 885
+    },
+    {
+      "date": "2025-12-17",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0058,
+      "max_bad_ratio": 0.0526,
+      "total_aircraft": 851
+    },
+    {
+      "date": "2025-12-18",
+      "n_hexes": 21,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 1116
+    },
+    {
+      "date": "2025-12-19",
+      "n_hexes": 18,
+      "mean_bad_ratio": 0.0023,
+      "max_bad_ratio": 0.0211,
+      "total_aircraft": 1636
+    },
+    {
+      "date": "2025-12-20",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0013,
+      "max_bad_ratio": 0.0097,
+      "total_aircraft": 1973
+    },
+    {
+      "date": "2025-12-21",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0048,
+      "max_bad_ratio": 0.0476,
+      "total_aircraft": 1711
+    },
+    {
+      "date": "2025-12-22",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 1161
+    },
+    {
+      "date": "2025-12-23",
+      "n_hexes": 18,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 1237
+    },
+    {
+      "date": "2025-12-24",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 1570
+    },
+    {
+      "date": "2025-12-25",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 1392
+    },
+    {
+      "date": "2025-12-26",
+      "n_hexes": 20,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 1770
+    },
+    {
+      "date": "2025-12-27",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 1938
+    },
+    {
+      "date": "2025-12-28",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 1972
+    },
+    {
+      "date": "2025-12-29",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0016,
+      "max_bad_ratio": 0.0108,
+      "total_aircraft": 1688
+    },
+    {
+      "date": "2025-12-30",
+      "n_hexes": 20,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 1615
+    },
+    {
+      "date": "2026-01-01",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 1341
+    },
+    {
+      "date": "2026-01-02",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 1607
+    },
+    {
+      "date": "2026-01-03",
+      "n_hexes": 20,
+      "mean_bad_ratio": 0.0029,
+      "max_bad_ratio": 0.0316,
+      "total_aircraft": 1772
+    },
+    {
+      "date": "2026-01-04",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0016,
+      "max_bad_ratio": 0.0168,
+      "total_aircraft": 1768
+    },
+    {
+      "date": "2026-01-05",
+      "n_hexes": 20,
+      "mean_bad_ratio": 0.0006,
+      "max_bad_ratio": 0.0111,
+      "total_aircraft": 1602
+    },
+    {
+      "date": "2026-01-06",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 1243
+    },
+    {
+      "date": "2026-01-07",
+      "n_hexes": 21,
+      "mean_bad_ratio": 0.0203,
+      "max_bad_ratio": 0.2,
+      "total_aircraft": 941
+    },
+    {
+      "date": "2026-01-08",
+      "n_hexes": 22,
+      "mean_bad_ratio": 0.0018,
+      "max_bad_ratio": 0.04,
+      "total_aircraft": 947
+    },
+    {
+      "date": "2026-01-09",
+      "n_hexes": 21,
+      "mean_bad_ratio": 0.0175,
+      "max_bad_ratio": 0.1,
+      "total_aircraft": 1125
+    },
+    {
+      "date": "2026-01-10",
+      "n_hexes": 18,
+      "mean_bad_ratio": 0.0005,
+      "max_bad_ratio": 0.0093,
+      "total_aircraft": 1410
+    },
+    {
+      "date": "2026-01-11",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0038,
+      "max_bad_ratio": 0.0405,
+      "total_aircraft": 1532
+    },
+    {
+      "date": "2026-01-12",
+      "n_hexes": 21,
+      "mean_bad_ratio": 0.0003,
+      "max_bad_ratio": 0.0071,
+      "total_aircraft": 1028
+    },
+    {
+      "date": "2026-01-13",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0008,
+      "max_bad_ratio": 0.0149,
+      "total_aircraft": 764
+    },
+    {
+      "date": "2026-01-14",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0175,
+      "max_bad_ratio": 0.1,
+      "total_aircraft": 836
+    },
+    {
+      "date": "2026-01-15",
+      "n_hexes": 17,
+      "mean_bad_ratio": 0.0268,
+      "max_bad_ratio": 0.15,
+      "total_aircraft": 923
+    },
+    {
+      "date": "2026-01-16",
+      "n_hexes": 20,
+      "mean_bad_ratio": 0.0094,
+      "max_bad_ratio": 0.1064,
+      "total_aircraft": 1262
+    },
+    {
+      "date": "2026-01-17",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 1582
+    },
+    {
+      "date": "2026-01-18",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.004,
+      "max_bad_ratio": 0.0455,
+      "total_aircraft": 1246
+    },
+    {
+      "date": "2026-01-19",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0021,
+      "max_bad_ratio": 0.0312,
+      "total_aircraft": 1561
+    },
+    {
+      "date": "2026-01-20",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0033,
+      "max_bad_ratio": 0.0488,
+      "total_aircraft": 1042
+    },
+    {
+      "date": "2026-01-21",
+      "n_hexes": 17,
+      "mean_bad_ratio": 0.0011,
+      "max_bad_ratio": 0.0169,
+      "total_aircraft": 857
+    },
+    {
+      "date": "2026-01-22",
+      "n_hexes": 15,
+      "mean_bad_ratio": 0.0012,
+      "max_bad_ratio": 0.0185,
+      "total_aircraft": 834
+    },
+    {
+      "date": "2026-01-23",
+      "n_hexes": 12,
+      "mean_bad_ratio": 0.0027,
+      "max_bad_ratio": 0.0323,
+      "total_aircraft": 379
+    },
+    {
+      "date": "2026-01-24",
+      "n_hexes": 18,
+      "mean_bad_ratio": 0.0098,
+      "max_bad_ratio": 0.1,
+      "total_aircraft": 910
+    },
+    {
+      "date": "2026-01-25",
+      "n_hexes": 18,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 1155
+    },
+    {
+      "date": "2026-01-26",
+      "n_hexes": 20,
+      "mean_bad_ratio": 0.0031,
+      "max_bad_ratio": 0.0417,
+      "total_aircraft": 974
+    },
+    {
+      "date": "2026-01-27",
+      "n_hexes": 17,
+      "mean_bad_ratio": 0.0092,
+      "max_bad_ratio": 0.1111,
+      "total_aircraft": 744
+    },
+    {
+      "date": "2026-01-28",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0148,
+      "max_bad_ratio": 0.125,
+      "total_aircraft": 752
+    },
+    {
+      "date": "2026-01-29",
+      "n_hexes": 18,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 912
+    },
+    {
+      "date": "2026-01-30",
+      "n_hexes": 20,
+      "mean_bad_ratio": 0.0064,
+      "max_bad_ratio": 0.0833,
+      "total_aircraft": 994
+    },
+    {
+      "date": "2026-01-31",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0025,
+      "max_bad_ratio": 0.0227,
+      "total_aircraft": 1280
+    },
+    {
+      "date": "2026-02-01",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0045,
+      "max_bad_ratio": 0.022,
+      "total_aircraft": 1371
+    },
+    {
+      "date": "2026-02-02",
+      "n_hexes": 21,
+      "mean_bad_ratio": 0.0012,
+      "max_bad_ratio": 0.0222,
+      "total_aircraft": 1234
+    },
+    {
+      "date": "2026-02-03",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0104,
+      "max_bad_ratio": 0.1111,
+      "total_aircraft": 861
+    },
+    {
+      "date": "2026-02-04",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0117,
+      "max_bad_ratio": 0.2,
+      "total_aircraft": 872
+    },
+    {
+      "date": "2026-02-05",
+      "n_hexes": 20,
+      "mean_bad_ratio": 0.0125,
+      "max_bad_ratio": 0.15,
+      "total_aircraft": 850
+    },
+    {
+      "date": "2026-02-06",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0021,
+      "max_bad_ratio": 0.04,
+      "total_aircraft": 1267
+    },
+    {
+      "date": "2026-02-07",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0046,
+      "max_bad_ratio": 0.0588,
+      "total_aircraft": 1570
+    },
+    {
+      "date": "2026-02-08",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0013,
+      "max_bad_ratio": 0.018,
+      "total_aircraft": 1413
+    },
+    {
+      "date": "2026-02-09",
+      "n_hexes": 21,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 1128
+    },
+    {
+      "date": "2026-02-10",
+      "n_hexes": 17,
+      "mean_bad_ratio": 0.0045,
+      "max_bad_ratio": 0.0769,
+      "total_aircraft": 817
+    },
+    {
+      "date": "2026-02-11",
+      "n_hexes": 17,
+      "mean_bad_ratio": 0.0102,
+      "max_bad_ratio": 0.1667,
+      "total_aircraft": 880
+    },
+    {
+      "date": "2026-02-12",
+      "n_hexes": 20,
+      "mean_bad_ratio": 0.0188,
+      "max_bad_ratio": 0.1667,
+      "total_aircraft": 917
+    },
+    {
+      "date": "2026-02-13",
+      "n_hexes": 18,
+      "mean_bad_ratio": 0.0057,
+      "max_bad_ratio": 0.0435,
+      "total_aircraft": 1291
+    },
+    {
+      "date": "2026-02-14",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0032,
+      "max_bad_ratio": 0.0588,
+      "total_aircraft": 1446
+    },
+    {
+      "date": "2026-02-15",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0024,
+      "max_bad_ratio": 0.0357,
+      "total_aircraft": 1434
+    },
+    {
+      "date": "2026-02-16",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 1738
+    },
+    {
+      "date": "2026-02-17",
+      "n_hexes": 20,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 1186
+    },
+    {
+      "date": "2026-02-18",
+      "n_hexes": 18,
+      "mean_bad_ratio": 0.0,
+      "max_bad_ratio": 0.0,
+      "total_aircraft": 811
+    },
+    {
+      "date": "2026-02-19",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0301,
+      "max_bad_ratio": 0.1667,
+      "total_aircraft": 858
+    },
+    {
+      "date": "2026-02-20",
+      "n_hexes": 19,
+      "mean_bad_ratio": 0.0001,
+      "max_bad_ratio": 0.0021,
+      "total_aircraft": 1045
     },
     {
       "date": "2026-02-21",
