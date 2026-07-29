@@ -6228,6 +6228,12 @@
       "measured": 23802,
       "degraded": 8768,
       "strong": 296
+    },
+    {
+      "date": "2026-07-28",
+      "measured": 23588,
+      "degraded": 8605,
+      "strong": 273
     }
   ]
 }
