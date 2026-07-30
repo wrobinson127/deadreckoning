@@ -375,6 +375,45 @@
         number.</li>
       </ul>
 
+      <h3>Archive coverage &amp; gaps</h3>
+      <p>The archive is dense, not continuous, and the missing days are worth
+      naming rather than papering over. A day with no source dump is not a quiet
+      day; it renders as absent, and the scrubber simply has nothing to show.</p>
+      <p><strong>The archive begins 2023-02-16.</strong> That is not a choice we
+      made, it is the first UTC day adsb.lol published a dump for. Nothing earlier
+      exists to ingest, so the record starts there and no amount of backfilling
+      moves it.</p>
+      <p>Six days inside the archive's span carry no data, each for a reason we can
+      state:</p>
+      <ul>
+        <li><strong>2023-03-10, 2026-05-05.</strong> A release exists upstream but
+        its payload is a placeholder that yields zero aircraft, so the pipeline
+        records the day as a gap rather than as an empty measurement.</li>
+        <li><strong>2023-12-31, 2024-12-31, 2025-12-31.</strong> Each year's final
+        day was tagged upstream without an archive payload attached.</li>
+        <li><strong>2026-05-06.</strong> The only dump for this day is
+        MLAT-only. MLAT positions are computed by ground receivers timing a signal,
+        not reported by the aircraft itself, so they carry no aircraft-reported
+        integrity figure. Ingesting them would produce a number that looks like NIC
+        but is not, so we exclude the day on purpose.</li>
+      </ul>
+      <p>Two source-quality notes apply to days that <em>are</em> present:</p>
+      <ul>
+        <li><strong>2023-02-16 to 2023-03-02</strong> predate the publisher settling
+        on its production tagging, and carry far fewer contributing feeders (roughly
+        0.1 to 1 GB of traces per day, against about 3 GB later on). The traces are
+        real, but coverage is thin, so most cells in this fortnight fall below the
+        aircraft floor and render as hatch. That is the honesty rule doing its job,
+        not a rendering fault.</li>
+        <li><strong>2025-05-28 to 2025-06-10</strong> were published under a
+        temporary tag suffix rather than the usual production one. The dumps are
+        the same size and shape as the days on either side, and are treated
+        identically.</li>
+      </ul>
+      <p>Coverage within a present day varies enormously by region, which is a
+      separate matter from a missing day and is covered under the sensor-desert
+      paradox above.</p>
+
       <h3>Time, data &amp; licensing</h3>
       <p>Everything is <strong>UTC</strong>; the source dumps are UTC days. Source
       flight data © <a href="https://www.adsb.lol" target="_blank" rel="noopener">adsb.lol</a>
