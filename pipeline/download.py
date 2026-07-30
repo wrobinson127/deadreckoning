@@ -43,10 +43,18 @@ def _api_get(url: str) -> "dict | list | None":
 
 
 def _tag_variants(day: str) -> list[str]:
+    """Candidate release tags for ``day``, in descending preference order.
+
+    Upstream changed tag suffixes over the archive's life (see
+    config.RELEASE_TAG_SUFFIXES for the census and the two deliberate
+    exclusions). prod-0 stays first, so an ordinary day resolves exactly as it
+    always did; the alternates are only consulted when the preferred tags are
+    absent, i.e. only ever to fill a real hole.
+    """
     dotted = day.replace("-", ".")  # YYYY-MM-DD -> YYYY.MM.DD
     return [
-        C.RELEASE_TAG_TEMPLATE.format(date=dotted),
-        C.RELEASE_STAGING_TEMPLATE.format(date=dotted),
+        C.RELEASE_TAG_PATTERN.format(date=dotted, suffix=s)
+        for s in C.RELEASE_TAG_SUFFIXES
     ]
 
 

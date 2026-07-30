@@ -119,6 +119,35 @@ RELEASE_TAG_TEMPLATE = "v{date}-planes-readsb-prod-0"   # date as YYYY.MM.DD
 RELEASE_STAGING_TEMPLATE = "v{date}-planes-readsb-staging-0"
 # Reassembly: concatenate .tar.aa + .tar.ab (+...) then untar. The 2023 archive
 # ships a single .tar (no split) — download._select_parts handles both eras.
+#
+# Upstream has not used one stable tag suffix for its whole history. Across
+# 2023-2026 six suffixes appear; these are the ones we accept, in PREFERENCE
+# order (first match with a tar payload wins), so a normal day still resolves to
+# prod-0 exactly as before and the alternates only ever fill genuine holes:
+#   prod-0       - the normal case, 1241 days
+#   staging-0    - fallback when prod was not published, 1207 days
+#   prod-0tmp    } upstream published 2025-05-28..06-10 under a temp-suffixed tag;
+#   staging-0tmp } same pipeline, same ~3.2 GB split tars as neighbouring days
+#   test-0       - the archive's first fortnight (2023-02-16..03-02) before the
+#                  publisher settled on prod/staging. Real traces, but far fewer
+#                  feeders (0.1-1.0 GB/day vs ~3 GB later), so most hexes fall
+#                  under MIN_AIRCRAFT_FLOOR and render as hatch, as they should.
+# DELIBERATELY EXCLUDED:
+#   mlatonly-0 - MLAT positions are multilaterated by ground receivers, not
+#                self-reported by the aircraft, so they carry no meaningful NIC.
+#                Ingesting them would contaminate the measure. 2026-05-06 is the
+#                only day where mlatonly is the sole release; it stays a gap.
+#   prod-1     - never the sole release for any day (always alongside prod-0), so
+#                accepting it would only risk double-counting an already-ingested
+#                day. Left out on purpose.
+RELEASE_TAG_SUFFIXES = (
+    "prod-0",
+    "staging-0",
+    "prod-0tmp",
+    "staging-0tmp",
+    "test-0",
+)
+RELEASE_TAG_PATTERN = "v{date}-planes-readsb-{suffix}"
 
 # Bulk-backfill disk guard: a single day's raw dump peaks at ~4 GB (2026) and is
 # deleted immediately after that day aggregates, so scratch never holds more than
