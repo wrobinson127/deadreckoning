@@ -3,6 +3,9 @@ h3==4.5.0            # H3 hexagonal grid (v4 API: latlng_to_cell, cell_to_bounda
 orjson==3.11.7       # fast JSON parse/serialize for streaming trace files
 PyYAML==6.0.3        # regions.yaml / events.yaml parsing
 
-# Dev/test only (not needed by the deployed site or the nightly Action runtime):
+# Dev/test (not needed by the deployed site itself):
 pytest==8.3.4
-matplotlib==3.10.8   # write-up analysis charts; regenerate via `python -m analysis.analyze`
+# matplotlib IS required by the nightly Action: it rebuilds site/assets/analysis/
+# every run so the methodology page cannot drift behind the map. Do not move it
+# to a dev-only install. Regenerate locally via `python -m analysis.analyze`.
+matplotlib==3.10.8
