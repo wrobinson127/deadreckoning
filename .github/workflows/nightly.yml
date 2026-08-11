@@ -66,12 +66,22 @@ jobs:
           python -m pipeline.backfill "${{ steps.day.outputs.day }}" \
             --scratch "${RUNNER_TEMP}/dr_scratch"
 
+      # site/assets/analysis/ is derived from data/ but lives under site/, so a
+      # data-only commit leaves the methodology page reporting a stale day count
+      # while the map reports the new one. That drift is invisible to the
+      # pipeline and grows by a day every night, so rebuild here rather than
+      # relying on someone noticing. Reads the committed dailies; no network.
+      - name: Rebuild analysis assets (stats.json + figures)
+        env:
+          PYTHONPATH: .
+        run: python -m analysis.analyze
+
       - name: Commit new aggregates
         id: commit
         run: |
           git config user.name  "deadreckoning-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add data/ content/*.json || true
+          git add data/ content/*.json site/assets/analysis/ || true
           if git diff --cached --quiet; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "No data changes."
