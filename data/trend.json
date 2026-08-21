@@ -7650,6 +7650,12 @@
       "measured": 23609,
       "degraded": 8757,
       "strong": 363
+    },
+    {
+      "date": "2026-08-20",
+      "measured": 24003,
+      "degraded": 8728,
+      "strong": 335
     }
   ]
 }
