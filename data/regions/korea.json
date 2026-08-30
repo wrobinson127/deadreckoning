@@ -8989,6 +8989,13 @@
       "mean_bad_ratio": 0.0085,
       "max_bad_ratio": 0.0909,
       "total_aircraft": 6584
+    },
+    {
+      "date": "2026-08-29",
+      "n_hexes": 33,
+      "mean_bad_ratio": 0.0052,
+      "max_bad_ratio": 0.0556,
+      "total_aircraft": 7032
     }
   ]
 }
