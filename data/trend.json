@@ -7560,6 +7560,522 @@
       "measured": 24049,
       "degraded": 8646,
       "strong": 303
+    },
+    {
+      "date": "2026-08-05",
+      "measured": 24128,
+      "degraded": 8453,
+      "strong": 250
+    },
+    {
+      "date": "2026-08-06",
+      "measured": 24217,
+      "degraded": 8854,
+      "strong": 291
+    },
+    {
+      "date": "2026-08-07",
+      "measured": 24351,
+      "degraded": 8612,
+      "strong": 270
+    },
+    {
+      "date": "2026-08-08",
+      "measured": 24463,
+      "degraded": 8094,
+      "strong": 311
+    },
+    {
+      "date": "2026-08-09",
+      "measured": 22724,
+      "degraded": 6954,
+      "strong": 257
+    },
+    {
+      "date": "2026-08-10",
+      "measured": 24026,
+      "degraded": 8165,
+      "strong": 254
+    },
+    {
+      "date": "2026-08-11",
+      "measured": 24213,
+      "degraded": 8520,
+      "strong": 285
+    },
+    {
+      "date": "2026-08-12",
+      "measured": 23186,
+      "degraded": 7645,
+      "strong": 224
+    },
+    {
+      "date": "2026-08-13",
+      "measured": 22611,
+      "degraded": 7596,
+      "strong": 227
+    },
+    {
+      "date": "2026-08-14",
+      "measured": 24667,
+      "degraded": 9229,
+      "strong": 356
+    },
+    {
+      "date": "2026-08-15",
+      "measured": 24287,
+      "degraded": 8581,
+      "strong": 328
+    },
+    {
+      "date": "2026-08-16",
+      "measured": 24201,
+      "degraded": 8327,
+      "strong": 333
+    },
+    {
+      "date": "2026-08-17",
+      "measured": 24232,
+      "degraded": 8654,
+      "strong": 310
+    },
+    {
+      "date": "2026-08-18",
+      "measured": 24017,
+      "degraded": 8785,
+      "strong": 367
+    },
+    {
+      "date": "2026-08-19",
+      "measured": 23609,
+      "degraded": 8757,
+      "strong": 363
+    },
+    {
+      "date": "2026-08-20",
+      "measured": 24003,
+      "degraded": 8728,
+      "strong": 335
+    },
+    {
+      "date": "2026-08-21",
+      "measured": 23880,
+      "degraded": 8745,
+      "strong": 349
+    },
+    {
+      "date": "2026-08-22",
+      "measured": 23934,
+      "degraded": 8487,
+      "strong": 385
+    },
+    {
+      "date": "2026-08-23",
+      "measured": 24137,
+      "degraded": 8499,
+      "strong": 359
+    },
+    {
+      "date": "2026-08-24",
+      "measured": 24220,
+      "degraded": 8709,
+      "strong": 360
+    },
+    {
+      "date": "2026-08-25",
+      "measured": 24102,
+      "degraded": 8819,
+      "strong": 354
+    },
+    {
+      "date": "2026-08-26",
+      "measured": 24491,
+      "degraded": 9001,
+      "strong": 371
+    },
+    {
+      "date": "2026-08-27",
+      "measured": 24599,
+      "degraded": 9137,
+      "strong": 385
+    },
+    {
+      "date": "2026-08-28",
+      "measured": 24839,
+      "degraded": 9155,
+      "strong": 396
+    },
+    {
+      "date": "2026-08-29",
+      "measured": 24710,
+      "degraded": 8534,
+      "strong": 402
+    },
+    {
+      "date": "2026-08-30",
+      "measured": 24839,
+      "degraded": 9093,
+      "strong": 424
+    },
+    {
+      "date": "2026-08-31",
+      "measured": 24674,
+      "degraded": 8879,
+      "strong": 372
+    },
+    {
+      "date": "2026-09-01",
+      "measured": 24258,
+      "degraded": 9118,
+      "strong": 381
+    },
+    {
+      "date": "2026-09-02",
+      "measured": 24619,
+      "degraded": 9109,
+      "strong": 330
+    },
+    {
+      "date": "2026-09-03",
+      "measured": 24832,
+      "degraded": 8820,
+      "strong": 350
+    },
+    {
+      "date": "2026-09-04",
+      "measured": 24868,
+      "degraded": 8730,
+      "strong": 357
+    },
+    {
+      "date": "2026-09-05",
+      "measured": 24418,
+      "degraded": 8720,
+      "strong": 340
+    },
+    {
+      "date": "2026-09-06",
+      "measured": 24691,
+      "degraded": 8627,
+      "strong": 336
+    },
+    {
+      "date": "2026-09-07",
+      "measured": 24149,
+      "degraded": 8703,
+      "strong": 352
+    },
+    {
+      "date": "2026-09-08",
+      "measured": 24331,
+      "degraded": 8971,
+      "strong": 312
+    },
+    {
+      "date": "2026-09-09",
+      "measured": 24568,
+      "degraded": 8858,
+      "strong": 316
+    },
+    {
+      "date": "2026-09-10",
+      "measured": 24678,
+      "degraded": 9310,
+      "strong": 331
+    },
+    {
+      "date": "2026-09-11",
+      "measured": 24798,
+      "degraded": 9355,
+      "strong": 379
+    },
+    {
+      "date": "2026-09-12",
+      "measured": 24407,
+      "degraded": 9013,
+      "strong": 408
+    },
+    {
+      "date": "2026-09-13",
+      "measured": 24425,
+      "degraded": 9019,
+      "strong": 367
+    },
+    {
+      "date": "2026-09-14",
+      "measured": 24563,
+      "degraded": 8934,
+      "strong": 321
+    },
+    {
+      "date": "2026-09-15",
+      "measured": 24301,
+      "degraded": 9166,
+      "strong": 349
+    },
+    {
+      "date": "2026-09-16",
+      "measured": 24432,
+      "degraded": 8966,
+      "strong": 302
+    },
+    {
+      "date": "2026-09-17",
+      "measured": 24297,
+      "degraded": 9118,
+      "strong": 341
+    },
+    {
+      "date": "2026-09-18",
+      "measured": 24076,
+      "degraded": 8583,
+      "strong": 359
+    },
+    {
+      "date": "2026-09-19",
+      "measured": 24151,
+      "degraded": 8094,
+      "strong": 326
+    },
+    {
+      "date": "2026-09-20",
+      "measured": 24291,
+      "degraded": 8080,
+      "strong": 335
+    },
+    {
+      "date": "2026-09-21",
+      "measured": 24517,
+      "degraded": 8577,
+      "strong": 329
+    },
+    {
+      "date": "2026-09-22",
+      "measured": 23985,
+      "degraded": 8752,
+      "strong": 300
+    },
+    {
+      "date": "2026-09-23",
+      "measured": 24271,
+      "degraded": 9138,
+      "strong": 360
+    },
+    {
+      "date": "2026-09-24",
+      "measured": 24161,
+      "degraded": 9158,
+      "strong": 352
+    },
+    {
+      "date": "2026-09-25",
+      "measured": 24166,
+      "degraded": 8793,
+      "strong": 328
+    },
+    {
+      "date": "2026-09-26",
+      "measured": 23918,
+      "degraded": 8315,
+      "strong": 336
+    },
+    {
+      "date": "2026-09-27",
+      "measured": 24121,
+      "degraded": 8021,
+      "strong": 344
+    },
+    {
+      "date": "2026-09-28",
+      "measured": 24104,
+      "degraded": 7246,
+      "strong": 295
+    },
+    {
+      "date": "2026-09-29",
+      "measured": 24045,
+      "degraded": 8733,
+      "strong": 303
+    },
+    {
+      "date": "2026-09-30",
+      "measured": 24170,
+      "degraded": 8697,
+      "strong": 330
+    },
+    {
+      "date": "2026-10-01",
+      "measured": 24236,
+      "degraded": 8584,
+      "strong": 296
+    },
+    {
+      "date": "2026-10-02",
+      "measured": 24292,
+      "degraded": 8658,
+      "strong": 327
+    },
+    {
+      "date": "2026-10-03",
+      "measured": 24230,
+      "degraded": 8410,
+      "strong": 321
+    },
+    {
+      "date": "2026-10-04",
+      "measured": 24232,
+      "degraded": 8472,
+      "strong": 321
+    },
+    {
+      "date": "2026-10-05",
+      "measured": 24170,
+      "degraded": 8589,
+      "strong": 317
+    },
+    {
+      "date": "2026-10-06",
+      "measured": 24128,
+      "degraded": 8919,
+      "strong": 319
+    },
+    {
+      "date": "2026-10-07",
+      "measured": 24180,
+      "degraded": 9079,
+      "strong": 343
+    },
+    {
+      "date": "2026-10-08",
+      "measured": 24686,
+      "degraded": 9098,
+      "strong": 361
+    },
+    {
+      "date": "2026-10-09",
+      "measured": 24826,
+      "degraded": 9058,
+      "strong": 318
+    },
+    {
+      "date": "2026-10-10",
+      "measured": 24529,
+      "degraded": 8311,
+      "strong": 381
+    },
+    {
+      "date": "2026-10-11",
+      "measured": 24456,
+      "degraded": 8346,
+      "strong": 311
+    },
+    {
+      "date": "2026-10-12",
+      "measured": 24722,
+      "degraded": 8415,
+      "strong": 346
+    },
+    {
+      "date": "2026-10-13",
+      "measured": 24612,
+      "degraded": 8835,
+      "strong": 387
+    },
+    {
+      "date": "2026-10-14",
+      "measured": 24697,
+      "degraded": 8742,
+      "strong": 388
+    },
+    {
+      "date": "2026-10-15",
+      "measured": 24651,
+      "degraded": 9167,
+      "strong": 387
+    },
+    {
+      "date": "2026-10-16",
+      "measured": 24494,
+      "degraded": 8806,
+      "strong": 425
+    },
+    {
+      "date": "2026-10-17",
+      "measured": 23926,
+      "degraded": 8609,
+      "strong": 337
+    },
+    {
+      "date": "2026-10-18",
+      "measured": 24316,
+      "degraded": 9035,
+      "strong": 384
+    },
+    {
+      "date": "2026-10-19",
+      "measured": 24336,
+      "degraded": 8790,
+      "strong": 390
+    },
+    {
+      "date": "2026-10-20",
+      "measured": 24175,
+      "degraded": 8652,
+      "strong": 422
+    },
+    {
+      "date": "2026-10-21",
+      "measured": 24266,
+      "degraded": 8602,
+      "strong": 384
+    },
+    {
+      "date": "2026-10-22",
+      "measured": 23650,
+      "degraded": 8838,
+      "strong": 406
+    },
+    {
+      "date": "2026-10-23",
+      "measured": 24338,
+      "degraded": 8769,
+      "strong": 421
+    },
+    {
+      "date": "2026-10-24",
+      "measured": 24186,
+      "degraded": 8357,
+      "strong": 356
+    },
+    {
+      "date": "2026-10-25",
+      "measured": 24647,
+      "degraded": 8614,
+      "strong": 345
+    },
+    {
+      "date": "2026-10-26",
+      "measured": 24485,
+      "degraded": 8609,
+      "strong": 295
+    },
+    {
+      "date": "2026-10-27",
+      "measured": 24189,
+      "degraded": 8597,
+      "strong": 290
+    },
+    {
+      "date": "2026-10-28",
+      "measured": 24339,
+      "degraded": 8705,
+      "strong": 240
+    },
+    {
+      "date": "2026-10-29",
+      "measured": 24447,
+      "degraded": 8513,
+      "strong": 249
     }
   ]
 }
