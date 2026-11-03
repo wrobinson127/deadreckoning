@@ -9432,6 +9432,13 @@
       "total_aircraft": 6716
     },
     {
+      "date": "2026-10-31",
+      "n_hexes": 33,
+      "mean_bad_ratio": 0.0071,
+      "max_bad_ratio": 0.025,
+      "total_aircraft": 6812
+    },
+    {
       "date": "2026-11-01",
       "n_hexes": 33,
       "mean_bad_ratio": 0.0048,
