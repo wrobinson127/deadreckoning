@@ -155,6 +155,12 @@ RELEASE_TAG_PATTERN = "v{date}-planes-readsb-{suffix}"
 # space on the scratch volume drops below this floor, rather than filling the disk.
 MIN_FREE_DISK_GB = 15
 
+# Nightly catch-up: the nightly run also retries this many days before its target
+# day. Days already present skip at no cost, so a night that paused or found no
+# release heals on a later run instead of leaving a permanent hole (2026-10-31
+# was lost that way: the run paused on low disk and still reported success).
+NIGHTLY_CATCHUP_DAYS = 2
+
 # --- Deep-backfill driver ----------------------------------------------------
 # Knobs for the ordered, resumable deep backfill (pipeline/deep_backfill.py).
 # Kept here so the single tunables file holds them (they were module constants).
