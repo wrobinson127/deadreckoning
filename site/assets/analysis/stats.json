@@ -1,8 +1,8 @@
 {
   "archive": {
-    "n_days": 1350,
+    "n_days": 1351,
     "start": "2023-02-16",
-    "end": "2026-11-02"
+    "end": "2026-11-03"
   },
   "featured": [
     "baltic",
@@ -11,8 +11,8 @@
     "us-southwest"
   ],
   "quadrant_medians": {
-    "mean_interference": 0.1146,
-    "spikiness_std": 0.1288
+    "mean_interference": 0.1147,
+    "spikiness_std": 0.1293
   },
   "regions": {
     "baltic": {
@@ -8117,16 +8117,22 @@
           "r": 0.2756,
           "bm": 0.3117,
           "bs": 0.045
+        },
+        {
+          "d": "2026-11-03",
+          "r": 0.2944,
+          "bm": 0.3112,
+          "bs": 0.0451
         }
       ],
-      "n_days": 1350,
-      "mean_interference": 0.1211,
-      "spikiness_std": 0.1159,
+      "n_days": 1351,
+      "mean_interference": 0.1212,
+      "spikiness_std": 0.116,
       "peak_ratio": 0.5367,
       "peak_day": "2026-05-09",
       "peak_anomaly_z": 4.37,
       "pct_days_above_band": 21.4,
-      "mean_aircraft_per_day": 12089.0,
+      "mean_aircraft_per_day": 12088.0,
       "n_events_total": 2,
       "n_events_in_window": 2,
       "classification": "chronic"
@@ -16233,16 +16239,22 @@
           "r": 0.4705,
           "bm": 0.3842,
           "bs": 0.0644
+        },
+        {
+          "d": "2026-11-03",
+          "r": 0.4512,
+          "bm": 0.3848,
+          "bs": 0.0649
         }
       ],
-      "n_days": 1258,
+      "n_days": 1259,
       "mean_interference": 0.4801,
-      "spikiness_std": 0.1751,
+      "spikiness_std": 0.175,
       "peak_ratio": 1.0,
       "peak_day": "2023-11-28",
       "peak_anomaly_z": 4.37,
-      "pct_days_above_band": 17.5,
-      "mean_aircraft_per_day": 3346.0,
+      "pct_days_above_band": 17.6,
+      "mean_aircraft_per_day": 3349.0,
       "n_events_total": 2,
       "n_events_in_window": 2,
       "classification": "volatile"
@@ -24349,16 +24361,22 @@
           "r": 0.0387,
           "bm": 0.0467,
           "bs": 0.0157
+        },
+        {
+          "d": "2026-11-03",
+          "r": 0.0249,
+          "bm": 0.0455,
+          "bs": 0.0161
         }
       ],
-      "n_days": 1223,
+      "n_days": 1224,
       "mean_interference": 0.1081,
       "spikiness_std": 0.0868,
       "peak_ratio": 0.5448,
       "peak_day": "2024-04-04",
       "peak_anomaly_z": 4.86,
       "pct_days_above_band": 16.8,
-      "mean_aircraft_per_day": 5895.0,
+      "mean_aircraft_per_day": 5898.0,
       "n_events_total": 1,
       "n_events_in_window": 1,
       "classification": "quiet"
@@ -32465,11 +32483,17 @@
           "r": 0.9955,
           "bm": 0.9419,
           "bs": 0.0498
+        },
+        {
+          "d": "2026-11-03",
+          "r": 0.96,
+          "bm": 0.9418,
+          "bs": 0.0497
         }
       ],
-      "n_days": 1260,
-      "mean_interference": 0.4075,
-      "spikiness_std": 0.3501,
+      "n_days": 1261,
+      "mean_interference": 0.4079,
+      "spikiness_std": 0.3503,
       "peak_ratio": 1.0,
       "peak_day": "2026-06-18",
       "peak_anomaly_z": 4.29,
@@ -40581,16 +40605,22 @@
           "r": 0.0263,
           "bm": 0.0187,
           "bs": 0.01
+        },
+        {
+          "d": "2026-11-03",
+          "r": 0.0124,
+          "bm": 0.0185,
+          "bs": 0.0101
         }
       ],
-      "n_days": 802,
+      "n_days": 803,
       "mean_interference": 0.0114,
       "spikiness_std": 0.0138,
       "peak_ratio": 0.1159,
       "peak_day": "2025-01-06",
       "peak_anomaly_z": 3.18,
       "pct_days_above_band": 15.7,
-      "mean_aircraft_per_day": 2629.0,
+      "mean_aircraft_per_day": 2632.0,
       "n_events_total": 2,
       "n_events_in_window": 2,
       "classification": "quiet"
@@ -48697,11 +48727,17 @@
           "r": 0.1758,
           "bm": 0.2213,
           "bs": 0.0657
+        },
+        {
+          "d": "2026-11-03",
+          "r": 0.1749,
+          "bm": 0.2166,
+          "bs": 0.0642
         }
       ],
-      "n_days": 1221,
-      "mean_interference": 0.2936,
-      "spikiness_std": 0.2089,
+      "n_days": 1222,
+      "mean_interference": 0.2935,
+      "spikiness_std": 0.2088,
       "peak_ratio": 0.9065,
       "peak_day": "2024-04-04",
       "peak_anomaly_z": 4.26,
@@ -56813,16 +56849,22 @@
           "r": 0.0706,
           "bm": 0.0934,
           "bs": 0.0387
+        },
+        {
+          "d": "2026-11-03",
+          "r": 0.1076,
+          "bm": 0.0942,
+          "bs": 0.0388
         }
       ],
-      "n_days": 1191,
+      "n_days": 1192,
       "mean_interference": 0.0815,
-      "spikiness_std": 0.1872,
+      "spikiness_std": 0.1871,
       "peak_ratio": 0.9404,
       "peak_day": "2026-03-08",
       "peak_anomaly_z": 5.17,
       "pct_days_above_band": 16.4,
-      "mean_aircraft_per_day": 9251.0,
+      "mean_aircraft_per_day": 9262.0,
       "n_events_total": 2,
       "n_events_in_window": 2,
       "classification": "episodic"
@@ -64926,6 +64968,12 @@
         },
         {
           "d": "2026-11-02",
+          "r": null,
+          "bm": null,
+          "bs": null
+        },
+        {
+          "d": "2026-11-03",
           "r": null,
           "bm": null,
           "bs": null
@@ -73045,11 +73093,17 @@
           "r": 0.648,
           "bm": 0.589,
           "bs": 0.1703
+        },
+        {
+          "d": "2026-11-03",
+          "r": 0.7134,
+          "bm": 0.6003,
+          "bs": 0.1677
         }
       ],
-      "n_days": 1222,
-      "mean_interference": 0.1318,
-      "spikiness_std": 0.1417,
+      "n_days": 1223,
+      "mean_interference": 0.1322,
+      "spikiness_std": 0.1426,
       "peak_ratio": 0.8921,
       "peak_day": "2026-10-16",
       "peak_anomaly_z": 4.5,
@@ -81161,9 +81215,15 @@
           "r": 0.0028,
           "bm": 0.0206,
           "bs": 0.0248
+        },
+        {
+          "d": "2026-11-03",
+          "r": 0.02,
+          "bm": 0.0205,
+          "bs": 0.0248
         }
       ],
-      "n_days": 1350,
+      "n_days": 1351,
       "mean_interference": 0.0058,
       "spikiness_std": 0.0105,
       "peak_ratio": 0.0931,
@@ -81177,207 +81237,207 @@
     }
   },
   "distribution": {
-    "n_hexdays": 23533570,
+    "n_hexdays": 23558837,
     "bins": [
       {
         "x0": 0.0,
         "x1": 0.025,
-        "c": 19868574
+        "c": 19889778
       },
       {
         "x0": 0.025,
         "x1": 0.05,
-        "c": 1505307
+        "c": 1506757
       },
       {
         "x0": 0.05,
         "x1": 0.075,
-        "c": 663102
+        "c": 663799
       },
       {
         "x0": 0.075,
         "x1": 0.1,
-        "c": 343483
+        "c": 343863
       },
       {
         "x0": 0.1,
         "x1": 0.125,
-        "c": 228215
+        "c": 228453
       },
       {
         "x0": 0.125,
         "x1": 0.15,
-        "c": 184567
+        "c": 184776
       },
       {
         "x0": 0.15,
         "x1": 0.175,
-        "c": 117325
+        "c": 117482
       },
       {
         "x0": 0.175,
         "x1": 0.2,
-        "c": 62584
+        "c": 62661
       },
       {
         "x0": 0.2,
         "x1": 0.225,
-        "c": 93758
+        "c": 93880
       },
       {
         "x0": 0.225,
         "x1": 0.25,
-        "c": 36032
+        "c": 36083
       },
       {
         "x0": 0.25,
         "x1": 0.275,
-        "c": 45729
+        "c": 45802
       },
       {
         "x0": 0.275,
         "x1": 0.3,
-        "c": 37124
+        "c": 37182
       },
       {
         "x0": 0.3,
         "x1": 0.325,
-        "c": 21753
+        "c": 21786
       },
       {
         "x0": 0.325,
         "x1": 0.35,
-        "c": 30527
+        "c": 30567
       },
       {
         "x0": 0.35,
         "x1": 0.375,
-        "c": 17278
+        "c": 17301
       },
       {
         "x0": 0.375,
         "x1": 0.4,
-        "c": 17492
+        "c": 17509
       },
       {
         "x0": 0.4,
         "x1": 0.425,
-        "c": 24021
+        "c": 24061
       },
       {
         "x0": 0.425,
         "x1": 0.45,
-        "c": 16163
+        "c": 16184
       },
       {
         "x0": 0.45,
         "x1": 0.475,
-        "c": 11783
+        "c": 11805
       },
       {
         "x0": 0.475,
         "x1": 0.5,
-        "c": 5590
+        "c": 5605
       },
       {
         "x0": 0.5,
         "x1": 0.525,
-        "c": 17978
+        "c": 18008
       },
       {
         "x0": 0.525,
         "x1": 0.55,
-        "c": 8077
+        "c": 8092
       },
       {
         "x0": 0.55,
         "x1": 0.575,
-        "c": 10549
+        "c": 10563
       },
       {
         "x0": 0.575,
         "x1": 0.6,
-        "c": 12849
+        "c": 12866
       },
       {
         "x0": 0.6,
         "x1": 0.625,
-        "c": 4371
+        "c": 4376
       },
       {
         "x0": 0.625,
         "x1": 0.65,
-        "c": 7715
+        "c": 7726
       },
       {
         "x0": 0.65,
         "x1": 0.675,
-        "c": 9291
+        "c": 9298
       },
       {
         "x0": 0.675,
         "x1": 0.7,
-        "c": 5606
+        "c": 5614
       },
       {
         "x0": 0.7,
         "x1": 0.725,
-        "c": 5695
+        "c": 5708
       },
       {
         "x0": 0.725,
         "x1": 0.75,
-        "c": 3724
+        "c": 3729
       },
       {
         "x0": 0.75,
         "x1": 0.775,
-        "c": 6436
+        "c": 6440
       },
       {
         "x0": 0.775,
         "x1": 0.8,
-        "c": 4308
+        "c": 4317
       },
       {
         "x0": 0.8,
         "x1": 0.825,
-        "c": 10407
+        "c": 10431
       },
       {
         "x0": 0.825,
         "x1": 0.85,
-        "c": 7705
+        "c": 7724
       },
       {
         "x0": 0.85,
         "x1": 0.875,
-        "c": 5848
+        "c": 5864
       },
       {
         "x0": 0.875,
         "x1": 0.9,
-        "c": 7168
+        "c": 7181
       },
       {
         "x0": 0.9,
         "x1": 0.925,
-        "c": 7274
+        "c": 7290
       },
       {
         "x0": 0.925,
         "x1": 0.95,
-        "c": 5885
+        "c": 5905
       },
       {
         "x0": 0.95,
         "x1": 0.975,
-        "c": 4046
+        "c": 4062
       },
       {
         "x0": 0.975,
         "x1": 1.0,
-        "c": 58231
+        "c": 58309
       }
     ],
     "median_ratio": 0.0,
@@ -81388,8 +81448,8 @@
     "n_in_window": 14,
     "window": [
       "2023-02-16",
-      "2026-11-02"
+      "2026-11-03"
     ]
   },
-  "small_sample_note": "1350 days, 14 annotated events (14 in window) \u2014 illustrative, not established; no significance is claimed."
+  "small_sample_note": "1351 days, 14 annotated events (14 in window) \u2014 illustrative, not established; no significance is claimed."
 }
