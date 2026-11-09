@@ -17,6 +17,12 @@ DISK-SAFE: one day's raw dump is deleted immediately after that day aggregates
 PAUSES cleanly (with a flag) if it falls below --min-free-gb (default
 config.MIN_FREE_DISK_GB), rather than filling the disk. Free space and re-run.
 
+EXIT CODES: 0 ok, 1 a day raised, 4 paused on low disk (the range was NOT
+finished, so a scheduler must not read it as success), 5 --require-ingest was
+set and some day in the range is still missing (not published / 0-hex release).
+The nightly Action passes --require-ingest so a night that lands nothing fails
+loudly (and opens an issue) instead of going green with a hole in the archive.
+
 Designed to run both in Actions (one day at a time) and locally for bulk.
 """
 from __future__ import annotations
@@ -29,6 +35,10 @@ from datetime import date as date_cls, timedelta
 
 from . import baselines, build_site_data, config as C, dailyio, download, regions
 from .run_daily import default_scratch, process_day
+
+EXIT_FAILED = 1
+EXIT_PAUSED = 4
+EXIT_MISSING = 5
 
 
 def _daterange(start: date_cls, end: date_cls):
@@ -47,7 +57,7 @@ def _resolve_range(args) -> tuple[date_cls, date_cls]:
         return start, end
     start = date_cls.fromisoformat(args.start)
     end = date_cls.fromisoformat(args.end) if args.end else start
-    return start, end
+    return start - timedelta(days=args.catchup), end
 
 
 def _utc_yesterday() -> date_cls:
@@ -71,6 +81,12 @@ def main(argv=None) -> int:
                          "falls below this many GB")
     ap.add_argument("--no-derived", action="store_true",
                     help="skip baselines/region recompute (do it once at the end of a larger job)")
+    ap.add_argument("--catchup", type=int, nargs="?", const=C.NIGHTLY_CATCHUP_DAYS, default=0,
+                    help="also retry N days before the start day (bare flag = "
+                         "config.NIGHTLY_CATCHUP_DAYS); present days skip")
+    ap.add_argument("--require-ingest", dest="require_ingest", action="store_true",
+                    help=f"exit {EXIT_MISSING} if any day in the range is still missing "
+                         "afterwards (nightly: a night that lands nothing must not go green)")
     args = ap.parse_args(argv)
 
     if args.last is None and not args.start:
@@ -122,7 +138,14 @@ def main(argv=None) -> int:
     print(f"\nprocessed={len(done)} skipped={len(skipped)} "
           f"not_ready={len(notready)} failed={len(failed)}"
           + (" PAUSED (low disk — free space and re-run to resume)" if paused else ""))
-    return 1 if failed else 0
+    if failed:
+        return EXIT_FAILED
+    if paused:
+        return EXIT_PAUSED
+    if args.require_ingest and notready:
+        print(f"[MISSING] still no data for: {', '.join(notready)}", file=sys.stderr)
+        return EXIT_MISSING
+    return 0
 
 
 if __name__ == "__main__":
