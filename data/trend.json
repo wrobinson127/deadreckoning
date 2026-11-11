@@ -8142,6 +8142,12 @@
       "measured": 25157,
       "degraded": 8668,
       "strong": 299
+    },
+    {
+      "date": "2026-11-10",
+      "measured": 25060,
+      "degraded": 8352,
+      "strong": 297
     }
   ]
 }
