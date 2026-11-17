@@ -48,12 +48,15 @@ reported as PASS or FAIL on its own; a FAIL on (a) alone shrinks the project to
   **Interior rule:** a hex belongs only if all six vertices are inside the FIR.
 - **Partial-FIR wording** ("part of FIR X") counts as naming FIR X.
 
-One change after the threshold commit, made before any count was read: the
-first run assigned each hex to a single polygon (smallest wins). That dropped
-Sweden (ESAA), because VATSIM's ESOS polygon sits inside it. The counts below
-use multi-membership instead: a hex counts toward every whole-FIR polygon that
-contains its centre (11,754 of 42,668 hexes sit in more than one). The bar
-itself did not change.
+One change after the threshold commit, made after the first run's counts had
+been read: that run assigned each hex to a single polygon (smallest wins),
+which dropped Sweden (ESAA), because VATSIM's ESOS polygon sits inside it. The
+counts below use multi-membership instead: a hex counts toward every
+whole-FIR polygon that contains its centre (11,754 of 42,668 hexes sit in
+more than one). The bar did not change, and the verdict is the same under
+either assignment: the first run also met (b) in 39 of 40 tables (usable
+minimum 21, top-20 minimum 15; live 30-day table 29 usable, 17 of the top
+20), and gave identical EETT onsets.
 
 ## 2. Result: **PASS** (part a PASS, part b PASS)
 
@@ -95,17 +98,22 @@ The named-list phase runs from R1 (2023-02-17) to the switch (after
 
 - Before 2024-07-05 the FIR had 502 covered days, 263 of them hit days (245
   under the interior rule).
-- The first hex with its own measurable onset is at 57.89 N, 26.83 E (Voru
-  county), 2023-06-26, wholly inside EETT. The centroid-rule date is earlier
-  because border hexes near Lake Peipus have centres inside the polygon.
+- The interference starts in one hex wholly inside EETT, at 57.89 N,
+  26.83 E (Voru county): hit days 2023-06-13, 14, 16, 17, 26 and 27. Its own
+  hex-level onset is 2023-06-26. The centroid-rule FIR onset is 2023-06-13
+  because two border hexes (58.16 N 27.29 E and 57.62 N 26.37 E, centres
+  inside EETT) add hit days on 06-28 to 06-30, bringing the 30-day count from
+  06-13 to 10. No EETT hex hits before 06-13 that month.
 - R2 (2023-11-06) came 133 to 146 days after onset and did not add EETT.
 - The case holds under both rules. The research file's range of 8 to 12
   months becomes about 12.5 months at FIR level.
 
 **Chisinau (LUUU): dropped.** Its only persistent onset is 2026-01-19 and is
-not measurable (2 clean covered days before it). No hex lies wholly inside the
-LUUU polygon, so the interior rule has nothing to test. Before 2024-07-05 it
-had 237 covered days and 26 hit days, short of persistence.
+not measurable (2 clean covered days before it). Hexes wholly inside LUUU
+exist (8 in a grid test) but had no covered day before 2024-07-05 (97 covered
+days in the whole archive, 1 hit day), so the interior rule has nothing to
+test. Under the centroid rule it had 237 covered days and 26 hit days before
+2024-07-05, short of persistence.
 
 **R1 and R2 FIRs (21): censored.** R1 was issued one day after the archive
 starts, so none can show an onset before naming.
@@ -184,5 +192,11 @@ codes, or ULLL and its neighbours leave the agreement count.
 Continue to Stage 1 on the narrowed scope, with (b) as the main body and (a)
 as one dated case (Tallinn) plus four reverse cases and the omission
 candidates. The Wayback series is richer than the research file assumed (40
-dated tables, not 8 captures of unknown content), so much of Stage 1 is done:
-the tables are parsed and kept outside the repo, in the session notes folder.
+dated tables, not 8 captures of unknown content). The tables are parsed once
+and kept outside the repo, in the session notes folder. Row counts match the
+browser's parse for all 40 tables, but the FIR codes were transcribed by hand
+and still owe the second-pass re-read that Stage 1 requires.
+
+The onset-rule constants (30-day window, 10 hit days, 60-day lookback, 20
+clean days) live in `analysis/easa_stage0.py`, not `pipeline/config.py`: they
+are study parameters for this gate, not pipeline tunables.
