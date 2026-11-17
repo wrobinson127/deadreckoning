@@ -1,5 +1,5 @@
 # EASA ranked FIR tables (Data4Safety), from Wayback captures of easa.europa.eu/en/domains/air-operations/global-navigation-satellite-system-outages-and-alterations and the live page (LIVE20261117 = read 2026-11-17).
-# codes in rank order; suffix s = spoofing column starred, r = reported column starred. Second pass: each line re-parsed from source by machine and SHA-256 compared (38/38 match).
+# codes in rank order; suffix s = spoofing column starred, r = reported column starred. Second pass: each line re-parsed from source by machine and SHA-256 compared: all 40 rows match (38 archived, 2 live); the 3 repeat captures (20260310170736, 20261108121718, 20261116103712) also match their twins.
 capture	window	stamp	codes
 20250520103645	7d	14/05/2025	LTAAs,EPWWs,VYYFs,URRV,ORBBs,UWWW,ULLLs,ESAAs,LBSR,LTBB,UGGG,UUWV,EYVLs,VTBBs,USSV,HECCs,EVRRs,UATT,UNNT,LRBB,EETTs,LCCCs,OJACs,OIIX,EFIN,UBBA,VECF,LLLLs,ULWW,UMKK,OEJD,UMMVs,ULKK,ULAA,UDDD,UKFV,OLBBs,VGFR,USTV,OSTT,LUUU,OPLRs,VIDFs,OPKR,HSSS
 20250520103645	30d	14/05/2025	EPWWsr,LTAAs,VYYFsr,EFINsr,ESAAs,URRV,ORBBs,LBSRs,LTBBs,ULLLs,UGGG,UWWW,EYVLs,VTBBs,EVRRs,USSV,EETTs,UUWV,UATT,UNNT,LRBB,HECCs,UBBA,OIIX,OJACs,LLLLs,UMMVs,UMKKs,ULWW,ULKK,OEJD,UDDD,VECF,ULAA,LUUU,USTV,OSTT,LCCCs,VGFR,UKFVs,UNKL,VIDFs,OPKRs

@@ -5,7 +5,9 @@ table. Walker's go came through the hub on 2026-11-17. $0, no model calls.
 Stage 0 is in `docs/EASA_STAGE0.md`.
 
 **Stage 1 check (research file):** each list re-read against its source by a
-second pass; snapshot timestamps recorded. **Met** for every list below.
+second pass; snapshot timestamps recorded. **Met** for the FIR codes of
+every list below, and for the "part of" wording of every list except R2,
+whose rows reuse R1's spelling (section 2).
 
 No agreement, rank or overlap figure was computed. The Stage 3 bar stays
 blind until it is registered.
@@ -39,7 +41,9 @@ pdf.js, loaded from jsDelivr into a page on the source's own site.
   full from the extracted text and gives the same 21 codes. R1 mentions Kaliningrad (UMKK)
   only as a reference point ("FIRs surrounding FIR Kaliningrad UMKK"), so it
   is not coded. R2 differs from R1 in one place: "Northern part of FIR
-  Baghdad" becomes "FIR Baghdad".
+  Baghdad" becomes "FIR Baghdad". The R2 rows reuse R1's spelling of the
+  part wording (R2 prints "north-eastern" where R1 prints "northeastern");
+  only the codes and the Baghdad change were checked against R2.
 - **R3 (2024-07-05) and R4 (2026-07-03)** carry no FIR list. Both point to
   the web page. The issue dates and the "revises" chain were re-read in each
   PDF (R4 revises R3 of 2024-07-05).
@@ -49,7 +53,14 @@ pdf.js, loaded from jsDelivr into a page on the source's own site.
   north-eastern to eastern; EFIN is named whole, with its northern part also
   listed under the Arctic; ORBB stays whole.
 - **IATA V4, V5 and V6** print identical FIR lists. Line by line, the lists
-  differ only in spelling ("Capetown" against "Cape town").
+  differ only in spelling ("Capetown" against "Cape town"). Second pass: in
+  each version, the codes after "FIR <name>" in the EASA-copy section,
+  matched by regular expression, equal the 29 coded rows plus UMKK, which
+  appears only as a reference point, as in R1. The ten "part of" phrases
+  match the coded qualifiers. In the FDX section the expression recovers 10
+  of the 12 codes in V5 and V6 (11 in V4). It misses DNKK ("FIR KANO DNKK")
+  and, in V5 and V6, FACA ("FIR Cape town FACA"), because of how those names
+  are written. Both appear in the line-by-line read of every version.
 - **IATA's copy disagrees with EASA's page in two places.** IATA has
   "Western part of FIR Helsinki EFIN" and "Northern part of FIR Baghdad
   ORBB"; EASA's captured page has EFIN whole and ORBB whole. Stage 2 uses
@@ -72,8 +83,7 @@ page, plus the live page on 2026-11-17.
 
 Three captures repeat an earlier stamp and are not separate rows:
 20260310170736 (04/03/2026), 20261108121718 and 20261116103712
-(14/10/2026). Their stamps and row counts match the rows kept. Their codes
-were not compared separately.
+(14/10/2026). Their tables are identical to the rows kept (same hash).
 
 Table stamps: 14/05/2025, 26/06/2025, 30/07/2025, 03/09/2025, 17/09/2025,
 24/09/2025, 05/11/2025, 12/11/2025, 10/12/2025, 11/02/2026, 27/02/2026,
@@ -83,8 +93,11 @@ tables are a sample of EASA's weekly series, not the whole series.
 
 **Second pass:** every row of `ranked_tables.tsv` was rebuilt from the source
 HTML by a fresh parse of the page's table elements, and compared by SHA-256
-with the stored line. **38 of 38 match** (36 archived plus 2 live). This
-closes the Stage 0 caveat that the codes were typed by hand.
+with the stored line. **All 40 rows match** (38 archived plus 2 live). The
+three repeat captures add 6 more matching tables. A first attempt compared
+only 36 archived rows, because one capture's tables lack the CSS class the
+check selected on; the rerun selects every table under a "last N days"
+heading. This closes the Stage 0 caveat that the codes were typed by hand.
 
 **Quirks kept as published:** ULMM appears twice in some 30-day tables
 (26/06/2025, 30/07/2025, 03/09/2025, 17/09/2025, 24/09/2025, 11/02/2026,
@@ -96,10 +109,18 @@ later shows 12/11/2026.
 
 - Static named list: last seen in the capture of 2025-02-17.
 - First ranked table seen: stamp 14/05/2025 (capture 2025-05-20).
-- The switch falls between those dates. No capture inside the gap exists,
-  and no EASA text found so far dates it.
+- The switch falls between those dates. An uncollapsed Wayback index query
+  (URL prefix, 2025-01-01 to 2025-06-01) returns only those two captures, so
+  the archive holds nothing inside the gap for this URL. The short URL that
+  SIB R3 points to (easa.europa.eu/GNSS) was not checked: the Wayback
+  Machine returned "Temporarily Offline" (HTTP 503) on 2026-11-17. No EASA
+  text found so far dates the switch.
 
 ## 5. Owed to later stages
+
+- Wayback check of easa.europa.eu/GNSS for captures between 2025-02-17 and
+  2025-05-14 (blocked by the outage). If one shows the static list, the end
+  of the named-list phase, and Stage 0's omission cutoff, move later.
 
 - A FIR code crosswalk for ULAA, ULKK, ULMM, ULWW and UUYY, which VATSIM
   folds into ULLL sub-sectors (Stage 0, section 2.3), before Stage 3 counts

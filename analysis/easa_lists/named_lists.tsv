@@ -1,4 +1,4 @@
-# Dated FIR lists, read 2026-11-17 in the in-app browser; second pass by machine compare (see docs/EASA_STAGE1.md)
+# Dated FIR lists, read 2026-11-17 in the in-app browser; second pass in docs/EASA_STAGE1.md section 2; R2 part wording carries R1 spelling (e.g. northeastern for north-eastern)
 list_id	dated	fir	part	kind	source
 EASA_SIB_2022-02R1	2023-02-17	LTBB		EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R1.pdf/SIB_2022-02R1_1
 EASA_SIB_2022-02R1	2023-02-17	LTAA		EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R1.pdf/SIB_2022-02R1_1
