@@ -1,0 +1,47 @@
+fir	category	first_named	list_id	part	onset_centroid	measurable	onset_interior	interior_measurable	lag_days	first_easa_table	part_only_onset	part_only_covered_before	part_only_hit_before	onset_hexes
+EFIN	censored (named on day 2 of the archive)	2023-02-17	EASA_SIB_2022-02R1	northern	2024-02-22	True	2024-02-22	True				0	0	841120bffffffff@61.80,26.37
+ENOR	censored (named on day 2 of the archive)	2023-02-17	EASA_SIB_2022-02R1	northern								1	0	
+EPWW	censored (named on day 2 of the archive)	2023-02-17	EASA_SIB_2022-02R1	northeastern	2024-09-14	True	2024-09-14	True			2024-09-14	0	0	841f551ffffffff@53.95,21.89
+EVRR	censored (named on day 2 of the archive)	2023-02-17	EASA_SIB_2022-02R1	southwestern	2023-09-29	True	2023-11-04	True			2024-11-16	1	0	841f6e7ffffffff@55.90,26.81;841f6e3ffffffff@56.10,27.37
+EYVL	censored (named on day 2 of the archive)	2023-02-17	EASA_SIB_2022-02R1	western	2024-09-22	True	2024-09-24	True			2024-09-22	0	0	841f715ffffffff@55.36,21.44
+HECC	censored (named on day 2 of the archive)	2023-02-17	EASA_SIB_2022-02R1	northeastern	2023-07-28	True	2023-07-28	True			2023-07-28	0	0	843e659ffffffff@32.01,32.80
+HLLL	censored (named on day 2 of the archive)	2023-02-17	EASA_SIB_2022-02R1	northern	2024-07-16	True	2024-07-16	True			2025-05-18	0	0	843f121ffffffff@32.26,14.89
+LBSR	censored (named on day 2 of the archive)	2023-02-17	EASA_SIB_2022-02R1		2024-06-04	True	2024-06-04	True						841eeadffffffff@43.22,25.58;841ee81ffffffff@43.96,27.00
+LCCC	censored (named on day 2 of the archive)	2023-02-17	EASA_SIB_2022-02R1		2023-06-25	False	2023-06-25	False						842db4bffffffff@32.93,33.62;843f497ffffffff@33.13,33.15;843f499ffffffff@34.01,33.08
+LLLL	censored (named on day 2 of the archive)	2023-02-17	EASA_SIB_2022-02R1		2023-09-08	True	2023-09-23	True						842db6bffffffff@31.86,34.14
+LRBB	censored (named on day 2 of the archive)	2023-02-17	EASA_SIB_2022-02R1	eastern	2023-06-18	True	2023-07-11	True			2023-06-18	1	0	841eedbffffffff@45.08,28.37
+LTAA	censored (named on day 2 of the archive)	2023-02-17	EASA_SIB_2022-02R1		2023-05-15	False	2023-05-15	False						842c209ffffffff@41.48,40.58
+LTBB	censored (named on day 2 of the archive)	2023-02-17	EASA_SIB_2022-02R1		2023-09-10	True	2026-08-17	True						842d229ffffffff@41.88,30.86
+OIIX	censored (named on day 2 of the archive)	2023-02-17	EASA_SIB_2022-02R1	northwestern	2025-06-14	True	2025-06-14	True			2025-10-04	0	0	84431e9ffffffff@27.34,56.20
+OJAC	censored (named on day 2 of the archive)	2023-02-17	EASA_SIB_2022-02R1		2023-10-03	True	2023-10-03	True						842db31ffffffff@32.15,36.32
+OLBB	censored (named on day 2 of the archive)	2023-02-17	EASA_SIB_2022-02R1		2023-06-26	False	2023-06-26	False						842da2dffffffff@34.08,34.89
+ORBB	censored (named on day 2 of the archive)	2023-02-17	EASA_SIB_2022-02R1	northern								0	0	
+OSTT	censored (named on day 2 of the archive)	2023-02-17	EASA_SIB_2022-02R1		2024-04-24	False	2026-03-31	True						842d841ffffffff@34.12,36.67
+UBBA	censored (named on day 2 of the archive)	2023-02-17	EASA_SIB_2022-02R1											
+UDDD	censored (named on day 2 of the archive)	2023-02-17	EASA_SIB_2022-02R1											
+UGGG	censored (named on day 2 of the archive)	2023-02-17	EASA_SIB_2022-02R1		2023-05-22	False	2023-09-04	True						842c255ffffffff@41.89,40.58
+EETT	positive lag	2024-07-05	EASA_WEB_STATIC		2023-06-13	True	2023-06-26	True	388					8411361ffffffff@57.89,26.83
+ESAA	reverse (named while covered, no persistent onset)	2024-07-05	EASA_WEB_STATIC	southern	2024-10-25	True	2024-11-15	True			2024-10-25	503	11	841f765ffffffff@55.33,17.76
+LGGG	reverse (named while covered, no persistent onset)	2024-07-05	EASA_WEB_STATIC	eastern								462	6	
+LHCC	reverse (named while covered, no persistent onset)	2024-07-05	EASA_WEB_STATIC		2026-09-24	True								841e081ffffffff@47.86,22.44;841e08dffffffff@47.99,21.86;841e089ffffffff@48.25,22.34
+LUUU	no data	2024-07-05	EASA_WEB_STATIC		2026-01-19	False								841e5edffffffff@45.89,28.24
+LZBB	reverse (named while covered, no persistent onset)	2024-07-05	EASA_WEB_STATIC		2026-09-24	True	2026-09-24	True						841e01bffffffff@49.03,20.46;841e0cdffffffff@48.90,21.06;841e2a7ffffffff@49.29,20.95;841e0c1ffffffff@48.77,21.65;841e0c7ffffffff@48.38,21.76
+OBBB	no data	2024-07-05	EASA_WEB_STATIC		2026-05-07	False	2026-05-13	False						84536e3ffffffff@26.19,50.89
+OKAC	no data	2024-07-05	EASA_WEB_STATIC											
+EGVV	omission candidate				2023-07-20	True	2023-07-20	True						8419429ffffffff@53.86,-1.03
+KZDV	outside EASA's apparent scope (positive control)				2024-07-16	True	2024-07-16	True						8426a5bffffffff@43.63,-103.47;8426165ffffffff@43.98,-103.23;8426167ffffffff@43.65,-102.89;8426a59ffffffff@43.95,-103.81
+KZHU	outside EASA's apparent scope (positive control)				2024-08-08	True	2024-08-11	True						8448803ffffffff@28.31,-100.19
+KZLA	outside EASA's apparent scope (positive control)				2023-08-03	True	2023-08-24	True						8429a49ffffffff@32.41,-117.40
+KZLC	outside EASA's apparent scope (positive control)				2023-09-06	True	2023-09-06	True						842692bffffffff@39.70,-111.68
+KZMP	outside EASA's apparent scope (positive control)				2023-06-11	True	2023-06-11	True						8427569ffffffff@46.82,-92.15
+OEJD	omission candidate				2023-12-08	True	2024-06-09	True		2025-05-14				843e681ffffffff@29.27,35.18
+PAZA	outside EASA's apparent scope (positive control)				2024-05-25	True	2024-05-25	True						840c705ffffffff@62.39,-150.33
+RKRR	omission candidate				2024-12-08	True								8430e6bffffffff@37.27,125.64
+ULLL	omission candidate				2023-06-02	True	2023-06-02	True		2025-05-14				841106dffffffff@59.52,29.78;8411307ffffffff@58.71,28.26;8411313ffffffff@60.01,28.99
+UMKK	omission candidate				2024-09-23	True	2024-09-23	True		2025-05-14				841f707ffffffff@55.25,20.25
+UMMV	omission candidate				2023-09-30	True	2023-09-30	True		2025-05-14				841f4c9ffffffff@54.90,28.25
+USSV	omission candidate				2024-08-18	True	2024-08-19	True		2025-05-14				8410f37ffffffff@56.34,56.72
+UWWW	omission candidate				2024-10-17	True	2024-10-17	True		2025-05-14				8410d49ffffffff@55.76,55.86;8410d45ffffffff@55.06,56.29
+VIDF	omission candidate				2023-12-12	True				2025-05-14				843d169ffffffff@30.51,76.03;843d363ffffffff@32.59,74.78
+VTBB	omission candidate				2025-02-14	True				2025-05-14				8464a39ffffffff@15.46,99.13
+VYYF	omission candidate				2024-01-07	True	2024-01-25	True		2025-05-14				8464a8dffffffff@15.25,97.03
