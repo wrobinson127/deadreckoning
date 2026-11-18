@@ -1,10 +1,12 @@
-# EASA Stage 3: agreement bar (DRAFT, not yet registered)
+# EASA Stage 3: agreement bar (REGISTERED)
 
-**Status: DRAFT for Walker's OK.** It becomes the registration when Walker
-approves it and a commit changes this line to "REGISTERED <date>, commit
-<sha>". No agreement, rank or overlap figure has been computed on any data
-before that commit. If anything below changes after results are seen, the
-change gets its own commit, and both versions' results are reported.
+**Status: REGISTERED 2026-11-18.** Walker approved the bar and chose scope
+B (global) as primary, via the hub, on 2026-11-18 ("yes go all of this" to
+the three #10 defaults). The registering commit is the one that adds this
+line (`git log --diff-filter=M -S "REGISTERED 2026-11-18" -- docs/EASA_STAGE3_REGISTRATION.md`).
+No agreement, rank or overlap figure was computed on any data before that
+commit. If anything below changes after results are seen, the change gets its
+own commit, and both versions' results are reported.
 
 Source of the bar: the hub research file, section 5 (Part b): "recall of at
 least 0.7 on EASA's top 20 in FIRs where DeadReckoning has high-confidence
@@ -53,12 +55,13 @@ date D (days D-W+1 to D, as in Stage 0):
    window score, highest first; ties broken by FIR code. Its length N is the
    number of unique codes in that EASA table (ULMM is listed twice in some
    30-day tables).
-6. **Scope: Walker chooses which is primary.**
-   - *Option A, EASA's apparent scope:* drop candidates whose 4-letter code
+6. **Scope: B (global) is primary; A is reported as secondary** (Walker,
+   2026-11-18).
+   - *Option A, EASA's apparent scope (secondary):* drop candidates whose 4-letter code
      starts with C, K, M, P, S or T, or (for non-ICAO VATSIM ids) whose
      bounding-box centre lies west of 30 W. No EASA table has listed an FIR
      in the Americas.
-   - *Option B, global:* keep every candidate.
+   - *Option B, global (primary):* keep every candidate.
    - Disclosure: Option A was written after the Stage 0 output had shown
      US FIRs (KZMP, KZLA, KZLC, PAZA, KZDV, KZHU) with measurable onsets
      that no EASA list carries. Under Option B those FIRs compete for
@@ -75,7 +78,7 @@ candidates. Section 6 gives those counts per table (coverage only), so the
 - **Recall for one table:** take EASA's top 20 for that table, keep those
   that are eligible (denominator); the share of them that appear in
   DeadReckoning's list of length N (numerator).
-- **Primary statistic:** the median recall over the 20 thirty-day tables, in the scope Walker picks as primary.
+- **Primary statistic:** the median recall over the 20 thirty-day tables, in scope B (global).
 - **PASS** if the primary statistic is **at least 0.70**. Otherwise FAIL, and
   the disagreements are the finding (research file sec. 5).
 - **Minimum denominator:** a table counts only if at least 15 of its top 20
@@ -85,7 +88,7 @@ candidates. Section 6 gives those counts per table (coverage only), so the
 
 ## 4. Reported alongside, not part of the bar
 
-- The same recall for the 20 seven-day tables, and for the global scope.
+- The same recall for the 20 seven-day tables, and for scope A.
 - Precision: the share of DeadReckoning's list that appears anywhere in
   EASA's table.
 - Spearman rank correlation between EASA rank and DeadReckoning score over
