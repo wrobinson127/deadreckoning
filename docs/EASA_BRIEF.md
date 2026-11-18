@@ -11,17 +11,14 @@ or a claim is checked against `docs/EASA_STAGE0.md` to `docs/EASA_STAGE3.md`.*
   May 2025 to November 2026, DeadReckoning's own ranking contained a median of
   94.2% of EASA's top 20, counting only FIRs with enough aircraft to score. The pass mark, written down and committed before the comparison ran, was 70%. A random list would score
   about 29%.
-- **It does not reproduce EASA's order or its edges.** About half of the
-  archive's list does not appear in EASA's table, because the bottom of a list
-  that long holds airspace with only 2 to 3% of aircraft degraded. Within the
-  FIRs both lists share, rank agreement is weak: a median Spearman correlation of 0.205, where 1 would mean the same order and 0 no relation.
+- **It does not reproduce EASA's order or its edges.** About half of the archive's list does not appear in EASA's table. The bottom of a list that long holds airspace with only 2 to 3% of aircraft degraded, and US FIRs take 3 to 10 places in each 30-day list. Within the
+  FIRs both lists share, rank agreement is weak: a median Spearman correlation of 0.205 on the 30-day tables, where 1 would mean the same order and 0 no relation.
 - **One clear case of a warning arriving after the interference.** The
   archive shows persistent interference in the Tallinn FIR (Estonia) from
   June 2023. EASA first named Tallinn on its list dated 5 July 2024, 388 days
   later (375 under a stricter boundary rule).
 - **Four cases run the other way.** EASA named Sweden (southern part), Athens
-  (eastern part), Budapest and Bratislava in July 2024 while the archive had
-  them under daily coverage and saw no persistent interference.
+  (eastern part), Budapest and Bratislava in July 2024 while the archive had them covered on most days and saw no persistent interference.
 
 This brief compares one open archive with EASA's published warnings in two
 ways: how its dates line up with EASA's named lists (2023 to 2025), and how
@@ -39,9 +36,8 @@ cells about 45 km across, and shows no value where fewer than five aircraft pass
 **EASA's warnings.** EASA's Safety Information Bulletin 2022-02 named
 affected FIRs in its text in February 2023 (revision 1, 21 FIRs) and November
 2023 (revision 2). Revision 3, issued 5 July 2024, moved the list to EASA's
-website, where it named 29 FIRs. By 14 May 2025 that page showed a ranked
-table instead. According to the page, the table comes from aircraft ADS-B NIC
-reports, treats NIC 7 as "the frontier between good and bad," and averages a
+website, where it named 29 FIRs. The earliest ranked table on record, in a copy captured on 20 May 2025, is stamped 14 May 2025. According to the page, the table comes from aircraft ADS-B NIC
+reports, treats NIC 7 as "the frontier between good and bad" (the archive's cut is NIC 6 or below), and averages a
 daily share of affected aircraft over 7 and 30 days. Archived copies of the
 page on the Internet Archive supplied 19 of the 20 table dates used here. The
 twentieth was read live. The switch from list to table happened between the
@@ -55,8 +51,7 @@ against official charts.
 ## Agreement with the ranked tables
 
 The pass mark and every rule were written down and committed to the project's repository before any agreement figure was computed. For each EASA table, DeadReckoning ranked every FIR with enough aircraft to score by its
-own share of degraded aircraft over the same 7 or 30 days, and kept as many
-as EASA listed (40 to 58). The measure was the share of EASA's top 20 inside
+own share of degraded aircraft over the same 7 or 30 days, and kept as many as EASA listed (43 to 58 in the 30-day tables). The measure was the share of EASA's top 20 inside
 that list.
 
 | Tables | Median share of EASA's top 20 found | Range |
@@ -65,15 +60,13 @@ that list.
 | 30-day, Americas excluded | 100% | 87.5% to 100% |
 | 7-day, worldwide | 93.3% | 76.5% to 100% |
 
-The misses are few and repeat: Istanbul, Bangkok, Jeddah, Cairo and Delhi account for
-most of them.
+The misses repeat: Istanbul, Bangkok, Jeddah, Cairo and Delhi account for 49 of the 55 across all 40 tables.
 
 - **About half the archive's list is not in EASA's table.** A list as long as EASA's reaches down to FIRs
   where 2 to 3% of aircraft report degraded integrity. Several central
-  European FIRs sit there in almost every table. That level is background in the archive's measure, and EASA's table leaves those FIRs out.
-- **The order differs.** Within FIRs on both lists, the archive's ranking correlates weakly with EASA's, and in three 2026 tables the correlation is below zero (the orders run slightly opposite).
-- **Some of EASA's top FIRs are out of reach.** In some tables, Baghdad,
-  Baku, Lahore, Asmara, Addis Ababa and several Russian and Kazakh FIRs had
+  European FIRs sit there in almost every table. EASA's table leaves those FIRs out. The comparison cannot tell whether that gap is background in the archive's measure or a real difference between the two methods.
+- **The order differs.** Within FIRs on both lists, the archive's ranking correlates weakly with EASA's, and in three 2026 30-day tables the correlation is below zero (the orders run slightly opposite).
+- **Some of EASA's top FIRs are out of reach.** In some tables, Baghdad, Baku, Lahore, Asmara, Addis Ababa, several Russian FIRs and Kazakhstan's Aktobe had
   too little coverage to score. These count as no data, not disagreement.
 
 ## Dates against the named lists
@@ -87,9 +80,7 @@ list did.
 Bratislava each had hundreds of covered days before July 2024 and no
 persistent interference by the archive's rule. Sweden showed it from October
 2024. Budapest and Bratislava showed it from September 2026. Athens has not.
-EASA's February 2023 bulletin says its list drew on "data from the Network
-of Analysts and open sources." The archive cannot see those sources, so it
-cannot say why these FIRs were named.
+EASA's bulletins do not say why each FIR was added in 2024. The February 2023 revision says its list drew on "data from the Network of Analysts and open sources." The archive cannot see those sources.
 
 **Seen first by the archive.** Eleven areas (ten FIRs plus one simulator
 outline over the UK) showed persistent interference before February
@@ -102,7 +93,7 @@ EASA's apparent scope. EASA's tables list no FIR in the Americas.
 
 ## What this does not show
 
-A lag here is the gap between two dates, and nothing more. EASA's page says its table is cross-checked against reported occurrences, which this archive cannot see. The agreement is between two related instruments, and EASA's method is only partly published, so neither one is ground truth. Where commercial aircraft do not fly, the archive has no data.
+A lag here is the gap between two dates, and nothing more. EASA's page says it cross-checks reported occurrences to mark whether interference was reported in each FIR, and this archive cannot see those reports. The agreement is between two related instruments, and EASA's method is only partly published, so neither one is ground truth. Where commercial aircraft do not fly, the archive has no data.
 
 ## What to watch
 
@@ -112,8 +103,7 @@ would turn a 20-date sample into a full series. The open question for the
 archive is what drives its background level in central Europe.
 
 *Sources: EASA SIB 2022-02 R1 to R4; EASA, "Global Navigation Satellite System
-(GNSS) Outages and Alterations" (live page and Internet Archive copies,
-2024-07-09 to 2026-11-17); VATSIM vatspy-data-project boundaries (CC BY-SA
+(GNSS) Outages and Alterations" (Internet Archive copies 2024-07-09 to 2026-11-16; live page read 2026-11-17); VATSIM vatspy-data-project boundaries (CC BY-SA
 4.0); flight data © adsb.lol (ODbL 1.0). Full method and every count:
 `docs/EASA_STAGE0.md` to `docs/EASA_STAGE3.md` and the registration,
 `docs/EASA_STAGE3_REGISTRATION.md`.*

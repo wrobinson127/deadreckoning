@@ -24,7 +24,7 @@ $0, no model calls.
   of its top 20 are eligible.
 - **Plain reading:** where the archive has high-confidence coverage, its own
   FIR ranking puts about 94% of EASA's top 20 inside a list of the same
-  length as EASA's table (40 to 58 FIRs).
+  length as EASA's table (43 to 58 FIRs in the 30-day tables).
 - **The tail of that list is baseline, not detection.** The last place in
   the archive's list has a score (share of aircraft with degraded NIC) of
   only 0.022 to 0.033 in the 30-day tables (0.025 to 0.174 in the 7-day
