@@ -1,0 +1,76 @@
+# Source: European Union Aviation Safety Agency (EASA). Safety Information Bulletin 2022-02R1 (17 Feb 2023) and 2022-02R2 (6 Nov 2023),
+# and the EASA web page 'Global Navigation Satellite System (GNSS) Outages and Alterations' (list dated by SIB 2022-02R3, 5 Jul 2024; read from Wayback captures).
+# (c) European Union Aviation Safety Agency. FIR codes and 'part of' wording extracted for research; see each row's source URL. Read 2026-11-17 in the in-app browser.
+# Second pass in docs/EASA_STAGE1.md section 2. R2 part wording reuses R1's spelling (e.g. northeastern for north-eastern).
+list_id	dated	fir	part	kind	source
+EASA_SIB_2022-02R1	2023-02-17	LTBB		EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R1.pdf/SIB_2022-02R1_1
+EASA_SIB_2022-02R1	2023-02-17	LTAA		EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R1.pdf/SIB_2022-02R1_1
+EASA_SIB_2022-02R1	2023-02-17	LRBB	eastern	EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R1.pdf/SIB_2022-02R1_1
+EASA_SIB_2022-02R1	2023-02-17	LBSR		EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R1.pdf/SIB_2022-02R1_1
+EASA_SIB_2022-02R1	2023-02-17	UGGG		EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R1.pdf/SIB_2022-02R1_1
+EASA_SIB_2022-02R1	2023-02-17	UDDD		EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R1.pdf/SIB_2022-02R1_1
+EASA_SIB_2022-02R1	2023-02-17	UBBA		EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R1.pdf/SIB_2022-02R1_1
+EASA_SIB_2022-02R1	2023-02-17	LCCC		EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R1.pdf/SIB_2022-02R1_1
+EASA_SIB_2022-02R1	2023-02-17	OLBB		EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R1.pdf/SIB_2022-02R1_1
+EASA_SIB_2022-02R1	2023-02-17	OSTT		EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R1.pdf/SIB_2022-02R1_1
+EASA_SIB_2022-02R1	2023-02-17	LLLL		EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R1.pdf/SIB_2022-02R1_1
+EASA_SIB_2022-02R1	2023-02-17	OJAC		EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R1.pdf/SIB_2022-02R1_1
+EASA_SIB_2022-02R1	2023-02-17	HECC	northeastern	EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R1.pdf/SIB_2022-02R1_1
+EASA_SIB_2022-02R1	2023-02-17	ORBB	northern	EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R1.pdf/SIB_2022-02R1_1
+EASA_SIB_2022-02R1	2023-02-17	OIIX	northwestern	EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R1.pdf/SIB_2022-02R1_1
+EASA_SIB_2022-02R1	2023-02-17	HLLL	northern	EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R1.pdf/SIB_2022-02R1_1
+EASA_SIB_2022-02R1	2023-02-17	EYVL	western	EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R1.pdf/SIB_2022-02R1_1
+EASA_SIB_2022-02R1	2023-02-17	EPWW	northeastern	EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R1.pdf/SIB_2022-02R1_1
+EASA_SIB_2022-02R1	2023-02-17	EVRR	southwestern	EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R1.pdf/SIB_2022-02R1_1
+EASA_SIB_2022-02R1	2023-02-17	EFIN	northern	EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R1.pdf/SIB_2022-02R1_1
+EASA_SIB_2022-02R1	2023-02-17	ENOR	northern	EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R1.pdf/SIB_2022-02R1_1
+EASA_SIB_2022-02R2	2023-11-06	LTBB		EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R2.pdf/SIB_2022-02R2_1
+EASA_SIB_2022-02R2	2023-11-06	LTAA		EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R2.pdf/SIB_2022-02R2_1
+EASA_SIB_2022-02R2	2023-11-06	LRBB	eastern	EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R2.pdf/SIB_2022-02R2_1
+EASA_SIB_2022-02R2	2023-11-06	LBSR		EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R2.pdf/SIB_2022-02R2_1
+EASA_SIB_2022-02R2	2023-11-06	UGGG		EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R2.pdf/SIB_2022-02R2_1
+EASA_SIB_2022-02R2	2023-11-06	UDDD		EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R2.pdf/SIB_2022-02R2_1
+EASA_SIB_2022-02R2	2023-11-06	UBBA		EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R2.pdf/SIB_2022-02R2_1
+EASA_SIB_2022-02R2	2023-11-06	LCCC		EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R2.pdf/SIB_2022-02R2_1
+EASA_SIB_2022-02R2	2023-11-06	OLBB		EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R2.pdf/SIB_2022-02R2_1
+EASA_SIB_2022-02R2	2023-11-06	OSTT		EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R2.pdf/SIB_2022-02R2_1
+EASA_SIB_2022-02R2	2023-11-06	LLLL		EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R2.pdf/SIB_2022-02R2_1
+EASA_SIB_2022-02R2	2023-11-06	OJAC		EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R2.pdf/SIB_2022-02R2_1
+EASA_SIB_2022-02R2	2023-11-06	HECC	northeastern	EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R2.pdf/SIB_2022-02R2_1
+EASA_SIB_2022-02R2	2023-11-06	ORBB		EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R2.pdf/SIB_2022-02R2_1
+EASA_SIB_2022-02R2	2023-11-06	OIIX	northwestern	EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R2.pdf/SIB_2022-02R2_1
+EASA_SIB_2022-02R2	2023-11-06	HLLL	northern	EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R2.pdf/SIB_2022-02R2_1
+EASA_SIB_2022-02R2	2023-11-06	EYVL	western	EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R2.pdf/SIB_2022-02R2_1
+EASA_SIB_2022-02R2	2023-11-06	EPWW	northeastern	EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R2.pdf/SIB_2022-02R2_1
+EASA_SIB_2022-02R2	2023-11-06	EVRR	southwestern	EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R2.pdf/SIB_2022-02R2_1
+EASA_SIB_2022-02R2	2023-11-06	EFIN	northern	EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R2.pdf/SIB_2022-02R2_1
+EASA_SIB_2022-02R2	2023-11-06	ENOR	northern	EASA bulletin text	https://ad.easa.europa.eu/blob/EASA_SIB_2022_02R2.pdf/SIB_2022-02R2_1
+EASA_WEB_STATIC	2024-07-05	LCCC		EASA web page list (dated by SIB R3, which points to it); same list in Wayback captures 2024-07-09 to 2025-02-17	https://web.archive.org/web/20240709034711/https://www.easa.europa.eu/en/domains/air-operations/global-navigation-satellite-system-outages-and-alterations
+EASA_WEB_STATIC	2024-07-05	OLBB		EASA web page list (dated by SIB R3, which points to it); same list in Wayback captures 2024-07-09 to 2025-02-17	https://web.archive.org/web/20240709034711/https://www.easa.europa.eu/en/domains/air-operations/global-navigation-satellite-system-outages-and-alterations
+EASA_WEB_STATIC	2024-07-05	OSTT		EASA web page list (dated by SIB R3, which points to it); same list in Wayback captures 2024-07-09 to 2025-02-17	https://web.archive.org/web/20240709034711/https://www.easa.europa.eu/en/domains/air-operations/global-navigation-satellite-system-outages-and-alterations
+EASA_WEB_STATIC	2024-07-05	LLLL		EASA web page list (dated by SIB R3, which points to it); same list in Wayback captures 2024-07-09 to 2025-02-17	https://web.archive.org/web/20240709034711/https://www.easa.europa.eu/en/domains/air-operations/global-navigation-satellite-system-outages-and-alterations
+EASA_WEB_STATIC	2024-07-05	OJAC		EASA web page list (dated by SIB R3, which points to it); same list in Wayback captures 2024-07-09 to 2025-02-17	https://web.archive.org/web/20240709034711/https://www.easa.europa.eu/en/domains/air-operations/global-navigation-satellite-system-outages-and-alterations
+EASA_WEB_STATIC	2024-07-05	HECC	north-eastern	EASA web page list (dated by SIB R3, which points to it); same list in Wayback captures 2024-07-09 to 2025-02-17	https://web.archive.org/web/20240709034711/https://www.easa.europa.eu/en/domains/air-operations/global-navigation-satellite-system-outages-and-alterations
+EASA_WEB_STATIC	2024-07-05	LGGG	eastern	EASA web page list (dated by SIB R3, which points to it); same list in Wayback captures 2024-07-09 to 2025-02-17	https://web.archive.org/web/20240709034711/https://www.easa.europa.eu/en/domains/air-operations/global-navigation-satellite-system-outages-and-alterations
+EASA_WEB_STATIC	2024-07-05	ORBB		EASA web page list (dated by SIB R3, which points to it); same list in Wayback captures 2024-07-09 to 2025-02-17	https://web.archive.org/web/20240709034711/https://www.easa.europa.eu/en/domains/air-operations/global-navigation-satellite-system-outages-and-alterations
+EASA_WEB_STATIC	2024-07-05	OKAC		EASA web page list (dated by SIB R3, which points to it); same list in Wayback captures 2024-07-09 to 2025-02-17	https://web.archive.org/web/20240709034711/https://www.easa.europa.eu/en/domains/air-operations/global-navigation-satellite-system-outages-and-alterations
+EASA_WEB_STATIC	2024-07-05	OBBB		EASA web page list (dated by SIB R3, which points to it); same list in Wayback captures 2024-07-09 to 2025-02-17	https://web.archive.org/web/20240709034711/https://www.easa.europa.eu/en/domains/air-operations/global-navigation-satellite-system-outages-and-alterations
+EASA_WEB_STATIC	2024-07-05	OIIX	north-western	EASA web page list (dated by SIB R3, which points to it); same list in Wayback captures 2024-07-09 to 2025-02-17	https://web.archive.org/web/20240709034711/https://www.easa.europa.eu/en/domains/air-operations/global-navigation-satellite-system-outages-and-alterations
+EASA_WEB_STATIC	2024-07-05	HLLL	northern	EASA web page list (dated by SIB R3, which points to it); same list in Wayback captures 2024-07-09 to 2025-02-17	https://web.archive.org/web/20240709034711/https://www.easa.europa.eu/en/domains/air-operations/global-navigation-satellite-system-outages-and-alterations
+EASA_WEB_STATIC	2024-07-05	LTBB		EASA web page list (dated by SIB R3, which points to it); same list in Wayback captures 2024-07-09 to 2025-02-17	https://web.archive.org/web/20240709034711/https://www.easa.europa.eu/en/domains/air-operations/global-navigation-satellite-system-outages-and-alterations
+EASA_WEB_STATIC	2024-07-05	LTAA		EASA web page list (dated by SIB R3, which points to it); same list in Wayback captures 2024-07-09 to 2025-02-17	https://web.archive.org/web/20240709034711/https://www.easa.europa.eu/en/domains/air-operations/global-navigation-satellite-system-outages-and-alterations
+EASA_WEB_STATIC	2024-07-05	LRBB	eastern	EASA web page list (dated by SIB R3, which points to it); same list in Wayback captures 2024-07-09 to 2025-02-17	https://web.archive.org/web/20240709034711/https://www.easa.europa.eu/en/domains/air-operations/global-navigation-satellite-system-outages-and-alterations
+EASA_WEB_STATIC	2024-07-05	LBSR		EASA web page list (dated by SIB R3, which points to it); same list in Wayback captures 2024-07-09 to 2025-02-17	https://web.archive.org/web/20240709034711/https://www.easa.europa.eu/en/domains/air-operations/global-navigation-satellite-system-outages-and-alterations
+EASA_WEB_STATIC	2024-07-05	UGGG		EASA web page list (dated by SIB R3, which points to it); same list in Wayback captures 2024-07-09 to 2025-02-17	https://web.archive.org/web/20240709034711/https://www.easa.europa.eu/en/domains/air-operations/global-navigation-satellite-system-outages-and-alterations
+EASA_WEB_STATIC	2024-07-05	UDDD		EASA web page list (dated by SIB R3, which points to it); same list in Wayback captures 2024-07-09 to 2025-02-17	https://web.archive.org/web/20240709034711/https://www.easa.europa.eu/en/domains/air-operations/global-navigation-satellite-system-outages-and-alterations
+EASA_WEB_STATIC	2024-07-05	UBBA		EASA web page list (dated by SIB R3, which points to it); same list in Wayback captures 2024-07-09 to 2025-02-17	https://web.archive.org/web/20240709034711/https://www.easa.europa.eu/en/domains/air-operations/global-navigation-satellite-system-outages-and-alterations
+EASA_WEB_STATIC	2024-07-05	LZBB		EASA web page list (dated by SIB R3, which points to it); same list in Wayback captures 2024-07-09 to 2025-02-17	https://web.archive.org/web/20240709034711/https://www.easa.europa.eu/en/domains/air-operations/global-navigation-satellite-system-outages-and-alterations
+EASA_WEB_STATIC	2024-07-05	LHCC		EASA web page list (dated by SIB R3, which points to it); same list in Wayback captures 2024-07-09 to 2025-02-17	https://web.archive.org/web/20240709034711/https://www.easa.europa.eu/en/domains/air-operations/global-navigation-satellite-system-outages-and-alterations
+EASA_WEB_STATIC	2024-07-05	LUUU		EASA web page list (dated by SIB R3, which points to it); same list in Wayback captures 2024-07-09 to 2025-02-17	https://web.archive.org/web/20240709034711/https://www.easa.europa.eu/en/domains/air-operations/global-navigation-satellite-system-outages-and-alterations
+EASA_WEB_STATIC	2024-07-05	EFIN	whole, plus northern part listed under Arctic	EASA web page list (dated by SIB R3, which points to it); same list in Wayback captures 2024-07-09 to 2025-02-17	https://web.archive.org/web/20240709034711/https://www.easa.europa.eu/en/domains/air-operations/global-navigation-satellite-system-outages-and-alterations
+EASA_WEB_STATIC	2024-07-05	EETT		EASA web page list (dated by SIB R3, which points to it); same list in Wayback captures 2024-07-09 to 2025-02-17	https://web.archive.org/web/20240709034711/https://www.easa.europa.eu/en/domains/air-operations/global-navigation-satellite-system-outages-and-alterations
+EASA_WEB_STATIC	2024-07-05	EVRR		EASA web page list (dated by SIB R3, which points to it); same list in Wayback captures 2024-07-09 to 2025-02-17	https://web.archive.org/web/20240709034711/https://www.easa.europa.eu/en/domains/air-operations/global-navigation-satellite-system-outages-and-alterations
+EASA_WEB_STATIC	2024-07-05	EYVL		EASA web page list (dated by SIB R3, which points to it); same list in Wayback captures 2024-07-09 to 2025-02-17	https://web.archive.org/web/20240709034711/https://www.easa.europa.eu/en/domains/air-operations/global-navigation-satellite-system-outages-and-alterations
+EASA_WEB_STATIC	2024-07-05	EPWW	eastern	EASA web page list (dated by SIB R3, which points to it); same list in Wayback captures 2024-07-09 to 2025-02-17	https://web.archive.org/web/20240709034711/https://www.easa.europa.eu/en/domains/air-operations/global-navigation-satellite-system-outages-and-alterations
+EASA_WEB_STATIC	2024-07-05	ESAA	southern	EASA web page list (dated by SIB R3, which points to it); same list in Wayback captures 2024-07-09 to 2025-02-17	https://web.archive.org/web/20240709034711/https://www.easa.europa.eu/en/domains/air-operations/global-navigation-satellite-system-outages-and-alterations
+EASA_WEB_STATIC	2024-07-05	ENOR	northern	EASA web page list (dated by SIB R3, which points to it); same list in Wayback captures 2024-07-09 to 2025-02-17	https://web.archive.org/web/20240709034711/https://www.easa.europa.eu/en/domains/air-operations/global-navigation-satellite-system-outages-and-alterations
