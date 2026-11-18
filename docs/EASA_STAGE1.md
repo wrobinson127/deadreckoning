@@ -16,7 +16,9 @@ blind until it is registered.
 
 | File | What it holds |
 |---|---|
-| `analysis/easa_lists/named_lists.tsv` | 9 dated named lists, 194 rows: one row per FIR, with the "part of" wording kept and the source URL |
+| `analysis/easa_lists/named_lists.tsv` | The 3 EASA named lists (R1, R2, static web list), 71 rows: one row per FIR, with the "part of" wording kept, the source URL and EASA credit |
+| `analysis/easa_lists/iata_codes.tsv` | IATA V4, V5 and V6, FIR codes only (123 rows: 29 in IATA's copy of the EASA list plus 12 FDX additions, per version), with a citation. No other IATA content, per Walker's ruling of 2026-11-18 |
+| `analysis/easa_lists/fir_crosswalk.tsv` | EASA codes with no whole-FIR VATSIM polygon, mapped to VATSIM sectors by name (added 2026-11-18) |
 | `analysis/easa_lists/ranked_tables.tsv` | 40 EASA ranked tables (20 dates by 7 and 30 days), FIR codes in rank order, with the spoofing and reported flags |
 
 Both hold codes, dates and flags only, not the sources' prose. All sources
@@ -112,21 +114,21 @@ later shows 12/11/2026.
 - The switch falls between those dates. An uncollapsed Wayback index query
   (URL prefix, 2025-01-01 to 2025-06-01) returns only those two captures, so
   the archive holds nothing inside the gap for this URL. The short URL that
-  SIB R3 points to (easa.europa.eu/GNSS) was not checked: the Wayback
-  Machine returned "Temporarily Offline" (HTTP 503) on 2026-11-17. No EASA
-  text found so far dates the switch.
+  SIB R3 points to was checked on 2026-11-18 with the Wayback availability
+  API (the index service was still returning HTTP 503): easa.europa.eu/GNSS,
+  its www and https forms, /en/GNSS, lower-case /gnss and /en/node/141825
+  return no capture at any date. The same API returns the 2025-02-17 and
+  2025-05-20 captures for the main URL, so it was working. No EASA text
+  found so far dates the switch.
 
 ## 5. Owed to later stages
 
-- Wayback check of easa.europa.eu/GNSS for captures between 2025-02-17 and
-  2025-05-14 (blocked by the outage). If one shows the static list, the end
-  of the named-list phase, and Stage 0's omission cutoff, move later.
-
-- A FIR code crosswalk for ULAA, ULKK, ULMM, ULWW and UUYY, which VATSIM
-  folds into ULLL sub-sectors (Stage 0, section 2.3), before Stage 3 counts
-  them.
-- The Stage 3 agreement bar (recall on EASA's top 20, from the research
-  file) must be registered in a commit before any agreement figure is run.
+- Done 2026-11-18: the Wayback check of the short URL (section 4) and the
+  FIR crosswalk (`analysis/easa_lists/fir_crosswalk.tsv`; its effect is in
+  `docs/EASA_STAGE0.md` section 2.4).
+- The Stage 3 agreement bar is drafted in `docs/EASA_STAGE3_REGISTRATION.md`
+  and is not registered until Walker approves it. No agreement figure has
+  been run.
 - `analysis/easa_stage0.py` still hard-codes the R1 and web-list codes; they
   equal `named_lists.tsv`, and the six static captures parse by machine to
   the same 29 codes. Stage 2 should read the TSV instead.

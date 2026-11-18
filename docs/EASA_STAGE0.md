@@ -175,6 +175,27 @@ ULWW, UUYY (VATSIM folds these into ULLL sub-sectors) and ZBPE, ZSHA, ZYSH
 (China, rare in the tables). Stage 1 needs a crosswalk for the five Russian
 codes, or ULLL and its neighbours leave the agreement count.
 
+### 2.4 Rerun with the FIR crosswalk (added 2026-11-18)
+
+`analysis/easa_lists/fir_crosswalk.tsv` maps the 9 codes that had no
+whole-FIR polygon to VATSIM sectors by their names in VATSpy.dat. EASA's
+ULLL now means VATSIM's Peterburg sector (ULLL-R) only, not the whole
+VATSIM ULLL, which also contains the Arkhangelsk, Murmansk, Kotlas, Vologda,
+Syktyvkar, Naryan-Mar and oceanic sectors. Command: as above, with the
+crosswalk as a fourth argument.
+
+- **Every EASA code now resolves to a polygon.** The verdict is unchanged:
+  **39 of 40 tables** meet the (b) bar. Usable FIRs range from 24 to 36 and
+  top-20 usable from 16 to 20 (the 15/04/2026 7-day table aside: 12 and 12).
+  Current 30-day table: 48 listed, 48 resolve, 30 usable, 17 of the top 20.
+- **Part (a) is unchanged.** EETT, ESAA, LHCC, LZBB, LGGG and LUUU give
+  identical onsets and counts under both rules.
+- **ULLL (Peterburg sector only)** keeps its measurable onset of 2023-06-02,
+  so it stays an omission candidate.
+- **The five northern Russian codes** are mostly no data: ULKK has no covered
+  day at all, ULAA 58, ULWW 148, ULMM 173 (onset 2023-07-30, not measurable)
+  and UUYY 281 (no hit days).
+
 ## 3. What this does not show
 
 - No agreement or rank figure was computed; Stage 3's recall bar on EASA's

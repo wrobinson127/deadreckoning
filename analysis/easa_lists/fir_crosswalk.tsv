@@ -1,0 +1,15 @@
+# EASA FIR code -> VATSIM vatspy-data-project boundary ids, for codes with no whole-FIR polygon of their own.
+# Basis: sector and ACC names in VATSpy.dat [FIRs] (VATSIM vatspy-data-project, CC BY-SA 4.0), read 2026-11-18.
+# Simulator sectors, not official FIR boundaries: spot-check against AIP before any claim rests on one of these.
+# VATSIM's base ULLL polygon is partitioned without gaps by ULLL-R (Peterburg) + AR + MR + KT + W + S + NM (Naryan-Mar) + MO (oceanic);
+# EASA lists ULLL separately from ULAA/ULKK/ULMM/ULWW/UUYY, so EASA ULLL is mapped to ULLL-R only. NM and MO are left unassigned.
+easa_code	vatsim_ids	vatspy_name
+ULLL	ULLL-R	Sankt-Peterburg ACC, sector Peterburg
+ULAA	ULLL-AR	Sankt-Peterburg ACC, sector Arkhangelsk
+ULKK	ULLL-KT	Sankt-Peterburg ACC, sector Kotlas
+ULMM	ULLL-MR	Sankt-Peterburg ACC, sector Murmansk
+ULWW	ULLL-W	Sankt-Peterburg ACC, sector Vologda
+UUYY	ULLL-S	Sankt-Peterburg ACC, sector Syktyvkar
+ZBPE	ZBAA,ZBHH	ACCs named "- Beijing FIR -" (Beijing, Hohhot)
+ZSHA	ZSAM,ZSCN,ZSJN,ZSOF,ZSQD,ZSSS	ACCs named "- Shanghai FIR -" (Xiamen, Nanchang, Jinan, Hefei, Qingdao, Shanghai)
+ZYSH	ZYHB,ZYTL,ZYTX	ACCs named "- Shenyang FIR -" (Harbin, Dalian, Shenyang)

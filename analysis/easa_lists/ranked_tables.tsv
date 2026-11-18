@@ -1,3 +1,4 @@
+# Source: European Union Aviation Safety Agency (EASA), GNSS Outages and Alterations page, ranked FIR tables powered by Data4Safety. (c) EASA; FIR codes, rank order and flags extracted for research.
 # EASA ranked FIR tables (Data4Safety), from Wayback captures of easa.europa.eu/en/domains/air-operations/global-navigation-satellite-system-outages-and-alterations and the live page (LIVE20261117 = read 2026-11-17).
 # codes in rank order; suffix s = spoofing column starred, r = reported column starred. Second pass: each line re-parsed from source by machine and SHA-256 compared: all 40 rows match (38 archived, 2 live); the 3 repeat captures (20260310170736, 20261108121718, 20261116103712) also match their twins.
 capture	window	stamp	codes

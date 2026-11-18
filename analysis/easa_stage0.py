@@ -2,13 +2,16 @@
 EASA Stage 0 gate (slate project #10): assign the archive to FIRs and count
 usable cases. Read-only over committed aggregates; writes one JSON of counts.
 
-    python -m analysis.easa_stage0 FIRS_TXT TABLES_TSV OUT_JSON
+    python -m analysis.easa_stage0 FIRS_TXT TABLES_TSV OUT_JSON [CROSSWALK_TSV]
 
 FIRS_TXT   FIR polygons, one feature per line: ``id|oceanic|ring;ring...``
            (lon lat pairs, rings split by '#', polygons by '@'). Derived from
            the VATSIM vatspy-data-project Boundaries.geojson (CC BY-SA 4.0).
            Used in processing only: never committed or redistributed.
 TABLES_TSV EASA ranked tables: ``capture  7d|30d  dd/mm/yyyy  CODE[s][r],...``
+           (analysis/easa_lists/ranked_tables.tsv; '#' and header lines skipped)
+CROSSWALK_TSV optional EASA code -> VATSIM boundary ids
+           (analysis/easa_lists/fir_crosswalk.tsv, Stage 1 follow-up)
 
 Definitions are in docs/EASA_STAGE0.md section 1 (set before counting).
 """
@@ -39,19 +42,37 @@ FIRST_TABLE = "2025-05-14"           # first ranked table seen (capture 2025-05-
 
 
 # --- polygons ---------------------------------------------------------------
-def load_firs(path):
-    feats = []
+def load_crosswalk(path):
+    """EASA code -> VATSIM boundary ids, from analysis/easa_lists/fir_crosswalk.tsv."""
+    cw = {}
+    for line in open(path, encoding="utf-8"):
+        if line.startswith(("#", "easa_code")) or not line.strip():
+            continue
+        code, ids = line.split("\t")[:2]
+        cw[code] = ids.split(",")
+    return cw
+
+
+def load_firs(path, crosswalk=None):
+    """Whole-FIR features, with EASA codes in ``crosswalk`` built from the
+    listed VATSIM boundaries instead (a listed base id is replaced)."""
+    raw = collections.defaultdict(list)
+    oce = {}
     for line in open(path, encoding="utf-8"):
         fid, oceanic, body = line.rstrip("\n").split("|", 2)
-        if "-" in fid:          # VATSIM sub-sector, not a whole FIR
-            continue
-        polys = []
         for p in body.split("@"):
             rings = [[tuple(map(float, v.split())) for v in r.split(";")] for r in p.split("#")]
-            polys.append(rings)
+            raw[fid].append(rings)
+        oce[fid] = oceanic == "1"
+    units = {fid: [fid] for fid in raw if "-" not in fid}  # sub-sectors are not whole FIRs
+    for code, ids in (crosswalk or {}).items():
+        units[code] = ids
+    feats = []
+    for uid, ids in units.items():
+        polys = [p for i in ids for p in raw[i]]
         xs = [x for p in polys for x, _ in p[0]]
         ys = [y for p in polys for _, y in p[0]]
-        feats.append(dict(id=fid, oceanic=oceanic == "1", polys=polys,
+        feats.append(dict(id=uid, oceanic=all(oce[i] for i in ids), polys=polys,
                           bbox=(min(xs), min(ys), max(xs), max(ys)),
                           area=(max(xs) - min(xs)) * (max(ys) - min(ys))))
     return feats
@@ -110,8 +131,8 @@ def onset(cov: set, hit: set, n_days: int):
     return None, None, None
 
 
-def main(firs_txt, tables_tsv, out_json):
-    feats = load_firs(firs_txt)
+def main(firs_txt, tables_tsv, out_json, crosswalk_tsv=None):
+    feats = load_firs(firs_txt, load_crosswalk(crosswalk_tsv) if crosswalk_tsv else None)
     A = Assigner(feats)
     paths = dailyio.daily_paths()
     days = [dailyio.day_of(p) for p in paths]
@@ -179,6 +200,8 @@ def main(firs_txt, tables_tsv, out_json):
     feat_ids = {f["id"] for f in feats}
     seen = set()
     for line in open(tables_tsv, encoding="utf-8"):
+        if line.startswith(("#", "capture")):
+            continue
         cap, win, stamp, codes = line.rstrip("\n").split("\t")
         key = (win, stamp)
         if key in seen:
@@ -216,4 +239,4 @@ def main(firs_txt, tables_tsv, out_json):
 
 
 if __name__ == "__main__":
-    main(*sys.argv[1:4])
+    main(*sys.argv[1:5])
