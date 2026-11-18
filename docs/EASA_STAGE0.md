@@ -142,8 +142,8 @@ appears in the first ranked table seen (14/05/2025), so its "naming" date is
 bounded by the capture schedule and by the change of method, not by a
 decision to warn. Three UK polygons (EGTT, EGVV, EGTM; onset 2023-07-20) show
 a measurable onset and appear in no EASA list or table. These are candidates
-for Stage 2, not findings: ULLL's VATSIM polygon absorbs five neighbouring
-FIRs (see 2.3), and the UK polygons overlap.
+for Stage 2, not findings: the UK polygons overlap, and ULLL was first scored
+on VATSIM's whole ULLL (see 2.4 for the Peterburg-sector rerun).
 
 ### 2.3 Part (b): EASA's ranked tables as an outside check. **PASS**
 
@@ -177,8 +177,8 @@ codes, or ULLL and its neighbours leave the agreement count.
 
 ### 2.4 Rerun with the FIR crosswalk (added 2026-11-18)
 
-`analysis/easa_lists/fir_crosswalk.tsv` maps the 9 codes that had no
-whole-FIR polygon to VATSIM sectors by their names in VATSpy.dat. EASA's
+`analysis/easa_lists/fir_crosswalk.tsv` maps the 8 codes that had no
+whole-FIR polygon, plus ULLL, to VATSIM sectors by their names in VATSpy.dat. EASA's
 ULLL now means VATSIM's Peterburg sector (ULLL-R) only, not the whole
 VATSIM ULLL, which also contains the Arkhangelsk, Murmansk, Kotlas, Vologda,
 Syktyvkar, Naryan-Mar and oceanic sectors. Command: as above, with the

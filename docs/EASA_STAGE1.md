@@ -54,22 +54,21 @@ pdf.js, loaded from jsDelivr into a page on the source's own site.
   R2: EYVL and EVRR lose their "part of" wording; EPWW goes from
   north-eastern to eastern; EFIN is named whole, with its northern part also
   listed under the Arctic; ORBB stays whole.
-- **IATA V4, V5 and V6** print identical FIR lists. Line by line, the lists
-  differ only in spelling ("Capetown" against "Cape town"). Second pass: in
-  each version, the codes after "FIR <name>" in the EASA-copy section,
-  matched by regular expression, equal the 29 coded rows plus UMKK, which
-  appears only as a reference point, as in R1. The ten "part of" phrases
-  match the coded qualifiers. In the FDX section the expression recovers 10
-  of the 12 codes in V5 and V6 (11 in V4). It misses DNKK ("FIR KANO DNKK")
-  and, in V5 and V6, FACA ("FIR Cape town FACA"), because of how those names
-  are written. Both appear in the line-by-line read of every version.
-- **IATA's copy disagrees with EASA's page in two places.** IATA has
-  "Western part of FIR Helsinki EFIN" and "Northern part of FIR Baghdad
-  ORBB"; EASA's captured page has EFIN whole and ORBB whole. Stage 2 uses
-  EASA's page as the record and treats IATA as a copy.
-- **IATA FDX additions** (outside EASA's list): BIRD, "NUUK" (printed as
-  given; not an ICAO FIR code), SAEF, SARR, SBBS, SBRE, VIDF, VABF, VYYF,
-  ZPKM, FACA, DNKK. These are IATA's FDX observations, not EASA naming.
+- **IATA V4, V5 and V6** carry identical FIR code lists (one place-name
+  spelling differs). Second pass: in each version, the codes in the section
+  that reprints EASA's list, matched by regular expression, equal the 29
+  coded rows plus UMKK, which appears only as a reference point, as in R1.
+  In the FDX section the expression recovers 10 of the 12 codes in V5 and
+  V6 (11 in V4); the two it misses (DNKK, and FACA in V5 and V6) were
+  confirmed in the line-by-line read of every version. When IATA's "part
+  of" wording was still kept (before 2026-11-18), it also matched the PDFs
+  line by line. It is no longer in the repo.
+- **IATA's reprint differs from EASA's captured page on two FIRs, EFIN and
+  ORBB:** IATA gives a part of each, while EASA's page names both whole.
+  Stage 2 uses EASA's page as the record and treats IATA as a copy.
+- **IATA FDX additions** (outside EASA's list), as codes only: see
+  `iata_codes.tsv`. One code ("NUUK") is not an ICAO FIR code. These are
+  IATA's FDX observations, not EASA naming.
 
 ## 3. Ranked tables
 
