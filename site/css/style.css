@@ -708,6 +708,12 @@ footer.site-footer .footer-note { flex-basis:100%; color:var(--ink-faint);
     border-radius: var(--radius); }
   .nav-links.open a:hover { background: var(--bg-panel2); }
   .nav-links.open .nav-help { align-self: flex-start; margin: 4px 4px 0; }
+  /* Doc pages (methodology, validation, about, writeup) have no hamburger: let
+     their plain nav wrap onto a second row instead of clipping off-screen. */
+  .topbar nav:not(:has(.nav-links)) { display: flex; flex-wrap: wrap; justify-content: flex-end;
+    align-items: center; gap: 4px 12px; min-width: 0; }
+  .topbar nav:not(:has(.nav-links)) > a,
+  .topbar nav:not(:has(.nav-links)) > .nav-help { margin-left: 0; }
   /* Trend strip: stack the label over the coverage so neither clips at narrow widths. */
   .trend-head { flex-direction: column; align-items: flex-start; gap: 1px; }
   .trend-coverage { white-space: normal; }
