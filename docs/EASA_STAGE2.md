@@ -56,9 +56,11 @@ county hex (Stage 0, section 2.2).
 - **LHCC and LZBB:** 0 hit days before naming; persistent onsets only on
   2026-09-24.
 
-**No data: 3.** LUUU, OBBB and OKAC were named on 2024-07-05 with coverage
-on fewer than half the days before it. LUUU replaces Stage 0's "dropped"
-label with this rule's "no data"; the facts are the same.
+**Insufficient coverage ("no data" rule): 3.** LUUU, OBBB and OKAC were
+named on 2024-07-05 with coverage on fewer than half the days before it.
+OBBB (32 covered days) and OKAC (46) are no data. LUUU is a partial case: 237
+covered days and 26 hit days before naming, short of both the coverage rule
+and persistence. It is not a reverse case and not a lag case.
 
 **Censored: 21** (all R1 FIRs). The research file did not plan a lead/lag
 reading for these. Their later onsets are in the table for reference only.
@@ -77,7 +79,7 @@ more reason not to read them as findings.
 | VIDF | 2023-12-12 | no onset | 14/05/2025 |
 | VYYF | 2024-01-07 | 2024-01-25 | 14/05/2025 |
 | USSV | 2024-08-18 | 2024-08-19 | 14/05/2025 |
-| UMKK | 2024-09-23 | same | 14/05/2025 |
+| UMKK (named as a reference point in R1 and R2) | 2024-09-23 | same | 14/05/2025 |
 | UWWW | 2024-10-17 | same | 14/05/2025 |
 | RKRR | 2024-12-08 | no onset | never |
 | VTBB | 2025-02-14 | no onset | 14/05/2025 |
@@ -87,6 +89,8 @@ more reason not to read them as findings.
 - Nine first appear in the first ranked table seen. That date is bounded by
   the capture schedule and by the change of method, so it is not a decision
   date and gives no lag.
+- UMKK is not a clean omission. R1 and R2 name the "FIRs surrounding FIR
+  Kaliningrad UMKK", so the lists point at it without naming it as affected.
 - EGVV and RKRR appear in no EASA list or table. RKRR rests on few hit days
   (21 in the whole archive); EGVV is a VATSIM polygon, not an official FIR.
 
@@ -94,8 +98,17 @@ more reason not to read them as findings.
 PAZA, KZDV, KZHU), with onsets from 2023-06-11 to 2024-08-08. The method
 picks up interference where EASA does not look.
 
-## 3. What this does not show
+## 3. Not done (open)
 
+- The research plan's comparison group for part (a) (FIRs with similar
+  traffic and no persistent interference, as a base rate of naming) was not
+  built.
+
+## 4. What this does not show
+
+- The named lists do not state their intended scope. Five of the eleven
+  omission candidates are Russian or Belarusian FIRs (ULLL, UMKK, UMMV,
+  USSV, UWWW). Their absence from the lists is not shown to be a lag or an oversight.
 - A lag is a fact about dates, not a grade on EASA. EASA's naming rests on
   occurrence reports and judgement the archive cannot see.
 - The reverse cases may mean EASA's 2024 list drew on reports from before
