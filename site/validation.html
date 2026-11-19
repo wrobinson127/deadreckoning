@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<script>(function(){try{var t=localStorage.getItem('dr_theme');if(t!=='light'&&t!=='dark')t='dark';document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','dark');}})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Validation: DEAD RECKONING</title>
+<meta name="description" content="DEAD RECKONING checked against EASA's published GNSS interference warnings and its ranked table of affected flight information regions." />
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+<link rel="alternate icon" href="assets/favicon.png" type="image/png" />
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+<style>
+  .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .table-scroll table { width: auto; min-width: 100%; margin: 0; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body>
+<div id="app" style="position:static;display:block;min-height:100%;">
+  <header class="topbar">
+    <a class="brand" href="index.html" style="text-decoration:none">DEAD<span class="dot">·</span>RECKONING</a>
+    <span class="spacer"></span>
+    <nav><a href="index.html">Map</a><a href="methodology.html">Methodology</a><a href="validation.html">Validation</a><a href="about.html">About</a><button class="nav-help" data-theme-toggle aria-label="toggle light or dark theme">☾</button></nav>
+  </header>
+
+  <main class="doc">
+    <a class="backlink" href="index.html">← back to the map</a>
+    <h1>Checked against Europe's official warnings</h1>
+    <p class="lede">The European Union Aviation Safety Agency (EASA) publishes a
+    ranked table of the flight information regions (FIRs) most affected by interference with GNSS, satellite navigation that includes GPS. Its page says the table is built from the trust score aircraft broadcast with their position (NIC, the Navigation Integrity Category), the same report this map uses. EASA treats NIC 7 as the line between good and bad; this map counts NIC 6 or below as degraded. So the two can be compared, FIR by FIR, with that difference in mind.</p>
+
+    <h2>The archive finds a median 94% of EASA's top 20 that it can score</h2>
+    <p>For each of 20 EASA tables, from May 2025 to November 2026, the archive ranked every FIR with enough aircraft to score by its own share of degraded aircraft over
+    the same days. It kept as many FIRs as EASA listed. Then it counted how many
+    of EASA's top 20 were in that list.</p>
+    <div class="table-scroll">
+    <table>
+      <tr><th>Tables</th><th class="num">Median share of EASA's top 20 found</th><th class="num">Range</th></tr>
+      <tr><td>30-day, worldwide (primary)</td><td class="num">94.2%</td><td class="num">82.4% to 100%</td></tr>
+      <tr><td>30-day, Americas excluded</td><td class="num">100%</td><td class="num">87.5% to 100%</td></tr>
+      <tr><td>7-day, worldwide</td><td class="num">93.3%</td><td class="num">76.5% to 100%</td></tr>
+    </table>
+    </div>
+    <p>The pass mark was 70%, written down and committed before the comparison ran. A list drawn at random would score about 29%. Only FIRs the archive
+    has enough aircraft to score count; the rest are no data.</p>
+
+    <h2>It does not match EASA's order or its edges</h2>
+    <ul>
+      <li><strong>About half the archive's list is not in EASA's table.</strong>
+      A list that long reaches down to airspace where only 2 to 3% of aircraft
+      report degraded integrity, and US FIRs take 3 to 10 places in each 30-day list. Several central European FIRs sit near the bottom in almost every table, and EASA's table leaves them out. The comparison cannot tell whether that gap is background in this measure or a real difference between the two methods.</li>
+      <li><strong>The order differs.</strong> Within FIRs on both lists, rank
+      agreement is weak: a median Spearman correlation of 0.205 on the 30-day tables, where 1 would mean the same order and 0 no relation. It falls below zero in three 2026 30-day tables.</li>
+      <li><strong>Some of EASA's top FIRs are out of reach.</strong> Baghdad, Baku, Lahore, Asmara, Addis Ababa, several Russian FIRs and Kazakhstan's Aktobe had too little traffic to score in some tables.</li>
+    </ul>
+
+    <h2>Tallinn was named 375 to 388 days after the archive's measured onset</h2>
+    <p>Before May 2025, EASA named affected FIRs in lists: in its bulletin of
+    February 2023, a revision in November 2023, and a web list dated 5 July
+    2024. The archive shows persistent interference in the Tallinn FIR from 13 June 2023, or from 26 June 2023 counting only cells wholly inside the FIR, starting in Voru county in southeast Estonia. Tallinn first appears on the July 2024 list, 388 or 375 days later. It is the clearest case where the archive's record
+    starts well before the naming.</p>
+
+    <h2>Four FIRs were named while the archive saw them quiet</h2>
+    <p>Southern Sweden, eastern Athens, Budapest and Bratislava joined the list
+    in July 2024. The archive had covered each on hundreds of days before then
+    and found no persistent interference. EASA's bulletins do not say why each FIR was added in 2024. The February 2023 revision says its list drew on "data from the Network of Analysts and open sources." The archive cannot see those sources.</p>
+
+    <h2>Eleven areas showed interference that no named list included</h2>
+    <p>Each showed persistent interference before February 2025, the last
+    archived copy of the named list. Most first appear in EASA's earliest
+    ranked table on record, in May 2025.
+    That date marks EASA's change of method, so it gives no lag. Five
+    of the eleven are Russian or Belarusian FIRs, and the lists do not say
+    whether they meant to cover that airspace.</p>
+
+    <h2>What this check is not</h2>
+    <p>Both sides are related instruments, and EASA's method is only partly published, so neither one is ground truth. A lag here is the gap between two dates, and nothing more. FIR outlines come from the VATSIM flight-simulation
+    community, not official charts. Nothing here says who causes any
+    interference. The full method, every count and the registration are in the
+    project repository under <code>docs/EASA_STAGE0.md</code> to
+    <code>docs/EASA_STAGE3.md</code>.</p>
+
+    <p>Sources: EASA Safety Information Bulletin 2022-02, revisions 1 to 4;
+    EASA, "Global Navigation Satellite System (GNSS) Outages and Alterations"
+    (live page and Internet Archive copies); FIR outlines © VATSIM
+    vatspy-data-project contributors (CC BY-SA 4.0), used in processing only.</p>
+
+    <a class="backlink" href="index.html">← back to the map</a>
+  </main>
+
+  <footer class="site-footer">
+    <span class="mono">DEAD·RECKONING</span>
+    <span>Built by <a href="https://walker-robinson.com" target="_blank" rel="noopener">Walker Robinson</a></span>
+    <span>Data © adsb.lol (ODbL 1.0)</span>
+    <span>Code MIT</span>
+    <span class="footer-note">Basemap borders reflect OpenStreetMap's rendering and imply no position on territorial disputes.</span>
+  </footer>
+</div>
+<script src="js/theme.js"></script>
+</body>
+</html>
