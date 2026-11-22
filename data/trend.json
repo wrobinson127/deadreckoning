@@ -8208,6 +8208,12 @@
       "measured": 25380,
       "degraded": 8853,
       "strong": 311
+    },
+    {
+      "date": "2026-11-21",
+      "measured": 25175,
+      "degraded": 7927,
+      "strong": 359
     }
   ]
 }
